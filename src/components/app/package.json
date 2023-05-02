@@ -1,0 +1,8 @@
+{
+    "name": "app",
+    "version": "1.0.0",
+    "main": "App.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
