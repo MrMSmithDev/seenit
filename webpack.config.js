@@ -19,11 +19,15 @@ module.exports = {
 				use: 'ts-loader',
 				exclude: /node_modules/,
 			},
+			{
+				test: /\.s(ac)ss?$/,
+				use: ['style-loader', 'css-loader', 'sass-loader'],
+			},
 		],
 	},
-	devServer: {
-		contentBase: path.join(__dirname, 'dist'),
-		compress: true,
-		port: 9000,
+	resolve: {
+		alias: {
+			'@components': path.resolve(__dirname, 'src/components'),
+		},
 	},
 }
