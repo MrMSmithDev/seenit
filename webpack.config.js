@@ -15,9 +15,14 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.tsx?$/,
-				use: 'ts-loader',
+				test: /\.(ts|js)x?$/,
 				exclude: /node_modules/,
+				use: {
+			  		loader: "babel-loader",
+					  options: { 
+						presets: ["@babel/env", "@babel/preset-react", "@babel/preset-typescript"]
+					  }
+				},
 			},
 			{
 				test: /\.s(ac)ss?$/,
@@ -28,6 +33,7 @@ module.exports = {
 	resolve: {
 		alias: {
 			'@components': path.resolve(__dirname, 'src/components'),
+			'@styles': path.resolve(__dirname, 'src/styles')
 		},
 	},
 }
