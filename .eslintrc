@@ -23,10 +23,10 @@
         },
         "ecmaVersion": "latest",
         "sourceType": "module",
-        "tsconfigRootDir": "."
-        // "project": [
-        //     "./tsconfig.json"
-        // ]
+        "tsconfigRootDir": ".",
+        "project": [
+            "./tsconfig.json"
+        ]
     },
     // Configuring third-party plugins
     "plugins": [
@@ -50,20 +50,20 @@
         "quotes": ["error", "single"],
         "react/react-in-jsx-scope": "off",
         "semi": ["error", "never"],
-        // "prettier/prettier": [
-        //   "error",
-        //   {
-        //     "endOfLine": "auto",
-        //     "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-        //     "importOrderSeparation": true,
-        //     "importOrderSortSpecifiers": true,
-        //     "printWidth": 100,
-        //     "semi": false,
-        //     "singleQuote": true,
-        //     "tabWidth": 2,
-        //     "trailingComma": "none"
-        //   }
-        // ],
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto",
+            "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+            "importOrderSeparation": true,
+            "importOrderSortSpecifiers": true,
+            "printWidth": 100,
+            "semi": false,
+            "singleQuote": true,
+            "tabWidth": 2,
+            "trailingComma": "none"
+          }
+        ],
         // Disallow the `any` type.
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-explicit-any": "warn",
