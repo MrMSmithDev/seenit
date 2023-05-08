@@ -34,6 +34,11 @@
         "@typescript-eslint"
     ],
     "settings": {
+        "import/core-modules": [
+            "@components/header",
+            "@components/newPost",
+            "@components/postFeed"
+        ],
         "import/resolver": {
             "typescript": {
                 "project": "./tsconfig.json"
