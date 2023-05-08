@@ -77,6 +77,9 @@
             }
         ],
         "react-hooks/exhaustive-deps": "off",
+        // Allow circumstances for style modules
+        "@typescript-eslint/no-unsafe-assignment": 0,
+        "@typescript-eslint/no-unsafe-member-access": 0,
         // Enforce the use of the shorthand syntax.
         "object-shorthand": "error",
         "no-console": "warn"
