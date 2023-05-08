@@ -1,0 +1,8 @@
+{
+    "name": "header",
+    "version": "1.0.0",
+    "main": "Header.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
