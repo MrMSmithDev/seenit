@@ -35,6 +35,7 @@
     ],
     "settings": {
         "import/core-modules": [
+            "@assets/images",
             "@components/header",
             "@components/newPost",
             "@components/postFeed"

@@ -28,10 +28,19 @@ module.exports = {
 				test: /\.s(a|c)ss?$/,
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
+			{
+				test: /\.png$/,
+				use: ['file-loader'],
+				options: {
+					name: '[name].[ext]',
+					outputPath: 'audio/'
+				  }
+			}
 		],
 	},
 	resolve: {
 		alias: {
+			'@assets': path.resolve(__dirname, 'src/assets'),
 			'@components': path.resolve(__dirname, 'src/components'),
 			'@styles': path.resolve(__dirname, 'src/styles')
 		},

@@ -21,17 +21,26 @@
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "baseUrl": ".",
     "paths": {
+      "@assets/*": [
+        "./src/assets/*"
+      ],
       "@components/*": [
           "./src/components/*"
       ],
       "@styles/*": [
           "./src/styles/*"
       ]
-  }
-
+    },
+    "outDir": "build",
   },
+
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx"
-  ]
+    "src/**/*.tsx",
+    "src/**/*.js",
+  ],
+  "exclude": [
+    "node_modules",
+    "build/**/*"
+  ],
 }
