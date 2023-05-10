@@ -29,12 +29,16 @@ module.exports = {
 				use: ['style-loader', 'css-loader', 'sass-loader'],
 			},
 			{
-				test: /\.png$/,
-				use: ['file-loader'],
-				options: {
-					name: '[name].[ext]',
-					outputPath: 'audio/'
-				  }
+				test: /\.(png|jpe?g|svg)$/,
+				use: [
+					{
+					    loader: 'file-loader',
+					    options: {
+							name: '[name].[ext]',
+							outputPath: 'audio/'
+						}
+					}
+				]
 			}
 		],
 	},
