@@ -25,10 +25,13 @@
         "./src/assets/*"
       ],
       "@components/*": [
-          "./src/components/*"
+        "./src/components/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks"
       ],
       "@styles/*": [
-          "./src/styles/*"
+        "./src/styles/*"
       ]
     },
     "outDir": "build",
