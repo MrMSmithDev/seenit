@@ -1,0 +1,23 @@
+.userStatus {
+    align-items: center;
+    color: #ffffff;
+    display: flex;
+    gap: 10px;
+
+    &.notLoggedIn {
+        cursor: pointer;
+    }
+}
+
+.userImgWrapper {
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    height: 30px;
+    width: 30px;
+}
+
+.userIcon {
+    color: #ffffff;
+}
