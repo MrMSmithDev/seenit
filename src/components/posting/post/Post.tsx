@@ -9,12 +9,12 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
-  const bodyStyle = isPreview ? `${style.postBody} ${style.postPreview}` : style.postBody
+  const postStyle = isPreview ? `${style.post} ${style.postPreview}` : style.postBody
 
   return (
-    <div className={style.post}>
+    <div className={postStyle}>
       <p className={style.postTitle}>{currentPost.title}</p>
-      <p className={bodyStyle}>{currentPost.body}</p>
+      <p className={style.postBody}>{currentPost.body}</p>
     </div>
   )
 }
