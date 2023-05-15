@@ -1,0 +1,8 @@
+{
+    "name": "post",
+    "version": "1.0.0",
+    "main": "Post.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
