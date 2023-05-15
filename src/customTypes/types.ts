@@ -1,9 +1,10 @@
 export interface PostType {
   id: string
-  dateTime: string
+  timeStamp: string
   author: string
   title: string
   body: string
+  edited?: boolean
 }
 
 export type PostCollection = Array<PostType>
