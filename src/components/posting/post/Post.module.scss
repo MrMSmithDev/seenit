@@ -12,9 +12,32 @@
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
             transform: scale(1.01)
         }
+
+        .postBody {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
+.postBody {
+    line-height: 20px;
+}
+
 .postTitle {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.postInfo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.postAuthor, .postTimestamp {
+    font-size: 12px;
     font-weight: bold;
 }

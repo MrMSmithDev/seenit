@@ -15,6 +15,10 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
     <div className={postStyle}>
       <p className={style.postTitle}>{currentPost.title}</p>
       <p className={style.postBody}>{currentPost.body}</p>
+      <div className={style.postInfo}>
+        <p className={style.postTimestamp}>{currentPost.timeStamp}</p>
+        <p className={style.postAuthor}>{currentPost.author}</p>
+      </div>
     </div>
   )
 }
