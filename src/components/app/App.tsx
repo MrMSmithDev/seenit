@@ -1,6 +1,6 @@
 import Header from '@components/header'
 import Main from '@components/main'
-import PostFeed from '@components/posting/postFeed/PostFeed'
+import PostFeed from '@components/posting/postFeed'
 import React from 'react'
 
 import styles from './App.module.scss'
