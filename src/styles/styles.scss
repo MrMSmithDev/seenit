@@ -36,6 +36,10 @@ body, input, button {
   font-family: Roboto, 'Trebuchet MS', Helvetica, sans-serif;
 }
 
+body {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
