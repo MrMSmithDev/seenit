@@ -27,17 +27,32 @@
     line-height: 20px;
 }
 
-.postTitle {
-    font-size: 24px;
-    font-weight: bold;
+.headline {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+
+    .starIcon {
+        color: #e7be08;
+        cursor: pointer;
+    }
+
+    .postTitle {
+        font-size: 24px;
+        font-weight: bold;
+    }
 }
 
 .postInfo {
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
 }
 
-.postAuthor, .postTimestamp {
+.postAuthor, .postTimestamp, .postCommentCount {
     font-size: 12px;
     font-weight: bold;
+}
+
+.postAuthor {
+    margin-left: auto;
 }
