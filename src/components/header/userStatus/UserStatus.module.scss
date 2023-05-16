@@ -1,8 +1,11 @@
+@import '~@styles/_variables.scss';
+
 .userStatus {
     align-items: center;
     color: #ffffff;
     display: flex;
     gap: 10px;
+    position: relative;
 
     &.notLoggedIn {
         cursor: pointer;
@@ -20,4 +23,29 @@
 
 .userIcon {
     color: #ffffff;
+}
+
+.dropDownMenu {
+    position: absolute;
+    width: calc(100% + 10px);
+    bottom: -37px;
+    right: calc(-100% - 20px);
+
+    &.isActive {
+        transform: translateX(-100%);
+    }
+
+    transition: translate .2s;
+    -webkit-transition: translate .2s;
+    -moz-transition: translate .2s;
+    -o-transition: translate .2s;
+
+    .signOutButton {
+        border: none;
+        border-bottom: 2px solid $deep-blue;
+        border-left: 2px solid $deep-blue;
+        background: #FFFFFF;
+        font-size: 16px;
+        width: 100%;
+    }
 }
