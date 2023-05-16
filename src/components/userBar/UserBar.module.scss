@@ -15,25 +15,6 @@
         padding: 5px;
         position: relative;
         text-align: left;
-
-        &::before {
-            content: "";
-            background-color: $deep-blue;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            height: 2px;
-        }
-
-        &::after {
-            content: "";
-            background-color: $deep-blue;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 2px;
-        }
+        width: 100%;
     }
 }
