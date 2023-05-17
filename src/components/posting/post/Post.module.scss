@@ -32,9 +32,11 @@
     display: flex;
     gap: 10px;
 
-    .starIcon {
-        color: #e7be08;
+    .favoriteButton {
+        background-color: inherit;
+        border: none;
         cursor: pointer;
+        font-size: 16px;
     }
 
     .postTitle {
@@ -48,9 +50,13 @@
     gap: 20px;
 }
 
-.postAuthor, .postTimestamp, .postCommentCount {
+.postAuthor, .postTimestamp, .postCommentCount, .postFavoriteCount {
     font-size: 12px;
     font-weight: bold;
+}
+
+.starIcon {
+    color: #e7be08;
 }
 
 .postAuthor {

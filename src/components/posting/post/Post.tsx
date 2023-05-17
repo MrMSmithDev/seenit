@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import style from './Post.module.scss'
 import { PostType } from 'src/customTypes/types'
@@ -12,16 +12,23 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
-  const userHasFavorite = false
+  const [userHasFavorite, setUserHasFavorite] = useState(false)
   const postStyle = isPreview ? `${style.post} ${style.postPreview}` : style.postBody
 
+  function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation()
+    setUserHasFavorite(!userHasFavorite)
+  }
+
   return (
-    <div className={postStyle}>
+    <div className={postStyle} data-post-id={currentPost.ID}>
       <p className={style.headline}>
-        <FontAwesomeIcon
-          className={style.starIcon}
-          icon={userHasFavorite ? solidStar : hollowStar}
-        />
+        <button className={style.favoriteButton} onClick={toggleFavorite}>
+          <FontAwesomeIcon
+            className={style.starIcon}
+            icon={userHasFavorite ? solidStar : hollowStar}
+          />
+        </button>
         <span className={style.postTitle}>{currentPost.title}</span>
       </p>
       <p className={style.postBody}>{currentPost.body}</p>
@@ -29,6 +36,9 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
         <p className={style.postTimestamp}>{currentPost.timeStamp}</p>
         <p className={style.postCommentCount}>
           {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+        </p>
+        <p className={style.postFavoriteCount}>
+          0 <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
         </p>
         <p className={style.postAuthor}>{currentPost.author}</p>
       </div>
