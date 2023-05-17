@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { logo } from '@assets/images'
 
 import style from './LandingPage.module.scss'
+import { useAuth } from '@hooks/useAuth'
 
 const LandingPage: React.FC = () => {
-  const [authStatus, setAuthStatus] = useState(false)
-
-  function signIn() {
-    setAuthStatus(!authStatus)
-  }
+  const { signIn } = useAuth()
 
   return (
     <div className={style.landingPage}>
