@@ -6,7 +6,7 @@ import { PostType } from 'src/customTypes/types'
 
 const posts: Array<PostType> = [
   {
-    id: 'postIDbaby1',
+    ID: 'postIDbaby1',
     timeStamp: '12:45 12/05/22',
     author: 'michael',
     title: 'Post title',
@@ -14,6 +14,7 @@ const posts: Array<PostType> = [
     comments: [
       {
         id: 'commentId',
+        postID: 'postIDbaby1',
         timeStamp: 'now',
         author: 'Not Michael',
         body: 'This is ma body'
@@ -21,14 +22,14 @@ const posts: Array<PostType> = [
     ]
   },
   {
-    id: 'postIDbaby2',
+    ID: 'postIDbaby2',
     timeStamp: '12:45 12/05/22',
     author: 'michael',
     title: 'Post title',
     body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.'
   },
   {
-    id: 'postIDbaby3',
+    ID: 'postIDbaby3',
     timeStamp: '12:45 12/05/22',
     author: 'michael',
     title: 'Post title',
@@ -38,7 +39,7 @@ const posts: Array<PostType> = [
 
 const PostFeed: React.FC = () => {
   const postArr = posts.map((post) => {
-    return <Post currentPost={post} isPreview={true} key={post.id} />
+    return <Post currentPost={post} isPreview={true} key={post.ID} />
   })
 
   return <div className={style.postFeed}>{postArr}</div>
