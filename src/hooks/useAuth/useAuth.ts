@@ -33,7 +33,7 @@ export function useAuth() {
     return user?.displayName || null
   }
 
-  function getUserPicture(): string | null {
+  function getUserImage(): string | null {
     return user?.photoURL || null
   }
 
@@ -47,7 +47,7 @@ export function useAuth() {
     signOutUser,
 
     getUserName,
-    getUserPicture,
+    getUserImage,
     isUserSignedIn
   }
 }
