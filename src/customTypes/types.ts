@@ -4,6 +4,7 @@ export interface PostType {
   author: string
   title: string
   body: string
+  image?: File
   imageId?: string
   edited?: boolean
   comments?: Array<Comment>
