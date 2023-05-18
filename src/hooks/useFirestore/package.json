@@ -1,7 +1,7 @@
 {
-    "name": "use-post-feed",
+    "name": "use-firestore",
     "version": "1.0.0",
-    "main": "usePostFeed.ts",
+    "main": "useFirestore.ts",
     "dependencies": {
         
     }
