@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-
+import { useAuth } from '@hooks/useAuth'
 import style from './UserStatus.module.scss'
 
 const UserStatus: React.FC = () => {
   const [dropIsActive, setDropIsActive] = useState(false)
-  const [authStatus, setAuthStatus] = useState(false)
+  const { signOutUser, getUserName, getUserImage } = useAuth()
 
-  function signOut(event: React.MouseEvent<HTMLButtonElement>) {
+  async function signOut(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
-    setAuthStatus(!authStatus)
+    await signOutUser()
   }
 
   function showDropDown() {
@@ -20,9 +18,9 @@ const UserStatus: React.FC = () => {
   return (
     <div className={`${style.userStatus} ${style.notLoggedIn}`} onClick={showDropDown}>
       <div className={style.userImgWrapper}>
-        <FontAwesomeIcon className={style.userIcon} icon={faUser} />
+        <div className={style.userImg} style={{ backgroundImage: getUserImage()! }} />
       </div>
-      <p>Login</p>
+      <p>{getUserName()}</p>
       <div className={`${style.dropDownMenu} ${dropIsActive ? style.isActive : ''}`}>
         <button className={style.signOutButton} onClick={signOut}>
           Sign Out
