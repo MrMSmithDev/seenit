@@ -3,13 +3,11 @@
 .userStatus {
     align-items: center;
     color: #ffffff;
+    cursor: pointer;
     display: flex;
+    font-weight: bold;
     gap: 10px;
     position: relative;
-
-    &.notLoggedIn {
-        cursor: pointer;
-    }
 }
 
 .userImgWrapper {
@@ -34,7 +32,7 @@
 .dropDownMenu {
     position: absolute;
     width: calc(100% + 10px);
-    bottom: -37px;
+    bottom: -45px;
     right: calc(-100% - 20px);
 
     &.isActive {
@@ -53,6 +51,8 @@
         background: #FFFFFF;
         cursor: pointer;
         font-size: 16px;
+        font-weight: bold;
+        padding: 5px;
         width: 100%;
     }
 }
