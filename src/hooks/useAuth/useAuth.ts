@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useFirestore from '@hooks/useFirestore/useFirestore'
 import {
   getAuth,
   onAuthStateChanged,
@@ -10,6 +11,7 @@ import {
 
 export function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
+  const { updateUserProfile } = useFirestore()
 
   useEffect(() => {
     const auth = getAuth()
