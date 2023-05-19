@@ -1,7 +1,7 @@
 {
-    "name": "new-post",
+    "name": "new-post-form",
     "version": "1.0.0",
-    "main": "NewPost.tsx",
+    "main": "NewPostForm.tsx",
     "dependencies": {
         "react": "^18.2.0"
     }

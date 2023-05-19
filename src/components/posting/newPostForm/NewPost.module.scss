@@ -1,0 +1,39 @@
+.newPostContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+.newPostTitle {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.newPostForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .inputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        input[type=text], textarea {
+            border: 2px solid red;
+            border-radius: none;
+
+            &:focus {
+                border-color: #000000;
+                border-radius: none;
+                outline: none;
+            }
+        }
+
+        label {
+            font-style: italic;
+            font-weight: bold;
+        }
+    }
+}

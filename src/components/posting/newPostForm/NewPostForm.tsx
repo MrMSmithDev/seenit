@@ -5,8 +5,8 @@ import style from './NewPost.module.scss'
 const NewPost: React.FC = () => {
   return (
     <div className={style.newPostContainer}>
-      <h1>New Post</h1>
-      <form>
+      <h1 className={style.newPostTitle}>New Post</h1>
+      <form className={style.newPostForm}>
         <div className={style.inputContainer}>
           <label htmlFor="post-title">Post Title</label>
           <input
