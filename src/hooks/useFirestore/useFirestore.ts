@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { useEffect, useState } from 'react'
 import { PostType } from 'src/customTypes/types'
 
+import { User } from 'firebase/auth'
 import {
   getFirestore,
   collection,
@@ -15,7 +15,8 @@ import {
   doc,
   serverTimestamp,
   QuerySnapshot,
-  getDocs
+  getDocs,
+  where
 } from 'firebase/firestore'
 
 function generateID(): string {
@@ -23,7 +24,39 @@ function generateID(): string {
 }
 
 function useFirestore() {
-  // Posts
+  //*******************//
+  //****** Users ******//
+  //*******************//
+  async function updateUserProfile(currentUser: User) {
+    try {
+      const userRef = doc(collection(getFirestore(), 'users', currentUser.uid))
+      await setDoc(userRef, {
+        uid: currentUser?.uid,
+        displayName: currentUser?.displayName,
+        photoURL: currentUser?.photoURL
+      })
+    } catch (error) {
+      console.error('Error updating user information:', error)
+      throw error
+    }
+  }
+
+  async function loadUserProfile(uid: string) {
+    try {
+      const userDB = collection(getFirestore(), 'users')
+      const querySnapshot = await getDocs(query(userDB, where('uid', '==', uid)))
+
+      const userDoc = querySnapshot.docs[0].data()
+      return userDoc
+    } catch (error) {
+      console.error('Error loading userProfile:', error)
+      throw error
+    }
+  }
+  //*******************//
+  //****** Posts ******//
+  //*******************//
+
   async function writePost(post: PostType) {
     const postID = generateID()
 
@@ -40,16 +73,14 @@ function useFirestore() {
         console.log('Add image here')
       }
     } catch (error) {
-      console.error('Could not upload post:', error)
+      console.error('Error writing post:', error)
+      throw error
     }
   }
 
   async function loadPostFeed(): Promise<PostType[]> {
-    const recentPostsQuery = query(
-      collection(getFirestore(), 'posts'),
-      orderBy('timestamp', 'desc'),
-      limit(20)
-    )
+    const postDB = collection(getFirestore(), 'posts')
+    const recentPostsQuery = query(postDB, orderBy('timestamp', 'desc'), limit(20))
 
     try {
       const querySnapshot = await getDocs(recentPostsQuery)
@@ -65,14 +96,28 @@ function useFirestore() {
       throw error
     }
   }
-  // function createPost
-  // function editPost
+
+  // async function editPost(post: PostType): Promise<void> {
+  //   const
+  // }
   // function deletePost
-  // function retrievePost (return as: ({post: post, comments: Array of [comments]}))
-  // function retrieveFavorites
-  // function retrieveComments
+  // function retrievePost
+  // function loadMyFavorites
+
+  //*******************//
+  //***** Comments ****//
+  //*******************//
+
+  // function writeComment
+  // function loadComments
+  // function editComment
+  // function deleteComment
+  // function loadMyComments
 
   return {
+    updateUserProfile,
+    loadUserProfile,
+
     writePost,
     loadPostFeed
   }
