@@ -9,12 +9,12 @@ import {
   query,
   orderBy,
   limit,
-  onSnapshot,
+  // onSnapshot,
   setDoc,
-  updateDoc,
+  // updateDoc,
   doc,
   serverTimestamp,
-  QuerySnapshot,
+  // QuerySnapshot,
   getDocs,
   where
 } from 'firebase/firestore'
@@ -64,7 +64,7 @@ function useFirestore() {
       await addDoc(collection(getFirestore(), 'posts'), {
         ID: postID,
         timeStamp: serverTimestamp(),
-        author: post.author,
+        author: post.authorID,
         title: post.title,
         body: post.body
       })
