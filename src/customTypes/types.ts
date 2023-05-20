@@ -1,7 +1,7 @@
 export interface PostType {
   ID: string
   timeStamp: string
-  author: string
+  authorID: string
   title: string
   body: string
   image?: File
