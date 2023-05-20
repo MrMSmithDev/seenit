@@ -1,8 +1,36 @@
-import React from 'react'
+import { useAuth } from '@hooks/useAuth'
+import useFirestore from '@hooks/useFirestore'
+import React, { useState } from 'react'
+import { PostType } from 'src/customTypes/types'
 
 import style from './NewPost.module.scss'
 
 const NewPost: React.FC = () => {
+  const [postTitle, setPostTitle] = useState('')
+  const [postBody, setPostBody] = useState('')
+  const { user } = useAuth()
+  const { writePost } = useFirestore()
+
+  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const postObject: PostType = {
+      ID: '',
+      timeStamp: '',
+      authorID: user!.uid,
+      title: postTitle,
+      body: postBody
+    }
+    await writePost(postObject)
+  }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostTitle(e.target.value)
+  }
+
+  const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPostBody(e.target.value)
+  }
+
   return (
     <div className={style.newPostContainer}>
       <h1 className={style.newPostTitle}>New Post</h1>
@@ -13,6 +41,7 @@ const NewPost: React.FC = () => {
             type="text"
             id="post-title"
             name="post-title"
+            onChange={handleTitleChange}
             minLength={3}
             maxLength={30}
             required
@@ -24,8 +53,17 @@ const NewPost: React.FC = () => {
         </div>
         <div className={style.inputContainer}>
           <label htmlFor="">Post Body</label>
-          <textarea id="post-body" name="post-body" minLength={10} />
+          <textarea
+            id="post-body"
+            name="post-body"
+            onChange={handleBodyChange}
+            minLength={10}
+            required
+          />
         </div>
+        <button type="submit" onClick={writeNewPost}>
+          Publish
+        </button>
       </form>
     </div>
   )
