@@ -1,7 +1,7 @@
 import Header from '@components/header'
 import LandingPage from '@components/landingPage'
 import Main from '@components/main'
-// import PostFeed from '@components/posting/postFeed'
+import PostFeed from '@components/posting/postFeed'
 import UserBar from '@components/userBar'
 import React from 'react'
 import { useAuth } from '@hooks/useAuth'
@@ -19,8 +19,8 @@ const App: React.FC = () => {
       <Header />
       <Main>
         <UserBar />
-        <NewPostForm />
-        {/* <PostFeed /> */}
+        {/* <NewPostForm /> */}
+        <PostFeed />
       </Main>
     </div>
   )
