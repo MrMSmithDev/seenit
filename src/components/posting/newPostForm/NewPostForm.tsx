@@ -3,7 +3,7 @@ import useFirestore from '@hooks/useFirestore'
 import React, { useState } from 'react'
 import { PostType } from 'src/customTypes/types'
 
-import style from './NewPost.module.scss'
+import style from './NewPostForm.module.scss'
 
 const NewPost: React.FC = () => {
   const [postTitle, setPostTitle] = useState('')
