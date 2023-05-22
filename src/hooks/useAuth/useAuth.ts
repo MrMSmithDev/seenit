@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react'
-// import useFirestore from '@hooks/useFirestore'
+import useFirestore from '@hooks/useFirestore'
 import {
   getAuth,
   onAuthStateChanged,
@@ -11,15 +12,20 @@ import {
 
 export function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
-  // const { updateUserProfile } = useFirestore()
+  const { updateUserProfile } = useFirestore()
 
   useEffect(() => {
-    const auth = getAuth()
-    const unsubscribe = onAuthStateChanged(auth, (userChange) => {
-      setUser(userChange)
-    })
+    const updateProfileInfo = async () => {
+      const auth = getAuth()
+      if (auth) await updateUserProfile(auth.currentUser!)
+      const unsubscribe = onAuthStateChanged(auth, (userChange) => {
+        setUser(userChange)
+      })
 
-    return () => unsubscribe()
+      return () => unsubscribe()
+    }
+
+    updateProfileInfo()
   }, [])
 
   async function signIn(): Promise<void> {
