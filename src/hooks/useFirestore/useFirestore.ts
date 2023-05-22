@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PostType } from 'src/customTypes/types'
+import { AuthorType, PostType } from 'src/customTypes/types'
 
 import { User } from 'firebase/auth'
 import {
@@ -41,12 +41,12 @@ function useFirestore() {
     }
   }
 
-  async function loadUserProfile(uid: string) {
+  async function loadUserProfile(uid: string): Promise<AuthorType> {
     try {
       const userDB = collection(getFirestore(), 'users')
       const querySnapshot = await getDocs(query(userDB, where('uid', '==', uid)))
 
-      const userDoc = querySnapshot.docs[0].data()
+      const userDoc = querySnapshot.docs[0].data() as AuthorType
       return userDoc
     } catch (error) {
       console.error('Error loading userProfile:', error)
@@ -64,7 +64,7 @@ function useFirestore() {
       await addDoc(collection(getFirestore(), 'posts'), {
         ID: postID,
         timeStamp: serverTimestamp(),
-        author: post.authorID,
+        authorID: post.authorID,
         title: post.title,
         body: post.body
       })
@@ -80,7 +80,7 @@ function useFirestore() {
 
   async function loadPostFeed(): Promise<PostType[]> {
     const postDB = collection(getFirestore(), 'posts')
-    const recentPostsQuery = query(postDB, orderBy('timestamp', 'desc'), limit(20))
+    const recentPostsQuery = query(postDB, orderBy('timeStamp', 'desc'), limit(20))
 
     try {
       const querySnapshot = await getDocs(recentPostsQuery)
@@ -88,6 +88,7 @@ function useFirestore() {
 
       querySnapshot.forEach((currentDoc) => {
         const post = currentDoc.data() as PostType
+        console.log(post)
         posts.push(post)
       })
       return posts
