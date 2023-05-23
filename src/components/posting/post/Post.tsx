@@ -14,12 +14,12 @@ interface PostProps {
   isPreview: boolean
 }
 
-const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
+const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
 
   const { user } = useAuth()
-  const { checkFavoriteStatus, loadUserProfile } = useFirestore()
+  const { checkFavoriteStatus, loadUserProfile, setFavoriteStatus } = useFirestore()
 
   useEffect(() => {
     const loadAuthorProfile = async () => {
@@ -39,12 +39,13 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview }) => {
     }
 
     loadFavoriteStatus()
-  }, [])
+  }, [user])
 
   const postStyle = isPreview ? `${style.post} ${style.postPreview}` : style.postBody
 
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
+    setFavoriteStatus(user!.uid, currentPost.ID)
     setUserHasFavorite(!userHasFavorite)
   }
 
