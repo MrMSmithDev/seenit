@@ -10,14 +10,14 @@ import {
   User as FirebaseUser
 } from 'firebase/auth'
 
-export function useAuth() {
+function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
   const { updateUserProfile } = useFirestore()
 
   useEffect(() => {
     const updateProfileInfo = async () => {
       const auth = getAuth()
-      if (auth) await updateUserProfile(auth.currentUser!)
+      if (auth.currentUser) await updateUserProfile(auth.currentUser)
       const unsubscribe = onAuthStateChanged(auth, (userChange) => {
         setUser(userChange)
       })
@@ -59,3 +59,5 @@ export function useAuth() {
     isUserSignedIn
   }
 }
+
+export default useAuth
