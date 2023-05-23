@@ -46,6 +46,7 @@
 }
 
 .postInfo {
+    align-items: center;
     display: flex;
     gap: 20px;
 }
@@ -59,6 +60,14 @@
     color: #e7be08;
 }
 
-.postAuthor {
+.authorContainer {
+    align-items: center;
+    display: flex;
     margin-left: auto;
+}
+
+.postAuthorImg {
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
