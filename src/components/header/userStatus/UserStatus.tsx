@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { useAuth } from '@hooks/useAuth'
+import useAuth from '@hooks/useAuth'
 import style from './UserStatus.module.scss'
 
 const UserStatus: React.FC = () => {
   const [dropIsActive, setDropIsActive] = useState(false)
-  const { signOutUser, getUserName, getUserImage } = useAuth()
+  const { signOutUser, user } = useAuth()
 
   async function signOut(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
@@ -16,11 +16,9 @@ const UserStatus: React.FC = () => {
   }
 
   return (
-    <div className={`${style.userStatus} ${style.notLoggedIn}`} onClick={showDropDown}>
-      <div className={style.userImgWrapper}>
-        <div className={style.userImg} style={{ backgroundImage: getUserImage()! }} />
-      </div>
-      <p>{getUserName()}</p>
+    <div className={style.userStatus} onClick={showDropDown}>
+      <img className={style.userImg} src={user?.photoURL || undefined} alt="Users image" />
+      <p>{user?.displayName}</p>
       <div className={`${style.dropDownMenu} ${dropIsActive ? style.isActive : ''}`}>
         <button className={style.signOutButton} onClick={signOut}>
           Sign Out
