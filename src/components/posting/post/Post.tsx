@@ -19,7 +19,13 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
 
   const { user } = useAuth()
-  const { checkFavoriteStatus, loadUserProfile, setFavoriteStatus } = useFirestore()
+  const {
+    checkFavoriteStatus,
+    loadUserProfile,
+    setFavoriteStatus,
+    incrementFavoriteCount,
+    decrementFavoriteCount
+  } = useFirestore()
 
   useEffect(() => {
     const loadAuthorProfile = async () => {
@@ -46,6 +52,8 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
     setFavoriteStatus(user!.uid, currentPost.ID)
+    if (!userHasFavorite) incrementFavoriteCount(currentPost.ID)
+    else decrementFavoriteCount(currentPost.ID)
     setUserHasFavorite(!userHasFavorite)
   }
 
