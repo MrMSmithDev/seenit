@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { AuthorType, PostType } from 'src/customTypes/types'
+import { UserType, PostType } from 'src/customTypes/types'
 
 import { User } from 'firebase/auth'
 import {
@@ -15,8 +15,8 @@ import {
   doc,
   serverTimestamp,
   // QuerySnapshot,
-  getDocs,
-  where
+  getDoc,
+  getDocs
 } from 'firebase/firestore'
 
 function generateID(): string {
@@ -29,25 +29,36 @@ function useFirestore() {
   //*******************//
   async function updateUserProfile(currentUser: User) {
     try {
-      const userRef = doc(collection(getFirestore(), 'users', currentUser.uid))
-      await setDoc(userRef, {
-        uid: currentUser?.uid,
-        displayName: currentUser?.displayName,
-        photoURL: currentUser?.photoURL
-      })
+      const userRef = doc(collection(getFirestore(), 'users'), currentUser.uid)
+      const userDoc = await getDoc(userRef)
+      if (userDoc.exists()) {
+        await setDoc(
+          userRef,
+          {
+            displayName: currentUser?.displayName,
+            photoURL: currentUser?.photoURL
+          },
+          { merge: true }
+        )
+      } else {
+        await setDoc(userRef, {
+          uid: currentUser?.uid,
+          displayName: currentUser?.displayName,
+          photoURL: currentUser?.photoURL,
+          favorites: []
+        })
+      }
     } catch (error) {
       console.error('Error updating user information:', error)
       throw error
     }
   }
 
-  async function loadUserProfile(uid: string): Promise<AuthorType> {
+  async function loadUserProfile(uid: string): Promise<UserType> {
     try {
-      const userDB = collection(getFirestore(), 'users')
-      const querySnapshot = await getDocs(query(userDB, where('uid', '==', uid)))
-
-      const userDoc = querySnapshot.docs[0].data() as AuthorType
-      return userDoc
+      const userRef = doc(collection(getFirestore(), 'users'), uid)
+      const userDoc = await getDoc(userRef)
+      return userDoc.data() as UserType
     } catch (error) {
       console.error('Error loading userProfile:', error)
       throw error
@@ -79,10 +90,10 @@ function useFirestore() {
   }
 
   async function loadPostFeed(): Promise<PostType[]> {
-    const postDB = collection(getFirestore(), 'posts')
-    const recentPostsQuery = query(postDB, orderBy('timeStamp', 'desc'), limit(20))
-
     try {
+      const postDB = collection(getFirestore(), 'posts')
+      const recentPostsQuery = query(postDB, orderBy('timeStamp', 'desc'), limit(20))
+
       const querySnapshot = await getDocs(recentPostsQuery)
       const posts: PostType[] = []
 
@@ -94,6 +105,45 @@ function useFirestore() {
       return posts
     } catch (error) {
       console.error('Error loading posts:', error)
+      throw error
+    }
+  }
+
+  async function setFavoriteStatus(userID: string, postID: string): Promise<void> {
+    try {
+      const userRef = doc(collection(getFirestore(), 'users'), userID)
+      const userDoc = await getDoc(userRef)
+      const userFavoritesArr: string[] = userDoc.data()?.favorites
+
+      if (userFavoritesArr.includes(postID)) {
+        const IDIndex: number = userFavoritesArr.indexOf(postID)
+        userFavoritesArr.splice(IDIndex, 1)
+      } else {
+        userFavoritesArr.push(postID)
+      }
+
+      await setDoc(
+        userRef,
+        {
+          favorites: userFavoritesArr
+        },
+        { merge: true }
+      )
+    } catch (error) {
+      console.error('Error changing favorite status:', error)
+      throw error
+    }
+  }
+
+  async function checkFavoriteStatus(userID: string, postID: string): Promise<boolean> {
+    try {
+      const userRef = doc(collection(getFirestore(), 'users'), userID)
+      const userDoc = await getDoc(userRef)
+      const userData = userDoc?.data() as UserType
+      if (userData.favorites?.includes(postID)) return true
+      return false
+    } catch (error) {
+      console.error('Error checking favorites:', error)
       throw error
     }
   }
@@ -120,7 +170,10 @@ function useFirestore() {
     loadUserProfile,
 
     writePost,
-    loadPostFeed
+    loadPostFeed,
+
+    setFavoriteStatus,
+    checkFavoriteStatus
   }
 }
 
