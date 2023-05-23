@@ -9,7 +9,8 @@ export interface PostType {
   image?: File
   imageId?: string
   edited?: boolean
-  comments?: Comment[]
+  comments?: string[]
+  favorites?: number
 }
 
 export interface CommentType {
