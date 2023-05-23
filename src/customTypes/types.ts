@@ -9,7 +9,7 @@ export interface PostType {
   image?: File
   imageId?: string
   edited?: boolean
-  comments?: Array<Comment>
+  comments?: Comment[]
 }
 
 export interface CommentType {
@@ -20,10 +20,11 @@ export interface CommentType {
   body: string
 }
 
-export interface AuthorType {
+export interface UserType {
   uid: string
   displayName: string
   photoURL: string
+  favorites?: string[]
 }
 
-export type PostCollection = Array<PostType>
+export type PostCollection = PostType[]
