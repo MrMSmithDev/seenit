@@ -77,7 +77,8 @@ function useFirestore() {
         timeStamp: serverTimestamp(),
         authorID: post.authorID,
         title: post.title,
-        body: post.body
+        body: post.body,
+        comments: 0
       })
 
       if (post.image) {
@@ -99,7 +100,6 @@ function useFirestore() {
 
       querySnapshot.forEach((currentDoc) => {
         const post = currentDoc.data() as PostType
-        console.log(post)
         posts.push(post)
       })
       return posts
@@ -148,6 +148,46 @@ function useFirestore() {
     }
   }
 
+  async function incrementFavoriteCount(postID: string): Promise<void> {
+    try {
+      const postRef = doc(collection(getFirestore(), 'posts'), postID)
+      const postDoc = await getDoc(postRef)
+      const postData = postDoc?.data() as PostType
+
+      const currentFavorites = postData.favorites
+      await setDoc(
+        postRef,
+        {
+          favorites: currentFavorites! + 1
+        },
+        { merge: true }
+      )
+    } catch (error) {
+      console.error('Error incrementing favorite count:', error)
+      throw error
+    }
+  }
+
+  async function decrementFavoriteCount(postID: string): Promise<void> {
+    try {
+      const postRef = doc(collection(getFirestore(), 'posts'), postID)
+      const postDoc = await getDoc(postRef)
+      const postData = postDoc?.data() as PostType
+
+      const currentFavorites = postData.favorites
+      await setDoc(
+        postRef,
+        {
+          favorites: currentFavorites! - 1
+        },
+        { merge: true }
+      )
+    } catch (error) {
+      console.error('Error decrementing favorite count:', error)
+      throw error
+    }
+  }
+
   // async function editPost(post: PostType): Promise<void> {
   //   const
   // }
@@ -173,7 +213,9 @@ function useFirestore() {
     loadPostFeed,
 
     setFavoriteStatus,
-    checkFavoriteStatus
+    checkFavoriteStatus,
+    incrementFavoriteCount,
+    decrementFavoriteCount
   }
 }
 
