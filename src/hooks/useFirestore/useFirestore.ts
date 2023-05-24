@@ -16,7 +16,8 @@ import {
   serverTimestamp,
   // QuerySnapshot,
   getDoc,
-  getDocs
+  getDocs,
+  where
 } from 'firebase/firestore'
 
 function generateID(): string {
@@ -140,7 +141,7 @@ function useFirestore() {
       const userRef = doc(collection(getFirestore(), 'users'), userID)
       const userDoc = await getDoc(userRef)
       const userData = userDoc?.data() as UserType
-      if (userData.favorites?.includes(postID)) return true
+      if (userData?.favorites?.includes(postID)) return true
       return false
     } catch (error) {
       console.error('Error checking favorites:', error)
@@ -150,11 +151,13 @@ function useFirestore() {
 
   async function incrementFavoriteCount(postID: string): Promise<void> {
     try {
-      const postRef = doc(collection(getFirestore(), 'posts'), postID)
-      const postDoc = await getDoc(postRef)
-      const postData = postDoc?.data() as PostType
+      const postDB = collection(getFirestore(), 'posts')
+      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
-      const currentFavorites = postData.favorites
+      const postRef = querySnapshot.docs[0].ref
+      const postData = querySnapshot.docs[0].data() as PostType
+
+      const currentFavorites = postData?.favorites
       await setDoc(
         postRef,
         {
@@ -170,11 +173,13 @@ function useFirestore() {
 
   async function decrementFavoriteCount(postID: string): Promise<void> {
     try {
-      const postRef = doc(collection(getFirestore(), 'posts'), postID)
-      const postDoc = await getDoc(postRef)
-      const postData = postDoc?.data() as PostType
+      const postDB = collection(getFirestore(), 'posts')
+      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
-      const currentFavorites = postData.favorites
+      const postRef = querySnapshot.docs[0].ref
+      const postData = querySnapshot.docs[0].data() as PostType
+
+      const currentFavorites = postData?.favorites
       await setDoc(
         postRef,
         {
