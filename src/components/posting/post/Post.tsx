@@ -16,6 +16,7 @@ interface PostProps {
 
 const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
+  const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
 
   const { user } = useAuth()
@@ -52,8 +53,13 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
     setFavoriteStatus(user!.uid, currentPost.ID)
-    if (!userHasFavorite) incrementFavoriteCount(currentPost.ID)
-    else decrementFavoriteCount(currentPost.ID)
+    if (!userHasFavorite) {
+      incrementFavoriteCount(currentPost.ID)
+      setFavoriteCount((prevCount) => prevCount + 1)
+    } else {
+      decrementFavoriteCount(currentPost.ID)
+      setFavoriteCount((prevCount) => prevCount - 1)
+    }
     setUserHasFavorite(!userHasFavorite)
   }
 
@@ -82,7 +88,8 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
           {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
         </p>
         <p className={style.postFavoriteCount}>
-          0 <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
+          {favoriteCount}
+          <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
         </p>
         <div className={style.authorContainer}>
           <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
