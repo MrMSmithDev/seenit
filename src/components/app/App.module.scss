@@ -1,4 +1,15 @@
+@import '~@styles/_variables';
+
 .appWrapper {
     display: flex;
     flex-direction: column;
+}
+
+.loading {
+    align-items: center;
+    background-color: $deep-blue;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    width: 100vw;
 }
