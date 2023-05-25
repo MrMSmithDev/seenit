@@ -2,7 +2,7 @@ import { Timestamp } from 'firebase/firestore'
 
 export interface PostType {
   ID: string
-  timeStamp: Timestamp
+  timeStamp?: Timestamp
   authorID: string
   title: string
   body: string
