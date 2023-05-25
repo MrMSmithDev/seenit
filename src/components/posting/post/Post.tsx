@@ -11,7 +11,7 @@ const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', '
 
 interface PostProps {
   currentPost: PostType
-  isPreview: boolean
+  isPreview?: boolean
 }
 
 const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
@@ -63,7 +63,7 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
     setUserHasFavorite(!userHasFavorite)
   }
 
-  const timePosted = currentPost.timeStamp.toDate()
+  const timePosted = currentPost.timeStamp!.toDate()
 
   return (
     <div className={postStyle} data-post-id={currentPost.ID}>
