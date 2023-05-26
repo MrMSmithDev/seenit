@@ -1,4 +1,4 @@
-import { useAuth } from '@hooks/useAuth'
+import useAuth from '@hooks/useAuth'
 import useFirestore from '@hooks/useFirestore'
 import React, { useState } from 'react'
 import { PostType } from 'src/customTypes/types'
@@ -15,7 +15,6 @@ const NewPost: React.FC = () => {
     e.preventDefault()
     const postObject: PostType = {
       ID: '',
-      timeStamp: '',
       authorID: user!.uid,
       title: postTitle,
       body: postBody
