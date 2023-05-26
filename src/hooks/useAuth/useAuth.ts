@@ -45,18 +45,13 @@ function useAuth() {
     return user?.photoURL || null
   }
 
-  function isUserSignedIn(): boolean {
-    return !!user
-  }
-
   return {
     user,
     signIn,
     signOutUser,
 
     getUserName,
-    getUserImage,
-    isUserSignedIn
+    getUserImage
   }
 }
 
