@@ -1,18 +1,18 @@
 import Header from '@components/header'
 import LandingPage from '@components/landingPage'
 import Main from '@components/main'
-import PostFeed from '@components/posting/postFeed'
 import UserBar from '@components/userBar'
 import React, { useEffect, useState } from 'react'
 import useAuth from '@hooks/useAuth'
 
 import styles from './App.module.scss'
 import { logo } from '@assets/images'
-// import NewPostForm from '@components/posting/newPostForm'
+import { BrowserRouter } from 'react-router-dom'
+import { PostRoutes } from '@routes/routeSwitches'
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const { isUserSignedIn } = useAuth()
+  const { user } = useAuth()
 
   useEffect(() => {
     setIsLoading(!isLoading)
@@ -25,17 +25,18 @@ const App: React.FC = () => {
       </div>
     )
 
-  if (!isUserSignedIn()) return <LandingPage />
+  if (!user) return <LandingPage />
 
   return (
-    <div className={styles.appWrapper}>
-      <Header />
-      <Main>
-        <UserBar />
-        {/* <NewPostForm /> */}
-        <PostFeed />
-      </Main>
-    </div>
+    <BrowserRouter>
+      <div className={styles.appWrapper}>
+        <Header />
+        <Main>
+          <UserBar />
+          <PostRoutes />
+        </Main>
+      </div>
+    </BrowserRouter>
   )
 }
 
