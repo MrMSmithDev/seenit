@@ -6,6 +6,7 @@ import { UserType, PostType } from 'src/customTypes/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
+import { PostLink } from '@routes/posts'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
@@ -65,7 +66,7 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
 
   const timePosted = currentPost.timeStamp!.toDate()
 
-  return (
+  const postComponent = (
     <div className={postStyle} data-post-id={currentPost.ID}>
       <p className={style.headline}>
         <button className={style.favoriteButton} onClick={toggleFavorite}>
@@ -98,6 +99,9 @@ const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
       </div>
     </div>
   )
+
+  if (isPreview) return <PostLink postID={'change me'}>{postComponent}</PostLink>
+  return postComponent
 }
 
 export default Post
