@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { ReactNode, useEffect, useState } from 'react'
-import Post from '@components/posting/post'
+import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
 import { PostType } from 'src/customTypes/types'
@@ -20,7 +20,7 @@ const PostFeed: React.FC = () => {
   }, [])
 
   const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
-    return <Post currentPost={post} isPreview={true} key={post.ID} />
+    return <PostPreview currentPost={post} key={post.ID} />
   })
 
   return <div className={style.postFeed}>{postArr}</div>
