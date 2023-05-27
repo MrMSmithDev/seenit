@@ -110,6 +110,17 @@ function useFirestore() {
     }
   }
 
+  async function loadCurrentPost(postID: string): Promise<PostType> {
+    try {
+      const postRef = doc(collection(getFirestore(), 'posts'), postID)
+      const postDoc = await getDoc(postRef)
+      return postDoc.data() as PostType
+    } catch (error) {
+      console.error('Error loading post:', error)
+      throw error
+    }
+  }
+
   async function setFavoriteStatus(userID: string, postID: string): Promise<void> {
     try {
       const userRef = doc(collection(getFirestore(), 'users'), userID)
@@ -216,6 +227,7 @@ function useFirestore() {
 
     writePost,
     loadPostFeed,
+    loadCurrentPost,
 
     setFavoriteStatus,
     checkFavoriteStatus,
