@@ -8,7 +8,7 @@ import useAuth from '@hooks/useAuth'
 import styles from './App.module.scss'
 import { logo } from '@assets/images'
 import { BrowserRouter } from 'react-router-dom'
-import { PostRoutes } from '@routes/routeSwitches'
+import { PostRoutes } from '@routes/posts'
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
