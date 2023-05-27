@@ -7,7 +7,7 @@ const UserBar: React.FC = () => {
   return (
     <div className={style.userBar}>
       <Link to="/" className={style.sidebarLink} tabIndex={1} data-testid="sidebarLink">
-        Homepage
+        Home
       </Link>
       <Link to="/posts/new" className={style.sidebarLink} tabIndex={2} data-testid="sidebarLink">
         New Post
