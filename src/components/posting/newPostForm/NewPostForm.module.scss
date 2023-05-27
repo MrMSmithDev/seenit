@@ -23,6 +23,8 @@
         input[type=text], textarea {
             border: 2px solid #535353;
             border-radius: none;
+            padding: 5px 3px;
+            resize: vertical;
 
             &:focus {
                 border-color: #000000;

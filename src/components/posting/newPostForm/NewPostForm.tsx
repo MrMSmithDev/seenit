@@ -42,7 +42,7 @@ const NewPost: React.FC = () => {
             name="post-title"
             onChange={handleTitleChange}
             minLength={3}
-            maxLength={30}
+            maxLength={120}
             required
           />
         </div>
