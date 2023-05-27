@@ -1,3 +1,5 @@
+@import '~@styles/_fonts.scss';
+
 /* 
   A set of styles to reset various elements
   to allow for compatibility across multiple
@@ -33,7 +35,7 @@ header {
 }
 
 body, input, button {
-  font-family: Roboto, 'Trebuchet MS', Helvetica, sans-serif;
+  font-family: $standardFont;
 }
 
 body {
