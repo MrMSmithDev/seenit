@@ -1,0 +1,15 @@
+@font-face {
+    font-family: bainsley;
+    src: url('~@assets/fonts/bainsley_roman-webfont.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: bainsley;
+    src: url('~@assets/fonts/bainsley_roman-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+$standardFont: bainsley, Geneva, Verdana, sans-serif
