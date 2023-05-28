@@ -1,4 +1,5 @@
 import useAuth from './useAuth'
-import useFirestore from './useFirestore'
+import useFirestore from './usePosts'
+import useUsers from './useUsers'
 
-export { useAuth, useFirestore }
+export { useAuth, useFirestore, useUsers }

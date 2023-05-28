@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "useFirestore.ts",
     "dependencies": {
-        
+        "firebase": "^9.22.0",
+        "react": "^18.2.0"
     }
 }

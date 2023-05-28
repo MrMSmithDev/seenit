@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react'
-import useFirestore from '@hooks/useFirestore'
+import useUsers from '@hooks/useUsers'
 import {
   getAuth,
   onAuthStateChanged,
@@ -12,7 +12,7 @@ import {
 
 function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
-  const { updateUserProfile } = useFirestore()
+  const { updateUserProfile } = useUsers()
 
   useEffect(() => {
     const updateProfileInfo = async () => {

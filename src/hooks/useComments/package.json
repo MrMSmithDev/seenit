@@ -1,0 +1,9 @@
+{
+    "name": "use-comments",
+    "version": "1.0.0",
+    "main": "useComments.ts",
+    "dependencies": {
+        "firebase": "^9.22.0",
+        "react": "^18.2.0"
+    }
+}
