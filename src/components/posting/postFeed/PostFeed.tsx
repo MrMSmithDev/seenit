@@ -4,10 +4,10 @@ import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
 import { PostType } from 'src/customTypes/types'
-import useFirestore from '@hooks/useFirestore'
+import usePosts from '@hooks/usePosts'
 
 const PostFeed: React.FC = () => {
-  const { loadPostFeed } = useFirestore()
+  const { loadPostFeed } = usePosts()
   const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
 
   useEffect(() => {

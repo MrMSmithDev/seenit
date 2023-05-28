@@ -1,5 +1,5 @@
 import useAuth from '@hooks/useAuth'
-import useFirestore from '@hooks/useFirestore'
+import usePosts from '@hooks/usePosts'
 import React, { useState } from 'react'
 import { PostType } from 'src/customTypes/types'
 
@@ -9,7 +9,7 @@ const NewPost: React.FC = () => {
   const [postTitle, setPostTitle] = useState('')
   const [postBody, setPostBody] = useState('')
   const { user } = useAuth()
-  const { writePost } = useFirestore()
+  const { writePost } = usePosts()
 
   const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()

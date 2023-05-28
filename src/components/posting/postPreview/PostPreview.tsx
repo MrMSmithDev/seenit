@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAuth, useFirestore } from '@hooks/index'
+import { useAuth, useFirestore, useUsers } from '@hooks/index'
 import style from './PostPreview.module.scss'
 import { UserType, PostType } from 'src/customTypes/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -25,13 +25,9 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const { ID, authorID, timeStamp, title, comments } = currentPost
 
   const { user } = useAuth()
-  const {
-    checkFavoriteStatus,
-    loadUserProfile,
-    setFavoriteStatus,
-    incrementFavoriteCount,
-    decrementFavoriteCount
-  } = useFirestore()
+  const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount, decrementFavoriteCount } =
+    useFirestore()
+  const { loadUserProfile } = useUsers()
 
   useEffect(() => {
     const loadAuthorProfile = async () => {
