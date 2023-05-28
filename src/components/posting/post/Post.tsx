@@ -13,7 +13,7 @@ import style from './Post.module.scss'
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
 const Post: React.FC = () => {
-  const { postTitle, postID } = useParams()
+  const { postID } = useParams()
   const { user } = useAuth()
   const {
     checkFavoriteStatus,
@@ -30,7 +30,6 @@ const Post: React.FC = () => {
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
 
   useEffect(() => {
-    console.log('loading post')
     const loadPost = async () => {
       const retrievedPost = await loadCurrentPost(postID!)
       setCurrentPost(retrievedPost)
@@ -52,13 +51,14 @@ const Post: React.FC = () => {
   }, [currentPost, user])
 
   useEffect(() => {
-    console.log('Getting author')
-    const loadAuthorProfile = async () => {
-      const firestoreAuthor = await loadUserProfile(currentPost!.authorID)
-      setAuthor(firestoreAuthor)
-    }
+    if (currentPost) {
+      const loadAuthorProfile = async () => {
+        const firestoreAuthor = await loadUserProfile(currentPost.authorID)
+        setAuthor(firestoreAuthor)
+      }
 
-    loadAuthorProfile()
+      loadAuthorProfile()
+    }
   }, [currentPost])
 
   let post: ReactNode
