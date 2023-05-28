@@ -111,10 +111,13 @@ function useFirestore() {
   }
 
   async function loadCurrentPost(postID: string): Promise<PostType> {
+    console.log(postID)
     try {
-      const postRef = doc(collection(getFirestore(), 'posts'), postID)
-      const postDoc = await getDoc(postRef)
-      return postDoc.data() as PostType
+      const postDB = collection(getFirestore(), 'posts')
+      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+
+      const postData = querySnapshot.docs[0].data()
+      return postData as PostType
     } catch (error) {
       console.error('Error loading post:', error)
       throw error
