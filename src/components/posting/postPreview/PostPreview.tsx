@@ -9,10 +9,8 @@ import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-i
 import { PostLink } from '@routes/posts'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-const generateAddressID = (title: string, ID: string) => {
-  const normalizedTitle = title.toLowerCase().replace(/[^a-z0-9]/gi, '')
-  const formulatedID = `${normalizedTitle.replaceAll(' ', '_')}_${ID}`
-  return formulatedID
+const generateAddressTitle = (title: string) => {
+  return title.toLowerCase().replace(/[^a-z0-9␣]/gi, '')
 }
 
 interface PostProps {
@@ -23,6 +21,8 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
+
+  const { ID, authorID, timeStamp, title, comments } = currentPost
 
   const { user } = useAuth()
   const {
@@ -35,7 +35,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   useEffect(() => {
     const loadAuthorProfile = async () => {
-      const firestoreAuthor = await loadUserProfile(currentPost.authorID)
+      const firestoreAuthor = await loadUserProfile(authorID)
       setAuthor(firestoreAuthor)
     }
 
@@ -55,22 +55,22 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
-    setFavoriteStatus(user!.uid, currentPost.ID)
+    setFavoriteStatus(user!.uid, ID)
     if (!userHasFavorite) {
-      incrementFavoriteCount(currentPost.ID)
+      incrementFavoriteCount(ID)
       setFavoriteCount((prevCount) => prevCount + 1)
     } else {
-      decrementFavoriteCount(currentPost.ID)
+      decrementFavoriteCount(ID)
       setFavoriteCount((prevCount) => prevCount - 1)
     }
     setUserHasFavorite(!userHasFavorite)
   }
 
-  const timePosted = currentPost.timeStamp!.toDate()
-  const postAddressID = generateAddressID(currentPost.title, currentPost.ID)
+  const timePosted = timeStamp!.toDate()
+  const postAddressTitle = generateAddressTitle(title)
 
   const postComponent = (
-    <div className={`${style.post} ${style.postPreview}`} data-post-id={currentPost.ID}>
+    <div className={`${style.post} ${style.postPreview}`} data-post-id={ID}>
       <p className={style.headline}>
         <button className={style.favoriteButton} onClick={toggleFavorite}>
           <FontAwesomeIcon
@@ -78,7 +78,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
             icon={userHasFavorite ? solidStar : hollowStar}
           />
         </button>
-        <span className={style.postTitle}>{currentPost.title}</span>
+        <span className={style.postTitle}>{title}</span>
       </p>
       <p className={style.postBody}>{currentPost.body}</p>
       <div className={style.postInfo}>
@@ -89,7 +89,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
           ]}
         </p>
         <p className={style.postCommentCount}>
-          {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+          {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
         </p>
         <p className={style.postFavoriteCount}>
           {favoriteCount}
@@ -103,7 +103,11 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     </div>
   )
 
-  return <PostLink postID={postAddressID}>{postComponent}</PostLink>
+  return (
+    <PostLink postID={ID} postTitle={postAddressTitle}>
+      {postComponent}
+    </PostLink>
+  )
 }
 
 export default Post
