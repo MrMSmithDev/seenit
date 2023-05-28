@@ -1,26 +1,8 @@
 .post {
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px;
-
-    &.postPreview {
-        cursor: pointer;
-
-        &:hover {
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-            transform: scale(1.01)
-        }
-
-        .postBody {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    }
+    padding: 20px;
 }
 
 .postBody {

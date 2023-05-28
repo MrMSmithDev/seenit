@@ -1,107 +1,122 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 
+import { useParams } from 'react-router-dom'
 import { useAuth, useFirestore } from '@hooks/index'
-import style from './Post.module.scss'
-import { UserType, PostType } from 'src/customTypes/types'
+import { PostType, UserType } from 'src/customTypes/types'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
-import { PostLink } from '@routes/posts'
+
+import style from './Post.module.scss'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
-interface PostProps {
-  currentPost: PostType
-  isPreview?: boolean
-}
-
-const Post: React.FC<PostProps> = ({ currentPost, isPreview = false }) => {
-  const [userHasFavorite, setUserHasFavorite] = useState(false)
-  const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
-  const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
-
+const Post: React.FC = () => {
+  const { postTitle, postID } = useParams()
   const { user } = useAuth()
   const {
     checkFavoriteStatus,
+    loadCurrentPost,
     loadUserProfile,
     setFavoriteStatus,
     incrementFavoriteCount,
     decrementFavoriteCount
   } = useFirestore()
 
+  const [currentPost, setCurrentPost] = useState<PostType | null>(null)
+  const [favoriteCount, setFavoriteCount] = useState<number>(0)
+  const [userHasFavorite, setUserHasFavorite] = useState(false)
+  const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
+
   useEffect(() => {
-    const loadAuthorProfile = async () => {
-      const firestoreAuthor = await loadUserProfile(currentPost.authorID)
-      setAuthor(firestoreAuthor)
+    console.log('loading post')
+    const loadPost = async () => {
+      const retrievedPost = await loadCurrentPost(postID!)
+      setCurrentPost(retrievedPost)
     }
 
-    loadAuthorProfile()
+    loadPost()
   }, [])
 
   useEffect(() => {
     const loadFavoriteStatus = async () => {
       if (user) {
-        const favoriteStatus = await checkFavoriteStatus(user.uid, currentPost.ID)
+        const favoriteStatus = await checkFavoriteStatus(user.uid, postID!)
         setUserHasFavorite(favoriteStatus)
       }
     }
 
     loadFavoriteStatus()
-  }, [user])
+    if (currentPost) setFavoriteCount(currentPost.favorites!)
+  }, [currentPost, user])
 
-  const postStyle = isPreview ? `${style.post} ${style.postPreview}` : style.postBody
+  useEffect(() => {
+    console.log('Getting author')
+    const loadAuthorProfile = async () => {
+      const firestoreAuthor = await loadUserProfile(currentPost!.authorID)
+      setAuthor(firestoreAuthor)
+    }
+
+    loadAuthorProfile()
+  }, [currentPost])
+
+  let post: ReactNode
 
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation()
-    setFavoriteStatus(user!.uid, currentPost.ID)
+    setFavoriteStatus(user!.uid, currentPost!.ID)
     if (!userHasFavorite) {
-      incrementFavoriteCount(currentPost.ID)
+      incrementFavoriteCount(currentPost!.ID)
       setFavoriteCount((prevCount) => prevCount + 1)
     } else {
-      decrementFavoriteCount(currentPost.ID)
+      decrementFavoriteCount(currentPost!.ID)
       setFavoriteCount((prevCount) => prevCount - 1)
     }
     setUserHasFavorite(!userHasFavorite)
   }
 
-  const timePosted = currentPost.timeStamp!.toDate()
+  if (currentPost) {
+    const timePosted = currentPost.timeStamp!.toDate()
 
-  const postComponent = (
-    <div className={postStyle} data-post-id={currentPost.ID}>
-      <p className={style.headline}>
-        <button className={style.favoriteButton} onClick={toggleFavorite}>
-          <FontAwesomeIcon
-            className={style.starIcon}
-            icon={userHasFavorite ? solidStar : hollowStar}
-          />
-        </button>
-        <span className={style.postTitle}>{currentPost.title}</span>
-      </p>
-      <p className={style.postBody}>{currentPost.body}</p>
-      <div className={style.postInfo}>
-        <p className={style.postTimestamp}>
-          {[
-            `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-            `${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
-          ]}
+    post = (
+      <div className={style.post}>
+        <p className={style.headline}>
+          <button className={style.favoriteButton} onClick={toggleFavorite}>
+            <FontAwesomeIcon
+              className={style.starIcon}
+              icon={userHasFavorite ? solidStar : hollowStar}
+            />
+          </button>
+          <span className={style.postTitle}>{currentPost.title}</span>
         </p>
-        <p className={style.postCommentCount}>
-          {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
-        </p>
-        <p className={style.postFavoriteCount}>
-          {favoriteCount}
-          <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
-        </p>
-        <div className={style.authorContainer}>
-          <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
-          <p className={style.postAuthor}>{author.displayName}</p>
+        <p className={style.postBody}>{currentPost.body}</p>
+        <div className={style.postInfo}>
+          <p className={style.postTimestamp}>
+            {[
+              `${timePosted.getHours()}:${timePosted.getMinutes()} `,
+              `${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
+            ]}
+          </p>
+          <p className={style.postCommentCount}>
+            {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+          </p>
+          <p className={style.postFavoriteCount}>
+            {favoriteCount}
+            <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
+          </p>
+          <div className={style.authorContainer}>
+            <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
+            <p className={style.postAuthor}>{author.displayName}</p>
+          </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    post = <div>Loading</div>
+  }
 
-  if (isPreview) return <PostLink postID={'change me'}>{postComponent}</PostLink>
-  return postComponent
+  return <React.Fragment>{post}</React.Fragment>
 }
 
 export default Post
