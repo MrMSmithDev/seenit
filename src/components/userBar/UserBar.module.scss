@@ -6,6 +6,8 @@
     flex-direction: column;
     gap: 15px;
     padding: 20px;
+    position: sticky;
+    top: 0;
 
     .sidebarLink {
         background-color: inherit;
