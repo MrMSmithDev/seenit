@@ -7,12 +7,14 @@
 
 .postBody {
     line-height: 20px;
+    white-space: pre-wrap;
 }
 
 .headline {
     align-items: center;
     display: flex;
     gap: 10px;
+    margin: 15px 0;
 
     .favoriteButton {
         background-color: inherit;
@@ -31,6 +33,7 @@
     align-items: center;
     display: flex;
     gap: 20px;
+    margin: 15px 0;
 }
 
 .postAuthor, .postTimestamp, .postCommentCount, .postFavoriteCount {
