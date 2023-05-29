@@ -1,0 +1,23 @@
+.newCommentContainer {
+    background-color: #c9c9c9;
+    padding: 10px;
+}
+
+.newCommentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    textarea {
+        padding: 5px;
+        resize: vertical;
+    }
+
+    button {
+        align-self: flex-end;
+    }
+
+    p {
+        text-align: center;
+    }
+}
