@@ -14,7 +14,7 @@ export interface PostType {
 }
 
 export interface CommentType {
-  id: string
+  ID: string
   postID: string
   timeStamp: string
   author: string
