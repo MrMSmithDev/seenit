@@ -1,0 +1,8 @@
+{
+    "name": "new-comment-form",
+    "version": "1.0.0",
+    "main": "NewCommentForm.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
