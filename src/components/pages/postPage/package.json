@@ -1,0 +1,8 @@
+{
+    "name": "post-page",
+    "version": "1.0.0",
+    "main": "PostPage.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
