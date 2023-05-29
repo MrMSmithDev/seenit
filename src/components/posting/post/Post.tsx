@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
-import { useAuth, useFirestore, useUsers } from '@hooks/index'
+import { useAuth, usePosts, useUsers } from '@hooks/index'
 import { PostType, UserType } from 'src/customTypes/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,7 +21,7 @@ const Post: React.FC = () => {
     setFavoriteStatus,
     incrementFavoriteCount,
     decrementFavoriteCount
-  } = useFirestore()
+  } = usePosts()
   const { loadUserProfile } = useUsers()
 
   const [currentPost, setCurrentPost] = useState<PostType | null>(null)
