@@ -1,5 +1,4 @@
-import useAuth from '@hooks/useAuth'
-import usePosts from '@hooks/usePosts'
+import { useAuth, usePosts } from '@hooks/index'
 import React, { useState } from 'react'
 import { PostType } from 'src/customTypes/types'
 
