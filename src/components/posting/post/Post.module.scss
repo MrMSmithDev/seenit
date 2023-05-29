@@ -2,11 +2,33 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    position: relative;
+
+    &::after {
+        background-color: black;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
 }
 
 .postBody {
     line-height: 20px;
+    position: relative;
     white-space: pre-wrap;
+
+    &::before {
+        background-color: black;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: -15px;
+    }
 }
 
 .headline {
