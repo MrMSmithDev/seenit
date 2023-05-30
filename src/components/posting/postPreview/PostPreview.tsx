@@ -25,8 +25,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const { ID, authorID, timeStamp, title, comments } = currentPost
 
   const { user } = useAuth()
-  const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount, decrementFavoriteCount } =
-    usePosts()
+  const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount } = usePosts()
   const { loadUserProfile } = useUsers()
 
   useEffect(() => {
@@ -50,13 +49,13 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   }, [user])
 
   function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation()
+    event.preventDefault()
     setFavoriteStatus(user!.uid, ID)
     if (!userHasFavorite) {
-      incrementFavoriteCount(ID)
+      incrementFavoriteCount(ID, 1)
       setFavoriteCount((prevCount) => prevCount + 1)
     } else {
-      decrementFavoriteCount(ID)
+      incrementFavoriteCount(ID, -1)
       setFavoriteCount((prevCount) => prevCount - 1)
     }
     setUserHasFavorite(!userHasFavorite)
