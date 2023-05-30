@@ -6,16 +6,18 @@ import {
   addDoc,
   arrayUnion,
   collection,
+  // getDoc,
   getDocs,
   getFirestore,
+  orderBy,
   query,
   serverTimestamp,
   updateDoc,
   where
 } from 'firebase/firestore'
 import useAuth from '@hooks/useAuth'
+import { CommentType } from 'src/customTypes/types'
 
-// function loadComments
 // function editComment
 // function deleteComment
 // function loadMyComments
@@ -41,7 +43,6 @@ async function addCommentToPost(postID: string, commentID: string): Promise<void
   }
 }
 
-
 function useComments() {
   const firestoreDB = getFirestore()
   const { user } = useAuth()
@@ -65,9 +66,29 @@ function useComments() {
       throw error
     }
   }
-  // function loadCommentFeed(postID)
+
+  async function loadCommentFeed(postID: string): Promise<CommentType[]> {
+    try {
+      const commentDB = collection(firestoreDB, 'comments')
+      const commentQuery = query(commentDB, where('postID', '==', postID), orderBy('timestamp'))
+
+      const querySnapshot = await getDocs(commentQuery)
+      const comments: CommentType[] = []
+
+      querySnapshot?.forEach((currentDoc) => {
+        const comment = currentDoc.data() as CommentType
+        comments.push(comment)
+      })
+      return comments
+    } catch (error) {
+      console.error('Error loading comments:', error)
+      throw error
+    }
+  }
+
   return {
-    writeComment
+    writeComment,
+    loadCommentFeed
   }
 }
 
