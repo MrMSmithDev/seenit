@@ -15,13 +15,8 @@ const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', '
 const Post: React.FC = () => {
   const { postID } = useParams()
   const { user } = useAuth()
-  const {
-    checkFavoriteStatus,
-    loadCurrentPost,
-    setFavoriteStatus,
-    incrementFavoriteCount,
-    decrementFavoriteCount
-  } = usePosts()
+  const { checkFavoriteStatus, loadCurrentPost, setFavoriteStatus, incrementFavoriteCount } =
+    usePosts()
   const { loadUserProfile } = useUsers()
 
   const [currentPost, setCurrentPost] = useState<PostType | null>(null)
@@ -63,14 +58,13 @@ const Post: React.FC = () => {
 
   let post: ReactNode
 
-  function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation()
+  function toggleFavorite() {
     setFavoriteStatus(user!.uid, currentPost!.ID)
     if (!userHasFavorite) {
-      incrementFavoriteCount(currentPost!.ID)
+      incrementFavoriteCount(currentPost!.ID, 1)
       setFavoriteCount((prevCount) => prevCount + 1)
     } else {
-      decrementFavoriteCount(currentPost!.ID)
+      incrementFavoriteCount(currentPost!.ID, -1)
       setFavoriteCount((prevCount) => prevCount - 1)
     }
     setUserHasFavorite(!userHasFavorite)

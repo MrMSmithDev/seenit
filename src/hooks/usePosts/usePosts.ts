@@ -11,8 +11,10 @@ import {
   serverTimestamp,
   getDoc,
   getDocs,
+  updateDoc,
   where,
-  getFirestore
+  getFirestore,
+  increment
 } from 'firebase/firestore'
 
 function generateID(): string {
@@ -118,46 +120,18 @@ function usePosts() {
     }
   }
 
-  async function incrementFavoriteCount(postID: string): Promise<void> {
+  async function incrementFavoriteCount(postID: string, incrementAmount: number): Promise<void> {
     try {
       const postDB = collection(firestoreDB, 'posts')
       const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
       const postRef = querySnapshot.docs[0].ref
-      const postData = querySnapshot.docs[0].data() as PostType
 
-      const currentFavorites = postData?.favorites
-      await setDoc(
-        postRef,
-        {
-          favorites: currentFavorites! + 1
-        },
-        { merge: true }
-      )
+      await updateDoc(postRef, {
+        favorites: increment(incrementAmount)
+      })
     } catch (error) {
       console.error('Error incrementing favorite count:', error)
-      throw error
-    }
-  }
-
-  async function decrementFavoriteCount(postID: string): Promise<void> {
-    try {
-      const postDB = collection(firestoreDB, 'posts')
-      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
-
-      const postRef = querySnapshot.docs[0].ref
-      const postData = querySnapshot.docs[0].data() as PostType
-
-      const currentFavorites = postData?.favorites
-      await setDoc(
-        postRef,
-        {
-          favorites: currentFavorites! - 1
-        },
-        { merge: true }
-      )
-    } catch (error) {
-      console.error('Error decrementing favorite count:', error)
       throw error
     }
   }
@@ -174,8 +148,7 @@ function usePosts() {
 
     setFavoriteStatus,
     checkFavoriteStatus,
-    incrementFavoriteCount,
-    decrementFavoriteCount
+    incrementFavoriteCount
   }
 }
 
