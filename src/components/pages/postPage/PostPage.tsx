@@ -1,18 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Post from '@components/posting/post'
 
 import style from './PostPage.module.scss'
 import NewCommentForm from '@components/comments/newCommentForm'
 import CommentFeed from '@components/comments/commentFeed'
+import { PostType } from 'src/customTypes/types'
+import { useParams } from 'react-router-dom'
+import { usePosts } from '@hooks/index'
 
 const PostPage: React.FC = () => {
-  return (
-    <div className={style.postPage}>
-      <Post />
-      <NewCommentForm />
-      <CommentFeed />
-    </div>
-  )
+  const [currentPost, setCurrentPost] = useState<PostType | null>()
+
+  const { loadCurrentPost } = usePosts()
+  const { postID } = useParams()
+
+  useEffect(() => {
+    const loadPost = async () => {
+      const retrievedPost = await loadCurrentPost(postID!)
+      setCurrentPost(retrievedPost)
+    }
+
+    loadPost()
+  }, [])
+
+  if (currentPost)
+    return (
+      <div className={style.postPage}>
+        <Post currentPost={currentPost} />
+        <NewCommentForm />
+        <CommentFeed commentIDs={currentPost.comments} />
+      </div>
+    )
+  else return <div>loading</div>
 }
 
 export default PostPage
