@@ -6,10 +6,8 @@ import {
   addDoc,
   arrayUnion,
   collection,
-  // getDoc,
   getDocs,
   getFirestore,
-  orderBy,
   query,
   serverTimestamp,
   updateDoc,
@@ -22,10 +20,9 @@ import { CommentType } from 'src/customTypes/types'
 // function deleteComment
 // function loadMyComments
 const generateCommentID = (): string => {
-  const commentID: number = Math.floor(Math.random()) * Date.now()
+  const commentID: number = Math.floor(Math.random() * Date.now())
   const formattedID: string = commentID.toLocaleString(undefined, { maximumSignificantDigits: 9 })
-  console.log(formattedID)
-  return formattedID
+  return formattedID.replaceAll(',', '')
 }
 
 async function addCommentToPost(postID: string, commentID: string): Promise<void> {
@@ -67,18 +64,20 @@ function useComments() {
     }
   }
 
-  async function loadCommentFeed(postID: string): Promise<CommentType[]> {
+  function loadCommentFeed(commentIDs: string[]): CommentType[] {
     try {
-      const commentDB = collection(firestoreDB, 'comments')
-      const commentQuery = query(commentDB, where('postID', '==', postID), orderBy('timestamp'))
-
-      const querySnapshot = await getDocs(commentQuery)
       const comments: CommentType[] = []
 
-      querySnapshot?.forEach((currentDoc) => {
-        const comment = currentDoc.data() as CommentType
-        comments.push(comment)
+      commentIDs.forEach(async (id) => {
+        const commentDB = collection(firestoreDB, 'comments')
+        const commentQuery = query(commentDB, where('ID', '==', id))
+
+        const querySnapshot = await getDocs(commentQuery)
+        const commentDoc = querySnapshot.docs[0]
+
+        if (commentDoc.exists()) comments.push(commentDoc.data() as CommentType)
       })
+
       return comments
     } catch (error) {
       console.error('Error loading comments:', error)
