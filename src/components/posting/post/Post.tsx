@@ -12,26 +12,19 @@ import style from './Post.module.scss'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
-const Post: React.FC = () => {
+interface PostProps {
+  currentPost: PostType
+}
+
+const Post: React.FC<PostProps> = ({ currentPost }) => {
   const { postID } = useParams()
   const { user } = useAuth()
-  const { checkFavoriteStatus, loadCurrentPost, setFavoriteStatus, incrementFavoriteCount } =
-    usePosts()
+  const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount } = usePosts()
   const { loadUserProfile } = useUsers()
 
-  const [currentPost, setCurrentPost] = useState<PostType | null>(null)
   const [favoriteCount, setFavoriteCount] = useState<number>(0)
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
-
-  useEffect(() => {
-    const loadPost = async () => {
-      const retrievedPost = await loadCurrentPost(postID!)
-      setCurrentPost(retrievedPost)
-    }
-
-    loadPost()
-  }, [])
 
   useEffect(() => {
     const loadFavoriteStatus = async () => {
@@ -59,12 +52,12 @@ const Post: React.FC = () => {
   let post: ReactNode
 
   function toggleFavorite() {
-    setFavoriteStatus(user!.uid, currentPost!.ID)
+    setFavoriteStatus(user!.uid, currentPost.ID)
     if (!userHasFavorite) {
-      incrementFavoriteCount(currentPost!.ID, 1)
+      incrementFavoriteCount(currentPost.ID, 1)
       setFavoriteCount((prevCount) => prevCount + 1)
     } else {
-      incrementFavoriteCount(currentPost!.ID, -1)
+      incrementFavoriteCount(currentPost.ID, -1)
       setFavoriteCount((prevCount) => prevCount - 1)
     }
     setUserHasFavorite(!userHasFavorite)
