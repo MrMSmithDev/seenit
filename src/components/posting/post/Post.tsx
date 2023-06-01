@@ -7,10 +7,9 @@ import { PostType, UserType } from 'src/customTypes/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
+import months from '@utils/months.js'
 
 import style from './Post.module.scss'
-
-const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
 interface PostProps {
   currentPost: PostType
