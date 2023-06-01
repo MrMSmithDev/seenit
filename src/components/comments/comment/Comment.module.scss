@@ -1,0 +1,22 @@
+.comment {
+    padding: 10px;
+
+    &:nth-child(2n) {
+        background-color: #f5f5f5;
+    }
+
+    .commentInfo {
+        display: flex;
+        margin-top: 15px;
+        
+        .authorContainer {
+            display: flex;
+            margin-left: auto;
+
+            .postAuthorImg {
+                height: 20px;
+                width: 20px;
+            }
+        }
+    }
+}
