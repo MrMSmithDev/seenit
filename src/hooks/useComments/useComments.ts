@@ -53,7 +53,7 @@ function useComments() {
         postID,
         ID: commentID,
         timeStamp: serverTimestamp(),
-        author: user?.uid,
+        authorID: user?.uid,
         body: commentBody
       })
       addCommentToPost(postID, commentID)
@@ -75,7 +75,7 @@ function useComments() {
         const querySnapshot = await getDocs(commentQuery)
         const commentDoc = querySnapshot.docs[0]
 
-        if (commentDoc.exists()) comments.push(commentDoc.data() as CommentType)
+        if (commentDoc?.exists()) comments.push(commentDoc.data() as CommentType)
       })
 
       return comments
