@@ -7,8 +7,8 @@ import { useParams } from 'react-router-dom'
 
 const NewCommentForm: React.FC = () => {
   const { postID } = useParams()
-  const [commentBody, setCommentBody] = useState('')
-  const [commentSuccess, setCommentSuccess] = useState(false)
+  const [commentBody, setCommentBody] = useState<string>('')
+  const [commentSuccess, setCommentSuccess] = useState<boolean>(false)
   const { writeComment } = useComments()
 
   useEffect(() => {
@@ -23,10 +23,12 @@ const NewCommentForm: React.FC = () => {
 
   const uploadComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const resultBool = await writeComment(postID!, commentBody)
-    if (resultBool) {
-      setCommentBody('')
-      setCommentSuccess(true)
+    if (commentBody.length > 0) {
+      const resultBool = await writeComment(postID!, commentBody)
+      if (resultBool) {
+        setCommentBody('')
+        setCommentSuccess(true)
+      }
     }
   }
 
@@ -49,6 +51,7 @@ const NewCommentForm: React.FC = () => {
           name="comment-input"
           minLength={3}
           maxLength={400}
+          value={commentBody}
           onChange={handleCommentBodyChange}
         />
         <button type="submit" onClick={uploadComment}>
