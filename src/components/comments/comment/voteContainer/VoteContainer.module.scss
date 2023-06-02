@@ -1,0 +1,19 @@
+.voteContainer {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.faIcon {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 10px;
+    text-align: center;
+}
+
+.iconButton {
+    border: none;
+    background-color: inherit;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    font-size: 20px;
+}

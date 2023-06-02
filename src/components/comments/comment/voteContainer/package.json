@@ -1,0 +1,8 @@
+{
+    "name": "vote-container",
+    "version": "1.0.0",
+    "main": "VoteContainer.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
