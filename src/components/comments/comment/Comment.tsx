@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CommentType, UserType } from 'src/customTypes/types'
+import VoteContainer from './voteContainer'
 import useUsers from '@hooks/useUsers'
 
 import months from '@utils/months'
@@ -25,18 +26,21 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   }, [])
 
   return (
-    <div className={style.comment}>
-      <p>{comment.body}</p>
-      <div className={style.commentInfo}>
-        <p className={style.commentTimestamp}>
+    <div className={style.commentContainer}>
+      <VoteContainer />
+      <div className={style.comment}>
+        <div className={style.commentTimestamp}>
           {[
             `${timePosted.getHours()}:${timePosted.getMinutes()} `,
             `${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
           ]}
-        </p>
-        <div className={style.authorContainer}>
-          <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
-          <p className={style.postAuthor}>{author.displayName}</p>
+        </div>
+        <p className={style.commentBody}>{comment.body}</p>
+        <div className={style.commentInfo}>
+          <div className={style.authorContainer}>
+            <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
+            <p className={style.postAuthor}>{author.displayName}</p>
+          </div>
         </div>
       </div>
     </div>
