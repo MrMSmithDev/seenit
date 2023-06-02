@@ -6,6 +6,8 @@ import {
   addDoc,
   arrayUnion,
   collection,
+  doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -84,6 +86,19 @@ function useComments() {
       throw error
     }
   }
+
+  // Comment points
+  // async function loadCommentUserPoint(): Promise<boolean> {
+  //   try {
+  //     const userRef = doc(collection(getFirestore(), 'users'), user?.uid)
+  //     const userDoc = await getDoc(userRef)
+
+      
+  //   } catch (error) {
+  //     console.error('Error loading comment points:', error)
+  //     throw error
+  //   }
+  // }
 
   return {
     writeComment,
