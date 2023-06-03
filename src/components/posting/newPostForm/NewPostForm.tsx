@@ -29,6 +29,8 @@ const NewPost: React.FC = () => {
     setPostBody(e.target.value)
   }
 
+  // Create logic to toggle publish button if inputs not validated
+
   return (
     <div className={style.newPostContainer}>
       <h1 className={style.newPostTitle}>New Post</h1>
@@ -59,10 +61,8 @@ const NewPost: React.FC = () => {
             required
           />
         </div>
-        <button type="submit" onClick={writeNewPost}>
-          Publish
-        </button>
       </form>
+      <button className={style.postSubmitButton} onClick={writeNewPost}>Publish</button>
     </div>
   )
 }
