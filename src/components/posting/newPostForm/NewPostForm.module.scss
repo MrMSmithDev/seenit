@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .newPostContainer {
     display: flex;
     flex-direction: column;
@@ -6,6 +8,7 @@
 }
 
 .newPostTitle {
+    color: $deep-blue;
     font-size: 24px;
     font-weight: bold;
 }
@@ -22,8 +25,10 @@
         gap: 5px;
 
         input[type=text], textarea {
-            border: 2px solid #535353;
+            border: 2px solid $deep-blue;
             border-radius: none;
+            font-size: 18px;
+            letter-spacing: 2px;
             padding: 5px 3px;
             resize: vertical;
 
@@ -32,16 +37,25 @@
                 border-radius: none;
                 outline: none;
             }
+
+            &:valid {
+                background-color: $light-blue;
+            }
+        }
+
+        textarea {
+            height: 100px;
         }
 
         label {
+            color: $deep-blue;
             font-style: italic;
             font-weight: bold;
         }
     }
 
     &::before {
-        background-color: black;
+        background-color: $deep-blue;
         content: '';
         height: 2px;
         left: 0;
@@ -49,4 +63,27 @@
         right: 0;
         top: -15px;
     }
+
+    &::after {
+        background-color: $deep-blue;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        bottom: -30px;
+    }
+}
+
+.postSubmitButton {
+    align-self: center;
+    background-color: inherit;
+    border: 2px solid $deep-blue;
+    color: $deep-blue;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 3px 30px;
+    width:fit-content;
 }
