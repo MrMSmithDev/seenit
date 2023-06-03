@@ -44,6 +44,7 @@ const NewPost: React.FC = () => {
             onChange={handleTitleChange}
             minLength={3}
             maxLength={120}
+            placeholder="required"
             required
           />
         </div>
@@ -58,11 +59,14 @@ const NewPost: React.FC = () => {
             name="post-body"
             onChange={handleBodyChange}
             minLength={10}
+            placeholder="required"
             required
           />
         </div>
       </form>
-      <button className={style.postSubmitButton} onClick={writeNewPost}>Publish</button>
+      <button className={style.postSubmitButton} onClick={writeNewPost}>
+        Publish
+      </button>
     </div>
   )
 }
