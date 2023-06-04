@@ -14,14 +14,36 @@ import {
   updateDoc,
   where,
   getFirestore,
-  increment
+  increment,
+  OrderByDirection
 } from 'firebase/firestore'
+import { useState } from 'react'
+
+interface FilterQuery {
+  attribute: string
+  order: OrderByDirection
+}
 
 function generateID(): string {
   return Date.now().toString()
 }
 
+function parseFilter(filter: string): FilterQuery {
+  // default is set to newest
+  switch (filter) {
+    case 'oldest':
+      return { attribute: 'timeStamp', order: 'asc' }
+    case 'highest':
+      return { attribute: 'favorites', order: 'desc' }
+    case 'lowest':
+      return { attribute: 'favorites', order: 'asc' }
+    default:
+      return { attribute: 'timeStamp', order: 'desc' }
+  }
+}
+
 function usePosts() {
+  const [filter, setFilter] = useState('newest')
   const firestoreDB = getFirestore()
   //*******************//
   //****** Posts ******//
@@ -50,9 +72,15 @@ function usePosts() {
   }
 
   async function loadPostFeed(): Promise<PostType[]> {
+    const queryConstraints = parseFilter(filter)
+    console.log(queryConstraints)
     try {
       const postDB = collection(firestoreDB, 'posts')
-      const recentPostsQuery = query(postDB, orderBy('timeStamp', 'desc'), limit(20))
+      const recentPostsQuery = query(
+        postDB,
+        orderBy(queryConstraints.attribute, queryConstraints.order),
+        limit(20)
+      )
 
       const querySnapshot = await getDocs(recentPostsQuery)
       const posts: PostType[] = []
