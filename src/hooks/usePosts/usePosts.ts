@@ -28,7 +28,7 @@ function generateID(): string {
   return Date.now().toString()
 }
 
-function parseFilter(filter: string): FilterQuery {
+function filterSwitch(filter: string): FilterQuery {
   // default is set to newest
   switch (filter) {
     case 'oldest':
@@ -72,7 +72,7 @@ function usePosts() {
   }
 
   async function loadPostFeed(): Promise<PostType[]> {
-    const queryConstraints = parseFilter(filter)
+    const queryConstraints = filterSwitch(filter)
     console.log(queryConstraints)
     try {
       const postDB = collection(firestoreDB, 'posts')
@@ -176,7 +176,10 @@ function usePosts() {
 
     setFavoriteStatus,
     checkFavoriteStatus,
-    incrementFavoriteCount
+    incrementFavoriteCount,
+
+    filter,
+    setFilter
   }
 }
 
