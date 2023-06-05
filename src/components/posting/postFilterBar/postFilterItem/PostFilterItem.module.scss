@@ -1,0 +1,10 @@
+.dropItem {
+    border: none;
+    cursor: pointer;
+    text-align: right;
+    width: 100%;
+
+    &:not(:last-of-type) {
+        border-bottom: 2px solid $deep-blue;
+    }
+}
