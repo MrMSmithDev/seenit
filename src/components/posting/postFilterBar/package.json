@@ -1,0 +1,8 @@
+{
+    "name": "post-filter-bar",
+    "version": "1.0.0",
+    "main": "PostFilterBar.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
