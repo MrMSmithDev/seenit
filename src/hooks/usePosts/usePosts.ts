@@ -73,16 +73,15 @@ function usePosts() {
 
   async function loadPostFeed(): Promise<PostType[]> {
     const queryConstraints = filterSwitch(filter)
-    console.log(queryConstraints)
     try {
       const postDB = collection(firestoreDB, 'posts')
-      const recentPostsQuery = query(
+      const postsQuery = query(
         postDB,
         orderBy(queryConstraints.attribute, queryConstraints.order),
         limit(20)
       )
 
-      const querySnapshot = await getDocs(recentPostsQuery)
+      const querySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
       querySnapshot.forEach((currentDoc) => {
@@ -92,6 +91,31 @@ function usePosts() {
       return posts
     } catch (error) {
       console.error('Error loading posts:', error)
+      throw error
+    }
+  }
+
+  async function loadUserPostFeed(userID: string): Promise<PostType[]> {
+    const queryConstraints = filterSwitch(filter)
+    try {
+      const postDB = collection(firestoreDB, 'posts')
+      const postsQuery = query(
+        postDB,
+        where('authorID', '==', userID),
+        orderBy(queryConstraints.attribute, queryConstraints.order),
+        limit(20)
+      )
+
+      const querySnapshot = await getDocs(postsQuery)
+      const posts: PostType[] = []
+
+      querySnapshot.forEach((currentDoc) => {
+        const post = currentDoc.data() as PostType
+        posts.push(post)
+      })
+      return posts
+    } catch (error) {
+      console.error('Error loading users posts:', error)
       throw error
     }
   }
@@ -172,6 +196,8 @@ function usePosts() {
   return {
     writePost,
     loadPostFeed,
+    loadUserPostFeed,
+
     loadCurrentPost,
 
     setFavoriteStatus,
