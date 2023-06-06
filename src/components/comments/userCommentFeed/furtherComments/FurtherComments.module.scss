@@ -1,0 +1,22 @@
+.dropMenu {
+    margin-top: 10px;
+
+    .faIcon {
+        transition: transform ease-in-out .3s;
+        -webkit-transition: transform ease-in-out .3s;
+        -moz-transition: transform ease-in-out .3s;
+        -o-transition: transform ease-in-out .3s;
+
+        &.isActive {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.dropContent {
+    display: none;
+
+    &.isActive {
+        display: block;
+    }
+}

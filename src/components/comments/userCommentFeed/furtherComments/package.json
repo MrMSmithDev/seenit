@@ -1,0 +1,8 @@
+{
+    "name": "further-comments",
+    "version": "1.0.0",
+    "main": "FurtherComments.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
