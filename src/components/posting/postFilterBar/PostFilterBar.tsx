@@ -6,7 +6,7 @@ import React, { ReactNode, useState } from 'react'
 import filters from '@utils/filters.js'
 
 import style from './PostFilterBar.module.scss'
-import PostFilterItem from './postFilterItem/PostFilterItem'
+import PostFilterItem from './postFilterItem'
 
 interface PostFilterBarProps {
   feedTitle?: string
