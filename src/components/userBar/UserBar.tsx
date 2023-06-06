@@ -23,7 +23,12 @@ const UserBar: React.FC = () => {
       >
         My Posts
       </Link>
-      <Link to="/" className={style.sidebarLink} tabIndex={4} data-testid="sidebarLink">
+      <Link
+        to={`/users/${user?.uid}/comments`}
+        className={style.sidebarLink}
+        tabIndex={4}
+        data-testid="sidebarLink"
+      >
         My Comments
       </Link>
       <Link to="/" className={style.sidebarLink} tabIndex={5} data-testid="sidebarLink">
