@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpLong, faDownLong, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faUpLong, faDownLong } from '@fortawesome/free-solid-svg-icons'
 
 import style from './VoteContainer.module.scss'
 
@@ -27,9 +27,7 @@ const VoteContainer: React.FC = () => {
       >
         <FontAwesomeIcon icon={faUpLong} />
       </button>
-      <div className={style.faIcon}>
-        <FontAwesomeIcon icon={faCircle} />
-      </div>
+      <div className={style.faIcon}>{commentUserPoint}</div>
       <button
         className={style.iconButton}
         onClick={decrementCommentPoint}
