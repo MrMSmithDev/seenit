@@ -17,7 +17,7 @@ interface PostProps {
   currentPost: PostType
 }
 
-const Post: React.FC<PostProps> = ({ currentPost }) => {
+const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
@@ -105,4 +105,4 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   )
 }
 
-export default Post
+export default PostPreview
