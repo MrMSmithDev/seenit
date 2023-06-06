@@ -1,0 +1,25 @@
+@import '~@styles/_variables.scss';
+
+.feedTitle {
+    font-weight: bold;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+
+    &:after {
+        content: '';
+        background-color: $deep-blue;
+        position: absolute;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+.feedContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
