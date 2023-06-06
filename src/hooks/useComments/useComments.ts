@@ -6,8 +6,7 @@ import {
   addDoc,
   arrayUnion,
   collection,
-  doc,
-  getDoc,
+  limit,
   getDocs,
   getFirestore,
   query,
@@ -87,13 +86,31 @@ function useComments() {
     }
   }
 
+  async function loadUsersComments(userID: string): Promise<CommentType[]> {
+    try {
+      const commentsDB = collection(firestoreDB, 'comments')
+      const commentsQuery = query(commentsDB, where('authorID', '==', userID), limit(20))
+
+      const querySnapshot = await getDocs(commentsQuery)
+      const comments: CommentType[] = []
+
+      querySnapshot.forEach((currentDoc) => {
+        const comment = currentDoc.data() as CommentType
+        comments.push(comment)
+      })
+      return comments
+    } catch (error) {
+      console.error('Error loading users comments:', error)
+      throw error
+    }
+  }
+
   // Comment points
   // async function loadCommentUserPoint(): Promise<boolean> {
   //   try {
   //     const userRef = doc(collection(getFirestore(), 'users'), user?.uid)
   //     const userDoc = await getDoc(userRef)
 
-      
   //   } catch (error) {
   //     console.error('Error loading comment points:', error)
   //     throw error
@@ -102,7 +119,9 @@ function useComments() {
 
   return {
     writeComment,
-    loadCommentFeed
+    loadCommentFeed,
+
+    loadUsersComments
   }
 }
 
