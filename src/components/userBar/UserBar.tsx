@@ -1,9 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import useAuth from '@hooks/useAuth'
 
 import style from './UserBar.module.scss'
 
 const UserBar: React.FC = () => {
+  const { user } = useAuth()
+
   return (
     <div className={style.userBar}>
       <Link to="/" className={style.sidebarLink} tabIndex={1} data-testid="sidebarLink">
@@ -12,7 +15,12 @@ const UserBar: React.FC = () => {
       <Link to="/posts/new" className={style.sidebarLink} tabIndex={2} data-testid="sidebarLink">
         New Post
       </Link>
-      <Link to="/" className={style.sidebarLink} tabIndex={3} data-testid="sidebarLink">
+      <Link
+        to={`/users/${user?.uid}/posts`}
+        className={style.sidebarLink}
+        tabIndex={3}
+        data-testid="sidebarLink"
+      >
         My Posts
       </Link>
       <Link to="/" className={style.sidebarLink} tabIndex={4} data-testid="sidebarLink">
