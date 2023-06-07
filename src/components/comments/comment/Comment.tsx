@@ -26,13 +26,13 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   }, [])
 
   return (
-    <div className={style.commentContainer}>
+    <div className={style.commentContainer} data-comment-post-id={comment.postID}>
       <VoteContainer />
       <div className={style.comment}>
         <div className={style.commentTimestamp}>
           {[
             `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-            `${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
+            `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
           ]}
         </div>
         <p className={style.commentBody}>{comment.body}</p>
