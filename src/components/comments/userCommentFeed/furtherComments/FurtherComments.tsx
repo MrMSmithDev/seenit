@@ -22,7 +22,7 @@ const FurtherComments: React.FC<FurtherCommentsProps> = ({ commentArr, displayNa
   return (
     <div className={style.dropMenu}>
       <p className={style.dropToggle} onClick={handleDropToggle}>
-        Show more comments by {displayName || 'this user'}
+        Show {dropIsActive ? ' less ' : ' more '} comments by {displayName || 'this user'}{' '}
         <FontAwesomeIcon
           className={`${style.faIcon} ${dropIsActive ? style.isActive : ''}`}
           icon={faCaretDown}
