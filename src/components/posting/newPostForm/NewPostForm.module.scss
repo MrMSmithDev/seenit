@@ -3,20 +3,19 @@
 .newPostContainer {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding: 20px;
 }
 
 .newPostTitle {
     color: $deep-blue;
-    font-size: 24px;
     font-weight: bold;
+    padding: 10px;
 }
 
 .newPostForm {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding: 20px;
     position: relative;
 
     .inputContainer {
@@ -61,7 +60,7 @@
         left: 0;
         position: absolute;
         right: 0;
-        top: -15px;
+        top: 0;
     }
 
     &::after {
@@ -71,7 +70,7 @@
         left: 0;
         position: absolute;
         right: 0;
-        bottom: -30px;
+        bottom: 0;
     }
 }
 
