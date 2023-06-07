@@ -44,18 +44,22 @@ const UserCommentFeed: React.FC = () => {
       retrievedComments.forEach((currentComment) => {
         const postID = currentComment.postID
         if (checkPostID(postArr, postID)) {
-          const arrIndex = postArr.findIndex((post) => post.postID)
+          const arrIndex = postArr.findIndex((post) => post.postID) // Possible bug here with comments incorrectly assigned
           postArr[arrIndex].commentArr.push(currentComment)
         } else {
           postArr[postArr.length] = { postID, commentArr: [currentComment] }
         }
       })
 
+      // Sort comments by date for each post:
+      postArr.forEach((post) => {
+        post.commentArr.sort((a, b) => (a.timeStamp.toDate() < b.timeStamp.toDate() ? -1 : 1))
+      })
+
       const feedArr = await Promise.all(
         postArr.map(async (postWithCommentsObj) => {
           const { postID, commentArr } = postWithCommentsObj
           const currentPost = await loadCurrentPost(postID)
-          console.log(commentArr)
           return (
             <div className={style.postWithComments} key={postID}>
               <PostPreview currentPost={currentPost} />
