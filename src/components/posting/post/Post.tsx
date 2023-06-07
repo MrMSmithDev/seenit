@@ -81,7 +81,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
           <p className={style.postTimestamp}>
             {[
               `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-              `${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
+              `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
             ]}
           </p>
           <p className={style.postCommentCount}>
