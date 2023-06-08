@@ -1,0 +1,72 @@
+@import '~@styles/_variables.scss';
+
+.loadingContainer {
+    display: grid;
+    place-content: center;
+}
+
+.loadingIcon {
+    height: 200px;
+    position: relative;
+    width: 200px;
+}
+
+.iconOuter {
+    animation: outer-sway infinite ease-in-out 5s;
+    border: 3px solid $deep-blue;
+    border-radius: 50%;
+    border-top-left-radius: 0%;
+    height: 120px;
+    left: 40px;
+    position: relative;
+    top: 40px;
+    width: 120px;
+}
+
+.iconInner {
+    animation: inner-sway infinite ease-in-out 5s;
+    border: 3px solid $favorite-yellow;
+    border-radius: 50%;
+    border-top-right-radius: 0%;
+    height: 40px;
+    left: 80px;
+    position: relative;
+    top: -40px;
+    width: 40px;
+}
+
+@keyframes outer-sway {
+    2% {
+        transform: rotate(0deg);
+    }
+
+    48% {
+        transform: rotate(90deg);
+    }
+
+    52% {
+        transform: rotate(90deg);
+    }
+
+    98% {
+        transform: rotate(0deg);
+    }   
+}
+
+@keyframes inner-sway {
+    2% {
+        transform: rotate(0deg);
+    }
+
+    48% {
+        transform: rotate(-90deg);
+    }
+
+    52% {
+        transform: rotate(-90deg);
+    }
+
+    98% {
+        transform: rotate(0deg);
+    }   
+}
