@@ -10,6 +10,7 @@ import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-i
 import months from '@utils/months.js'
 
 import style from './Post.module.scss'
+import Loading from '@components/loading'
 
 interface PostProps {
   currentPost: PostType
@@ -21,6 +22,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount } = usePosts()
   const { loadUserProfile } = useUsers()
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [favoriteCount, setFavoriteCount] = useState<number>(0)
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
@@ -45,6 +47,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       }
 
       loadAuthorProfile()
+      setIsLoading(false)
     }
   }, [currentPost])
 
@@ -61,6 +64,8 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     }
     setUserHasFavorite(!userHasFavorite)
   }
+
+  if (isLoading) return <Loading />
 
   if (currentPost) {
     const timePosted = currentPost.timeStamp!.toDate()
