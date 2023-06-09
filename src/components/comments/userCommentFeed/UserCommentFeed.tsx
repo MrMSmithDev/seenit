@@ -44,7 +44,7 @@ const UserCommentFeed: React.FC = () => {
       retrievedComments.forEach((currentComment) => {
         const postID = currentComment.postID
         if (checkPostID(postArr, postID)) {
-          const arrIndex = postArr.findIndex((post) => post.postID) // Possible bug here with comments incorrectly assigned
+          const arrIndex = postArr.findIndex((post) => post.postID === currentComment.postID)
           postArr[arrIndex].commentArr.push(currentComment)
         } else {
           postArr[postArr.length] = { postID, commentArr: [currentComment] }
