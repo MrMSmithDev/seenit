@@ -7,6 +7,7 @@ import { PostType } from 'src/customTypes/types'
 import { usePosts, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
+import Loading from '@components/loading'
 
 interface PostFeedProps {
   feedTitle: string
@@ -15,6 +16,7 @@ interface PostFeedProps {
 const PostFeed: React.FC<PostFeedProps> = ({ feedTitle }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const { loadPostFeed, filter } = usePosts()
   const { getUsersDisplayName } = useUsers()
@@ -36,6 +38,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle }) => {
       if (!userID) posts = await loadPostFeed()
       else posts = await loadPostFeed()
       setCurrentPosts(posts)
+      if (posts) setIsLoading(false)
     }
 
     fetchPosts()
@@ -44,6 +47,8 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle }) => {
   const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
   })
+
+  if (isLoading) return <Loading />
 
   return (
     <div className={style.postFeedContainer}>
