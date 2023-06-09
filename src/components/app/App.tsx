@@ -6,38 +6,32 @@ import React, { useEffect, useState } from 'react'
 import useAuth from '@hooks/useAuth'
 
 import styles from './App.module.scss'
-import { logo } from '@assets/images'
 import { BrowserRouter } from 'react-router-dom'
 import { PostRoutes } from '@routes/posts'
+import Loading from '@components/loading'
 
 const App: React.FC = () => {
+  // Initiate loading screen properly here
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useAuth()
 
   useEffect(() => {
-    setIsLoading(!isLoading)
+    setIsLoading(false)
   }, [])
 
-  if (isLoading)
-    return (
-      <div className={styles.loading}>
-        <img src={logo} alt="Seenit logo" />
-      </div>
-    )
-
   if (!user) return <LandingPage />
-
-  return (
-    <BrowserRouter>
-      <div className={styles.appWrapper}>
-        <Header />
-        <Main>
-          <UserBar />
-          <PostRoutes />
-        </Main>
-      </div>
-    </BrowserRouter>
-  )
+  else
+    return (
+      <BrowserRouter>
+        <div className={styles.appWrapper}>
+          <Header />
+          <Main>
+            <UserBar />
+            <PostRoutes />
+          </Main>
+        </div>
+      </BrowserRouter>
+    )
 }
 
 export default App
