@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .dropMenu {
     margin-top: 10px;
 
@@ -22,6 +24,9 @@
 }
 
 .dropToggle {
+    background-color: $deep-blue;
+    color: #ffffff;
     cursor: pointer;
-    width: fit-content;
+    padding: 3px 5px;
+    text-align: right;
 }
