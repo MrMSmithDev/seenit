@@ -11,14 +11,15 @@ import Loading from '@components/loading'
 
 interface PostFeedProps {
   feedTitle: string
+  constraint?: string
 }
 
-const PostFeed: React.FC<PostFeedProps> = ({ feedTitle }) => {
+const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  const { loadPostFeed, filter } = usePosts()
+  const { loadPostFeed, loadUserFavorites, filter } = usePosts()
   const { getUsersDisplayName } = useUsers()
   const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
 
@@ -35,7 +36,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       let posts
-      if (!userID) posts = await loadPostFeed()
+      if (userID && constraint === 'favorites') posts = await loadUserFavorites(userID)
       else posts = await loadPostFeed()
       setCurrentPosts(posts)
       if (posts) setIsLoading(false)
