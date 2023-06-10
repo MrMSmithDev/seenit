@@ -2,15 +2,26 @@
 import { UserType } from 'src/customTypes/types'
 
 import { User } from 'firebase/auth'
-import { getFirestore, collection, setDoc, doc, getDoc } from 'firebase/firestore'
+import {
+  getFirestore,
+  collection,
+  setDoc,
+  doc,
+  getDoc,
+  DocumentReference,
+  DocumentSnapshot,
+  Firestore,
+  CollectionReference
+} from 'firebase/firestore'
 
 function useUsers() {
-  const firestoreDB = getFirestore()
+  const firestoreDB: Firestore = getFirestore()
 
   async function updateUserProfile(currentUser: User) {
     try {
-      const userRef = doc(collection(firestoreDB, 'users'), currentUser.uid)
-      const userDoc = await getDoc(userRef)
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, currentUser.uid)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc.exists()) {
         await setDoc(
           userRef,
@@ -36,8 +47,9 @@ function useUsers() {
 
   async function loadUserProfile(uid: string): Promise<UserType> {
     try {
-      const userRef = doc(collection(firestoreDB, 'users'), uid)
-      const userDoc = await getDoc(userRef)
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, uid)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       return userDoc.data() as UserType
     } catch (error) {
       console.error('Error loading userProfile:', error)
@@ -47,8 +59,9 @@ function useUsers() {
 
   async function getUsersDisplayName(uid: string): Promise<string> {
     try {
-      const userRef = doc(collection(firestoreDB, 'users'), uid)
-      const userDoc = await getDoc(userRef)
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, uid)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData = userDoc.data() as UserType
       return userData.displayName
     } catch (error) {
