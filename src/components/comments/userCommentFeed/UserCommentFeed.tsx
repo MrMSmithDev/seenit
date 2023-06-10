@@ -1,3 +1,4 @@
+import Loading from '@components/loading'
 import PostPreview from '@components/posting/postPreview'
 import { useComments, usePosts, useUsers } from '@hooks/index'
 import React, { ReactNode, useEffect, useState } from 'react'
@@ -20,6 +21,7 @@ const checkPostID = (arr: PostIDsWithComments[], id: string): boolean => {
 const UserCommentFeed: React.FC = () => {
   const { userID } = useParams()
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [userDisplayName, setUserDisplayName] = useState<string>('')
   const [feedData, setFeedData] = useState<ReactNode[]>([])
 
@@ -70,10 +72,13 @@ const UserCommentFeed: React.FC = () => {
         })
       )
       setFeedData(feedArr)
+      setIsLoading(false)
     }
 
     retrieveComments()
   }, [])
+
+  if (isLoading) return <Loading />
 
   return (
     <div className={style.userCommentFeed}>
