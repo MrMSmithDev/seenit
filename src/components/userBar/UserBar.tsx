@@ -31,7 +31,12 @@ const UserBar: React.FC = () => {
       >
         My Comments
       </Link>
-      <Link to="/" className={style.sidebarLink} tabIndex={5} data-testid="sidebarLink">
+      <Link
+        to={`/users/${user?.uid}/favorites`}
+        className={style.sidebarLink}
+        tabIndex={5}
+        data-testid="sidebarLink"
+      >
         My Favorites
       </Link>
       <Link to="/" className={style.sidebarLink} tabIndex={6} data-testid="sidebarLink">
@@ -42,9 +47,3 @@ const UserBar: React.FC = () => {
 }
 
 export default UserBar
-
-// to={`/products/${product.id}`}
-// className={style.productCard}
-// data-product-id={product.id}
-// tabIndex="-1"
-// data-testid="product-card"
