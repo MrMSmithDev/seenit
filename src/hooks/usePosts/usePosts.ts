@@ -21,7 +21,8 @@ import {
   DocumentSnapshot,
   CollectionReference,
   QuerySnapshot,
-  Query
+  Query,
+  QueryDocumentSnapshot
 } from 'firebase/firestore'
 import { useState } from 'react'
 
@@ -59,7 +60,8 @@ function usePosts() {
     const postID = generateID()
 
     try {
-      await addDoc(collection(firestoreDB, 'posts'), {
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      await addDoc(postDB, {
         ID: postID,
         timeStamp: serverTimestamp(),
         authorID: post.authorID,
@@ -87,10 +89,10 @@ function usePosts() {
         limit(20)
       )
 
-      const querySnapshot = await getDocs(postsQuery)
+      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
-      querySnapshot.forEach((currentDoc) => {
+      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
         const post = currentDoc.data() as PostType
         posts.push(post)
       })
@@ -115,7 +117,7 @@ function usePosts() {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
-      querySnapshot.forEach((currentDoc) => {
+      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
         const post = currentDoc.data() as PostType
         posts.push(post)
       })
@@ -148,7 +150,7 @@ function usePosts() {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
-      querySnapshot.forEach((currentDoc) => {
+      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
         const post = currentDoc.data() as PostType
         posts.push(post)
       })
@@ -164,8 +166,8 @@ function usePosts() {
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
-      const postData = querySnapshot.docs[0].data()
-      return postData as PostType
+      const postData: QueryDocumentSnapshot = querySnapshot.docs[0]
+      return postData.data() as PostType
     } catch (error) {
       console.error('Error loading post:', error)
       throw error

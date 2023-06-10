@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-//*******************//
-//***** Comments ****//
-//*******************//
 import {
   addDoc,
   arrayUnion,
@@ -12,7 +9,12 @@ import {
   query,
   serverTimestamp,
   updateDoc,
-  where
+  where,
+  CollectionReference,
+  Query,
+  QuerySnapshot,
+  Firestore,
+  QueryDocumentSnapshot
 } from 'firebase/firestore'
 import useAuth from '@hooks/useAuth'
 import { CommentType } from 'src/customTypes/types'
@@ -28,8 +30,8 @@ const generateCommentID = (): string => {
 
 async function addCommentToPost(postID: string, commentID: string): Promise<void> {
   try {
-    const postDB = collection(getFirestore(), 'posts')
-    const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+    const postDB: CollectionReference = collection(getFirestore(), 'posts')
+    const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
     const postRef = querySnapshot.docs[0].ref
     await updateDoc(postRef, {
@@ -42,15 +44,15 @@ async function addCommentToPost(postID: string, commentID: string): Promise<void
 }
 
 function useComments() {
-  const firestoreDB = getFirestore()
+  const firestoreDB: Firestore = getFirestore()
   const { user } = useAuth()
 
   async function writeComment(postID: string, commentBody: string): Promise<boolean> {
-    const commentID = generateCommentID()
-    console.log(commentID)
+    const commentID: string = generateCommentID()
 
     try {
-      await addDoc(collection(firestoreDB, 'comments'), {
+      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
+      await addDoc(commentDB, {
         postID,
         ID: commentID,
         timeStamp: serverTimestamp(),
@@ -70,11 +72,11 @@ function useComments() {
       const comments: CommentType[] = []
 
       commentIDs.forEach(async (id) => {
-        const commentDB = collection(firestoreDB, 'comments')
-        const commentQuery = query(commentDB, where('ID', '==', id))
+        const commentDB: CollectionReference = collection(firestoreDB, 'comments')
+        const commentQuery: Query = query(commentDB, where('ID', '==', id))
 
-        const querySnapshot = await getDocs(commentQuery)
-        const commentDoc = querySnapshot.docs[0]
+        const querySnapshot: QuerySnapshot = await getDocs(commentQuery)
+        const commentDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
 
         if (commentDoc?.exists()) comments.push(commentDoc.data() as CommentType)
       })
@@ -88,13 +90,13 @@ function useComments() {
 
   async function loadUsersComments(userID: string): Promise<CommentType[]> {
     try {
-      const commentsDB = collection(firestoreDB, 'comments')
-      const commentsQuery = query(commentsDB, where('authorID', '==', userID), limit(20))
+      const commentsDB: CollectionReference = collection(firestoreDB, 'comments')
+      const commentsQuery: Query = query(commentsDB, where('authorID', '==', userID), limit(20))
 
-      const querySnapshot = await getDocs(commentsQuery)
+      const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
       const comments: CommentType[] = []
 
-      querySnapshot.forEach((currentDoc) => {
+      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
         const comment = currentDoc.data() as CommentType
         comments.push(comment)
       })
