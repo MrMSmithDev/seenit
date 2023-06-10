@@ -120,6 +120,37 @@ function usePosts() {
     }
   }
 
+  async function loadUserFavorites(userID: string): Promise<PostType[]> {
+    const queryConstraints = filterSwitch(filter)
+    try {
+      let userFavoriteIDs
+
+      // Retrieve favorites list from user
+      const userRef = doc(collection(firestoreDB, 'users'), userID)
+      const userDoc = await getDoc(userRef)
+      if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
+
+      const postDB = collection(firestoreDB, 'posts')
+      const postsQuery = query(
+        postDB,
+        where('postID', 'in', userFavoriteIDs),
+        orderBy(queryConstraints.attribute, queryConstraints.order)
+      )
+
+      const querySnapshot = await getDocs(postsQuery)
+      const posts: PostType[] = []
+
+      querySnapshot.forEach((currentDoc) => {
+        const post = currentDoc.data() as PostType
+        posts.push(post)
+      })
+      return posts
+    } catch (error) {
+      console.error('Error loading users favorites:', error)
+      throw error
+    }
+  }
+
   async function loadCurrentPost(postID: string): Promise<PostType> {
     try {
       const postDB = collection(firestoreDB, 'posts')
@@ -197,6 +228,7 @@ function usePosts() {
     writePost,
     loadPostFeed,
     loadUserPostFeed,
+    loadUserFavorites,
 
     loadCurrentPost,
 
