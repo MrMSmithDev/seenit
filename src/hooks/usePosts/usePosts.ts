@@ -15,7 +15,13 @@ import {
   where,
   getFirestore,
   increment,
-  OrderByDirection
+  OrderByDirection,
+  Firestore,
+  DocumentReference,
+  DocumentSnapshot,
+  CollectionReference,
+  QuerySnapshot,
+  Query
 } from 'firebase/firestore'
 import { useState } from 'react'
 
@@ -44,7 +50,7 @@ function filterSwitch(filter: string): FilterQuery {
 
 function usePosts() {
   const [filter, setFilter] = useState('newest')
-  const firestoreDB = getFirestore()
+  const firestoreDB: Firestore = getFirestore()
   //*******************//
   //****** Posts ******//
   //*******************//
@@ -74,8 +80,8 @@ function usePosts() {
   async function loadPostFeed(): Promise<PostType[]> {
     const queryConstraints = filterSwitch(filter)
     try {
-      const postDB = collection(firestoreDB, 'posts')
-      const postsQuery = query(
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const postsQuery: Query = query(
         postDB,
         orderBy(queryConstraints.attribute, queryConstraints.order),
         limit(20)
@@ -98,15 +104,15 @@ function usePosts() {
   async function loadUserPostFeed(userID: string): Promise<PostType[]> {
     const queryConstraints = filterSwitch(filter)
     try {
-      const postDB = collection(firestoreDB, 'posts')
-      const postsQuery = query(
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const postsQuery: Query = query(
         postDB,
         where('authorID', '==', userID),
         orderBy(queryConstraints.attribute, queryConstraints.order),
         limit(20)
       )
 
-      const querySnapshot = await getDocs(postsQuery)
+      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
       querySnapshot.forEach((currentDoc) => {
@@ -126,18 +132,20 @@ function usePosts() {
       let userFavoriteIDs
 
       // Retrieve favorites list from user
-      const userRef = doc(collection(firestoreDB, 'users'), userID)
-      const userDoc = await getDoc(userRef)
+      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
 
-      const postDB = collection(firestoreDB, 'posts')
-      const postsQuery = query(
+      console.log(userFavoriteIDs)
+
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const postsQuery: Query = query(
         postDB,
         where('postID', 'in', userFavoriteIDs),
         orderBy(queryConstraints.attribute, queryConstraints.order)
       )
 
-      const querySnapshot = await getDocs(postsQuery)
+      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
       querySnapshot.forEach((currentDoc) => {
@@ -153,8 +161,8 @@ function usePosts() {
 
   async function loadCurrentPost(postID: string): Promise<PostType> {
     try {
-      const postDB = collection(firestoreDB, 'posts')
-      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
       const postData = querySnapshot.docs[0].data()
       return postData as PostType
@@ -166,8 +174,8 @@ function usePosts() {
 
   async function setFavoriteStatus(userID: string, postID: string): Promise<void> {
     try {
-      const userRef = doc(collection(firestoreDB, 'users'), userID)
-      const userDoc = await getDoc(userRef)
+      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userFavoritesArr: string[] = userDoc.data()?.favorites
 
       if (userFavoritesArr.includes(postID)) {
@@ -192,8 +200,8 @@ function usePosts() {
 
   async function checkFavoriteStatus(userID: string, postID: string): Promise<boolean> {
     try {
-      const userRef = doc(collection(firestoreDB, 'users'), userID)
-      const userDoc = await getDoc(userRef)
+      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData = userDoc?.data() as UserType
       if (userData?.favorites?.includes(postID)) return true
       return false
@@ -205,10 +213,10 @@ function usePosts() {
 
   async function incrementFavoriteCount(postID: string, incrementAmount: number): Promise<void> {
     try {
-      const postDB = collection(firestoreDB, 'posts')
-      const querySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
-      const postRef = querySnapshot.docs[0].ref
+      const postRef: DocumentReference = querySnapshot.docs[0].ref
 
       await updateDoc(postRef, {
         favorites: increment(incrementAmount)
