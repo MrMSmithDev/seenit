@@ -9,12 +9,17 @@
     gap: 5px;
 
     textarea {
+        min-height: 40px;
         padding: 5px;
         resize: vertical;
     }
 
-    button {
+    .confirmButton {
         align-self: flex-end;
+        background-color: #fff;
+        border: 1px solid black;
+        cursor: pointer;
+        padding: 1px 10px;
     }
 
     p {

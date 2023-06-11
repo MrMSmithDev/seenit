@@ -54,7 +54,7 @@ const NewCommentForm: React.FC = () => {
           value={commentBody}
           onChange={handleCommentBodyChange}
         />
-        <button type="submit" onClick={uploadComment}>
+        <button className={style.confirmButton} type="submit" onClick={uploadComment}>
           Confirm
         </button>
       </form>
