@@ -129,31 +129,35 @@ function usePosts() {
   }
 
   async function loadUserFavorites(userID: string): Promise<PostType[]> {
-    const queryConstraints = filterSwitch(filter)
+    // const queryConstraints = filterSwitch(filter)
     try {
-      let userFavoriteIDs
+      let userFavoriteIDs: string[] = []
 
       // Retrieve favorites list from user
       const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
 
-      console.log(userFavoriteIDs)
-
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
-      const postsQuery: Query = query(
-        postDB,
-        where('postID', 'in', userFavoriteIDs),
-        orderBy(queryConstraints.attribute, queryConstraints.order)
-      )
-
-      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const posts: PostType[] = []
 
-      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-        const post = currentDoc.data() as PostType
-        posts.push(post)
-      })
+      for (const favoriteID of userFavoriteIDs) {
+        const postQuery: Query = query(postDB, where('ID', '==', favoriteID), limit(1))
+        const querySnapshot: QuerySnapshot = await getDocs(postQuery)
+        const postDocs: QueryDocumentSnapshot[] = querySnapshot.docs
+
+        if (postDocs.length > 0) {
+          const postDoc: QueryDocumentSnapshot = postDocs[0]
+          posts.push(postDoc.data() as PostType)
+        }
+      }
+
+      // posts.sort((a: PostType, b: PostType) => {
+      //   if (a[queryConstraints.attribute] < b[queryConstraints.attribute]) return -1
+      //   if (a[queryConstraints.attribute] > b[queryConstraints.attribute]) return 1
+      //   return 0
+      // })
+
       return posts
     } catch (error) {
       console.error('Error loading users favorites:', error)
