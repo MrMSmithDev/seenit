@@ -43,7 +43,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     }
 
     fetchPosts()
-  }, [filter])
+  }, [filter, feedTitle])
 
   const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
