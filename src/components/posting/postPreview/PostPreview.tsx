@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
 import { PostLink } from '@routes/posts'
+import AuthorInfo from '@components/utils/AuthorInfo'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 const generateAddressTitle = (title: string) => {
@@ -90,10 +91,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
           {favoriteCount}
           <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
         </p>
-        <div className={style.authorContainer}>
-          <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
-          <p className={style.postAuthor}>{author.displayName}</p>
-        </div>
+        <AuthorInfo author={author} bold={true} />
       </div>
     </div>
   )

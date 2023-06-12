@@ -11,6 +11,7 @@ import months from '@utils/months.js'
 
 import style from './Post.module.scss'
 import Loading from '@components/loading'
+import AuthorInfo from '@components/users/AuthorInfo'
 
 interface PostProps {
   currentPost: PostType
@@ -96,10 +97,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
             {favoriteCount}
             <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
           </p>
-          <div className={style.authorContainer}>
-            <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
-            <p className={style.postAuthor}>{author.displayName}</p>
-          </div>
+          <AuthorInfo author={author} bold={true} />
         </div>
       </div>
     )
