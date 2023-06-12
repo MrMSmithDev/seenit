@@ -1,0 +1,8 @@
+{
+    "name": "author-info",
+    "version": "1.0.0",
+    "main": "AuthorInfo.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}

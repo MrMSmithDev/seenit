@@ -1,0 +1,17 @@
+.authorContainer {
+    display: flex;
+    gap: 5px;
+    margin-left: auto;
+
+    .postAuthorImg {
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+    }
+
+    .postAuthor {
+        &.bold {
+            font-weight: bold;
+        }
+    }
+}
