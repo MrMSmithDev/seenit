@@ -23,7 +23,7 @@ const NewCommentForm: React.FC = () => {
 
   const uploadComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (commentBody.length > 0) {
+    if (commentBody.match(/[a-z|0-9]/gi)) {
       const resultBool = await writeComment(postID!, commentBody)
       if (resultBool) {
         setCommentBody('')
