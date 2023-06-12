@@ -6,6 +6,7 @@ import useUsers from '@hooks/useUsers'
 import months from '@utils/months'
 
 import style from './Comment.module.scss'
+import AuthorInfo from '@components/users/AuthorInfo'
 
 interface CommentProps {
   comment: CommentType
@@ -37,10 +38,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         </div>
         <p className={style.commentBody}>{comment.body}</p>
         <div className={style.commentInfo}>
-          <div className={style.authorContainer}>
-            <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
-            <p className={style.postAuthor}>{author.displayName}</p>
-          </div>
+          <AuthorInfo author={author} />
         </div>
       </div>
     </div>
