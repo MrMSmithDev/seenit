@@ -5,6 +5,7 @@ import NewPostForm from '@components/posting/newPostForm'
 import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
+import UserProfilePage from '@components/pages/userProfilePage/UserProfilePage'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
@@ -31,6 +32,11 @@ const PostRoutes: React.FC = () => {
         key={`${location.pathname}-user-favorites`}
         path="/users/:userID/favorites"
         element={<PostFeed feedTitle="Favorites" constraint="favorites" />}
+      />
+      <Route
+        key={`${location.pathname}-user-profile`}
+        path="/users/profile/:userID"
+        element={<UserProfilePage />}
       />
     </Routes>
   )
