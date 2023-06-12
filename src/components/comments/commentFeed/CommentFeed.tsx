@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { CommentType } from 'src/customTypes/types'
 import useComments from '@hooks/useComments'
 
@@ -15,14 +15,14 @@ const CommentFeed: React.FC<CommentFeedProps> = ({ commentIDs }) => {
   // const { postID } = useParams()
   const { loadCommentFeed } = useComments()
 
-  useEffect(() => {
+  useEffect((): void => {
     if (commentIDs) {
       const commentFeed = loadCommentFeed(commentIDs)
       setCurrentComments(commentFeed)
     }
   }, [])
 
-  const commentArr = currentComments.map((comment: CommentType) => {
+  const commentArr: ReactNode[] = currentComments.map((comment: CommentType) => {
     return <Comment comment={comment} key={comment.ID} />
   })
 

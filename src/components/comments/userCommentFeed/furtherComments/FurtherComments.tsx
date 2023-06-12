@@ -15,7 +15,7 @@ const FurtherComments: React.FC<FurtherCommentsProps> = ({ commentArr, displayNa
   const [dropIsActive, setDropIsActive] = useState<boolean>(false)
   const comments = commentArr.map((comment) => <Comment comment={comment} key={comment.ID} />)
 
-  const handleDropToggle = () => {
+  const handleDropToggle = (): void => {
     setDropIsActive(!dropIsActive)
   }
 

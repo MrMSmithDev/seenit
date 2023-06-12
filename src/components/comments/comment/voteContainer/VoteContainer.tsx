@@ -8,12 +8,12 @@ import style from './VoteContainer.module.scss'
 const VoteContainer: React.FC = () => {
   const [commentUserPoint, setCommentUserPoint] = useState<number>(0)
 
-  const incrementCommentPoint = () => {
+  const incrementCommentPoint = (): void => {
     if (commentUserPoint != 1) setCommentUserPoint(1)
     else setCommentUserPoint(0)
   }
 
-  const decrementCommentPoint = () => {
+  const decrementCommentPoint = (): void => {
     if (commentUserPoint != -1) setCommentUserPoint((prev) => prev - 1)
     else setCommentUserPoint(0)
   }

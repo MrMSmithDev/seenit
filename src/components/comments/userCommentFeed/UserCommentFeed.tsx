@@ -30,7 +30,7 @@ const UserCommentFeed: React.FC = () => {
   const { loadCurrentPost } = usePosts()
 
   useEffect(() => {
-    const getUsersName = async () => {
+    const getUsersName = async (): Promise<void> => {
       const displayName = await getUsersDisplayName(userID!)
       setUserDisplayName(displayName)
     }
@@ -39,7 +39,7 @@ const UserCommentFeed: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    const retrieveComments = async () => {
+    const retrieveComments = async (): Promise<void> => {
       const retrievedComments: CommentType[] = await loadUsersComments(userID!)
       const postArr: PostIDsWithComments[] = []
 

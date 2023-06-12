@@ -11,7 +11,7 @@ const NewCommentForm: React.FC = () => {
   const [commentSuccess, setCommentSuccess] = useState<boolean>(false)
   const { writeComment } = useComments()
 
-  useEffect(() => {
+  useEffect((): void => {
     let timeoutID
     if (commentSuccess)
       timeoutID = setTimeout(() => {
@@ -21,7 +21,7 @@ const NewCommentForm: React.FC = () => {
     return clearTimeout(timeoutID)
   }, [commentSuccess])
 
-  const uploadComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const uploadComment = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
     if (commentBody.match(/[a-z|0-9]/gi)) {
       const resultBool = await writeComment(postID!, commentBody)
@@ -32,11 +32,11 @@ const NewCommentForm: React.FC = () => {
     }
   }
 
-  const handleCommentBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleCommentBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setCommentBody(e.target.value)
   }
 
-  const successMessage = (
+  const successMessage: React.ReactNode = (
     <div>
       <p>Comment added</p>
     </div>

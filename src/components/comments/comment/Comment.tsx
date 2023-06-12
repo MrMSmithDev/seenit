@@ -15,10 +15,10 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({ comment }) => {
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
   const { loadUserProfile } = useUsers()
-  const timePosted = comment.timeStamp.toDate()
+  const timePosted: Date = comment.timeStamp.toDate()
 
-  useEffect(() => {
-    const loadAuthor = async () => {
+  useEffect((): void => {
+    const loadAuthor = async (): Promise<void> => {
       const userProfile = await loadUserProfile(comment.authorID)
       setAuthor(userProfile)
     }
