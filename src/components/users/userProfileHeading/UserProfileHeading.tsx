@@ -8,7 +8,14 @@ interface UserProfileHeadingProps {
 }
 
 const UserProfileHeading: React.FC<UserProfileHeadingProps> = ({ user }) => {
-  return <div className={style.userProfileHeadingContainer}></div>
+  return (
+    <div className={style.userProfileHeadingContainer}>
+      <div
+        className={style.profileHeadingImage}
+        style={{ backgroundImage: `url(${user.photoURL})` }}
+      />
+    </div>
+  )
 }
 
 export default UserProfileHeading
