@@ -25,11 +25,11 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [favoriteCount, setFavoriteCount] = useState<number>(0)
-  const [userHasFavorite, setUserHasFavorite] = useState(false)
+  const [userHasFavorite, setUserHasFavorite] = useState<boolean>(false)
   const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
 
   useEffect(() => {
-    const loadFavoriteStatus = async () => {
+    const loadFavoriteStatus = async (): Promise<void> => {
       if (user) {
         const favoriteStatus = await checkFavoriteStatus(user.uid, postID!)
         setUserHasFavorite(favoriteStatus)
@@ -42,7 +42,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   useEffect(() => {
     if (currentPost) {
-      const loadAuthorProfile = async () => {
+      const loadAuthorProfile = async (): Promise<void> => {
         const firestoreAuthor = await loadUserProfile(currentPost.authorID)
         setAuthor(firestoreAuthor)
       }
@@ -54,7 +54,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   let post: ReactNode
 
-  function toggleFavorite() {
+  function toggleFavorite(): void {
     setFavoriteStatus(user!.uid, currentPost.ID)
     if (!userHasFavorite) {
       incrementFavoriteCount(currentPost.ID, 1)
@@ -69,7 +69,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   if (isLoading) return <Loading />
 
   if (currentPost) {
-    const timePosted = currentPost.timeStamp!.toDate()
+    const timePosted: Date = currentPost.timeStamp!.toDate()
 
     post = (
       <div className={style.post}>
@@ -101,8 +101,6 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
         </div>
       </div>
     )
-  } else {
-    post = <div>Loading</div>
   }
 
   return <React.Fragment>{post}</React.Fragment>

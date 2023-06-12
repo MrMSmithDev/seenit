@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
 import { PostLink } from '@routes/posts'
-import AuthorInfo from '@components/utils/AuthorInfo'
+import AuthorInfo from '@components/users/AuthorInfo'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 const generateAddressTitle = (title: string) => {
@@ -29,19 +29,19 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const { checkFavoriteStatus, setFavoriteStatus, incrementFavoriteCount } = usePosts()
   const { loadUserProfile } = useUsers()
 
-  useEffect(() => {
-    const loadAuthorProfile = async () => {
-      const firestoreAuthor = await loadUserProfile(authorID)
+  useEffect((): void => {
+    const loadAuthorProfile = async (): Promise<void> => {
+      const firestoreAuthor: UserType = await loadUserProfile(authorID)
       setAuthor(firestoreAuthor)
     }
 
     loadAuthorProfile()
   }, [])
 
-  useEffect(() => {
-    const loadFavoriteStatus = async () => {
+  useEffect((): void => {
+    const loadFavoriteStatus = async (): Promise<void> => {
       if (user) {
-        const favoriteStatus = await checkFavoriteStatus(user.uid, currentPost.ID)
+        const favoriteStatus: boolean = await checkFavoriteStatus(user.uid, currentPost.ID)
         setUserHasFavorite(favoriteStatus)
       }
     }
@@ -49,7 +49,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
     loadFavoriteStatus()
   }, [user])
 
-  function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>) {
+  function toggleFavorite(event: React.MouseEvent<HTMLButtonElement>): void {
     event.preventDefault()
     setFavoriteStatus(user!.uid, ID)
     if (!userHasFavorite) {
@@ -62,8 +62,8 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
     setUserHasFavorite(!userHasFavorite)
   }
 
-  const timePosted = timeStamp!.toDate()
-  const postAddressTitle = generateAddressTitle(title)
+  const timePosted: Date = timeStamp!.toDate()
+  const postAddressTitle: string = generateAddressTitle(title)
 
   const postComponent = (
     <div className={`${style.post} ${style.postPreview}`} data-post-id={ID}>

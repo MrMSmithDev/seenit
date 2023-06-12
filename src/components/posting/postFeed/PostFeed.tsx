@@ -18,12 +18,12 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
 
   const { loadPostFeed, loadUserFavorites, filter } = usePosts()
   const { getUsersDisplayName } = useUsers()
-  const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
 
-  useEffect(() => {
+  useEffect((): void => {
     const createTitle = async () => {
       const tempTitle = `${await getUsersDisplayName(userID!)}'s ${feedTitle}`
       setTitle(tempTitle)
@@ -33,8 +33,8 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     else setTitle(feedTitle)
   }, [userID])
 
-  useEffect(() => {
-    const fetchPosts = async () => {
+  useEffect((): void => {
+    const fetchPosts = async (): Promise<void> => {
       let posts
       if (userID && constraint === 'favorites') posts = await loadUserFavorites(userID)
       else posts = await loadPostFeed()

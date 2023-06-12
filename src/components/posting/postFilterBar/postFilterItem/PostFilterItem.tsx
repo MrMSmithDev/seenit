@@ -10,7 +10,7 @@ interface PostFilterItemProps {
 
 const PostFilterItem: React.FC<PostFilterItemProps> = ({ filterText, filterID }) => {
   const { setFilter } = usePosts()
-  const handleItemClick = () => {
+  const handleItemClick = (): void => {
     setFilter(filterID)
   }
 

@@ -5,12 +5,12 @@ import { PostType } from 'src/customTypes/types'
 import style from './NewPostForm.module.scss'
 
 const NewPost: React.FC = () => {
-  const [postTitle, setPostTitle] = useState('')
-  const [postBody, setPostBody] = useState('')
+  const [postTitle, setPostTitle] = useState<string>('')
+  const [postBody, setPostBody] = useState<string>('')
   const { user } = useAuth()
   const { writePost } = usePosts()
 
-  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
     const postObject: PostType = {
       ID: '',
@@ -21,11 +21,11 @@ const NewPost: React.FC = () => {
     await writePost(postObject)
   }
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPostTitle(e.target.value)
   }
 
-  const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setPostBody(e.target.value)
   }
 
