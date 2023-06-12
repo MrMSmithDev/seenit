@@ -1,0 +1,8 @@
+{
+    "name": "user-profile-page",
+    "version": "1.0.0",
+    "main": "UserProfilePage.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
