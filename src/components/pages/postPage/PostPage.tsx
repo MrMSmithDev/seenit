@@ -15,7 +15,7 @@ const PostPage: React.FC = () => {
   const { postID } = useParams()
 
   useEffect(() => {
-    const loadPost = async () => {
+    const loadPost = async (): Promise<void> => {
       const retrievedPost = await loadCurrentPost(postID!)
       setCurrentPost(retrievedPost)
     }
