@@ -11,7 +11,7 @@ interface AuthorInfoProps {
 
 const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold }) => {
   return (
-    <Link to={`/users/${author.uid}`}>
+    <Link to={`/users/profile/${author.uid}`}>
       <div className={style.authorContainer}>
         <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
         <p className={`${style.postAuthor} ${bold ? style.bold : null}`}>{author.displayName}</p>
