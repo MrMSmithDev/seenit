@@ -1,5 +1,5 @@
-import Loading from '@components/loading/Loading'
-import UserProfileHeading from '@components/users/userProfileHeading/UserProfileHeading'
+import Loading from '@components/loading'
+import UserProfileHeading from '@components/users/userProfileHeading'
 import React, { useEffect, useState } from 'react'
 import useUsers from '@hooks/useUsers'
 import { useParams } from 'react-router-dom'
