@@ -1,13 +1,24 @@
+@import '~@styles/_variables.scss';
+
 .userProfileHeadingContainer {
+    align-items: center;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    padding: 20px;
 }
 
 .profileHeadingImage {
+    background-color: grey;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border: 3px solid $deep-blue;
     border-radius: 50%;
-    height: 100px;
-    width: 100px;
+    height: 200px;
+    width: 200px;
+}
+
+.profileHeadingName {
+    font-size: 24px;
 }
