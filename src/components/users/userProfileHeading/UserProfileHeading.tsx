@@ -10,10 +10,13 @@ interface UserProfileHeadingProps {
 const UserProfileHeading: React.FC<UserProfileHeadingProps> = ({ user }) => {
   return (
     <div className={style.userProfileHeadingContainer}>
-      <div
+      <img
         className={style.profileHeadingImage}
-        style={{ backgroundImage: `url(${user.photoURL})` }}
+        src={user.photoURL}
+        alt="Users Profile Picture"
+        referrerPolicy="no-referrer"
       />
+      <h1 className={style.profileHeadingName}>{user.displayName}</h1>
     </div>
   )
 }
