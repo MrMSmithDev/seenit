@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
 import { PostLink } from '@routes/posts'
-import AuthorInfo from '@components/users/AuthorInfo'
+import AuthorInfo from '@components/users/authorInfo'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 const generateAddressTitle = (title: string) => {
