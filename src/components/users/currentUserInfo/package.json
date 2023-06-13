@@ -1,0 +1,8 @@
+{
+    "name": "current-user-info",
+    "version": "1.0.0",
+    "main": "CurrentUserInfo.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
