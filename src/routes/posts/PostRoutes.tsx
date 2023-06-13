@@ -5,7 +5,7 @@ import NewPostForm from '@components/posting/newPostForm'
 import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
-import UserProfilePage from '@components/pages/userProfilePage/UserProfilePage'
+import UserProfilePage from '@components/pages/userProfilePage'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
