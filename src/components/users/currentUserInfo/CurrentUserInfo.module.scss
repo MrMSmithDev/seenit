@@ -1,0 +1,13 @@
+.currentUserContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.userImg {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
