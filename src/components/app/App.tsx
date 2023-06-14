@@ -9,6 +9,7 @@ import styles from './App.module.scss'
 import { BrowserRouter } from 'react-router-dom'
 import { PostRoutes } from '@routes/posts'
 import Loading from '@components/loading'
+import CurrentUserInfo from '@components/users/currentUserInfo'
 
 const App: React.FC = () => {
   // Initiate loading screen properly here
@@ -17,7 +18,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(false)
-  }, [])
+  })
+
+  if (isLoading) return <Loading />
 
   if (!user) return <LandingPage />
   else
@@ -28,6 +31,7 @@ const App: React.FC = () => {
           <Main>
             <UserBar />
             <PostRoutes />
+            <CurrentUserInfo />
           </Main>
         </div>
       </BrowserRouter>
