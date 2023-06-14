@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UserType } from 'src/customTypes/types'
+import { PostType, UserType } from 'src/customTypes/types'
 
 import { User } from 'firebase/auth'
 import {
@@ -11,7 +11,13 @@ import {
   DocumentReference,
   DocumentSnapshot,
   Firestore,
-  CollectionReference
+  CollectionReference,
+  query,
+  where,
+  QuerySnapshot,
+  Query,
+  getDocs,
+  QueryDocumentSnapshot
 } from 'firebase/firestore'
 
 function useUsers() {
@@ -70,11 +76,33 @@ function useUsers() {
     }
   }
 
+  async function getUsersFavoriteCount(uid: string): Promise<number> {
+    try {
+      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const postsQuery: Query = query(postDB, where('authorID', '==', uid))
+
+      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
+      const result = querySnapshot.docs.reduce(
+        (total: number, currentDoc: QueryDocumentSnapshot) => {
+          const docData = currentDoc.data() as PostType
+          return total + (docData.favorites || 0)
+        },
+        0
+      )
+
+      return result
+    } catch (error) {
+      console.error('Error loading users favorite count:', error)
+      throw error
+    }
+  }
+
   return {
     updateUserProfile,
 
     loadUserProfile,
-    getUsersDisplayName
+    getUsersDisplayName,
+    getUsersFavoriteCount
   }
 }
 
