@@ -22,7 +22,7 @@ const CurrentUserInfo: React.FC = () => {
   useEffect(() => {
     if (user) {
       const loadProfile = async () => {
-        const activeUser = await loadUserProfile(user.uid)
+        const activeUser: UserType = await loadUserProfile(user.uid)
         setCurrentUser(activeUser)
         setLoading(false)
       }
@@ -31,6 +31,17 @@ const CurrentUserInfo: React.FC = () => {
     }
   }, [user])
 
+  useEffect(() => {
+    if (user) {
+      const loadFavoriteCount = async () => {
+        const favoriteCount: number = await getUsersFavoriteCount(user.uid)
+        setUsersFavoriteCount(favoriteCount)
+      }
+
+      loadFavoriteCount()
+    }
+  })
+
   if (loading) return <Loading />
 
   return (
@@ -38,7 +49,7 @@ const CurrentUserInfo: React.FC = () => {
       <img className={style.userImg} src={currentUser.photoURL} referrerPolicy="no-referrer" />
       <h1 className={style.userDisplayName}>{currentUser.displayName}</h1>
       <p>
-        <FontAwesomeIcon className={style.faIcon} icon={faStar} /> {}
+        <FontAwesomeIcon className={style.faIcon} icon={faStar} /> {usersFavoriteCount}
       </p>
       <p className={style.userProfileBlurb}>
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat
