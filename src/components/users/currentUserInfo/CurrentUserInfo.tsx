@@ -2,6 +2,7 @@ import { useAuth, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import Loading from '@components/loading'
 import { UserType } from 'src/customTypes/types'
+import { Link } from 'react-router-dom'
 
 import style from './CurrentUserInfo.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -48,7 +49,7 @@ const CurrentUserInfo: React.FC = () => {
     <div className={style.currentUserContainer}>
       <img className={style.userImg} src={currentUser.photoURL} referrerPolicy="no-referrer" />
       <h1 className={style.userDisplayName}>{currentUser.displayName}</h1>
-      <p>
+      <p className={style.favoriteCount}>
         <FontAwesomeIcon className={style.faIcon} icon={faStar} /> {usersFavoriteCount}
       </p>
       <p className={style.userProfileBlurb}>
@@ -61,9 +62,9 @@ const CurrentUserInfo: React.FC = () => {
         vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
         porttitor, facilisis luctus, metus.
       </p>
-      <button className={style.editProfileButton} type="button">
+      <Link className={style.editProfileButton} to={`/users/edit-profile/${user?.uid}`}>
         Edit Profile
-      </button>
+      </Link>
     </div>
   )
 }
