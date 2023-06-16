@@ -2,16 +2,23 @@
 
 .currentUserContainer {
     align-items: center;
+    align-self: start;
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 20px;
+    position: sticky;
+    top: 60px;
 }
 
 .userImg {
     border-radius: 50%;
     height: 100px;
     width: 100px;
+}
+
+.favoriteCount {
+    margin-top: -20px;
 }
 
 .faIcon {
