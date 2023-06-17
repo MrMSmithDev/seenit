@@ -1,8 +1,3 @@
-// interface Filter {
-//   text: string
-//   id: string
-// }
-
 const filters = [
   { text: 'Newest', id: 'new' },
   { text: 'Oldest', id: 'oldest' },
