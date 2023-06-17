@@ -6,6 +6,7 @@ import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
 import UserProfilePage from '@components/pages/userProfilePage'
+import PageNotFound from '@components/pages/pageNotFound/PageNotFound'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
@@ -38,6 +39,7 @@ const PostRoutes: React.FC = () => {
         path="/users/profile/:userID"
         element={<UserProfilePage />}
       />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   )
 }
