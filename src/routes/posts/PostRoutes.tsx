@@ -6,7 +6,7 @@ import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
 import UserProfilePage from '@components/pages/userProfilePage'
-import PageNotFound from '@components/pages/pageNotFound/PageNotFound'
+import PageNotFound from '@components/pages/pageNotFound'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
