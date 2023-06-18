@@ -1,0 +1,8 @@
+{
+    "name": "edit-profile-page",
+    "version": "1.0.0",
+    "main": "EditProfilePage.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
