@@ -41,7 +41,7 @@ const PostRoutes: React.FC = () => {
       />
       <Route
         key={`${location.pathname}-edit-profile`}
-        path="/edit-profile/:userID"
+        path="/edit-profile"
         element={<PageNotFound />}
       />
       <Route path="*" element={<PageNotFound />} />

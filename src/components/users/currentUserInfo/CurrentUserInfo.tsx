@@ -62,7 +62,7 @@ const CurrentUserInfo: React.FC = () => {
         vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
         porttitor, facilisis luctus, metus.
       </p>
-      <Link className={style.editProfileButton} to={`/users/edit-profile/${user?.uid}`}>
+      <Link className={style.editProfileButton} to="/edit-profile/">
         Edit Profile
       </Link>
     </div>
