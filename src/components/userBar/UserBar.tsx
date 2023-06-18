@@ -39,7 +39,7 @@ const UserBar: React.FC = () => {
       >
         My Favorites
       </Link>
-      <Link to="/" className={style.sidebarLink} tabIndex={6} data-testid="sidebarLink">
+      <Link to={'/settings'} className={style.sidebarLink} tabIndex={6} data-testid="sidebarLink">
         Settings
       </Link>
     </div>
