@@ -7,6 +7,7 @@ import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
 import UserProfilePage from '@components/pages/userProfilePage'
 import PageNotFound from '@components/pages/pageNotFound'
+import EditProfilePage from '@components/pages/editProfilePage'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
@@ -42,7 +43,7 @@ const PostRoutes: React.FC = () => {
       <Route
         key={`${location.pathname}-edit-profile`}
         path="/edit-profile"
-        element={<PageNotFound />}
+        element={<EditProfilePage />}
       />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
