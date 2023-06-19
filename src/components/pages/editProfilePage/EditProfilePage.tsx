@@ -2,6 +2,7 @@ import Loading from '@components/loading'
 import { useAuth, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { UserType } from 'src/customTypes/types'
+import EditPicture from './editPicture'
 
 import style from './EditProfilePage.module.scss'
 
@@ -17,27 +18,30 @@ const EditProfilePage: React.FC = () => {
     favorites: []
   })
 
+  const [currentTempProfilePicture, setTempProfilePicture] = useState<string | File>(
+    currentUser.photoURL
+  )
+  const [currentTempDisplayName, setTempDisplayName] = useState<string>(currentUser.displayName)
+
   useEffect(() => {
     if (user) {
       const loadProfile = async (): Promise<void> => {
         const userProfile: UserType = await loadUserProfile(user.uid)
         setCurrentUser(userProfile)
+        setTempProfilePicture(userProfile.photoURL)
+        setTempDisplayName(userProfile.displayName)
       }
 
       loadProfile()
       setIsLoading(false)
     }
-    console.log(currentUser)
   }, [user])
 
   if (isLoading) return <Loading />
 
   return (
     <div className={style.editProfileContainer}>
-      {/* <div className={style.editPictureContainer}>
-        <img src={currentUser.photoURL}/>
-    </div>
-    < */}
+      <EditPicture currentPicture={currentUser.photoURL} setTempPicture={setTempProfilePicture} />
     </div>
   )
 }
