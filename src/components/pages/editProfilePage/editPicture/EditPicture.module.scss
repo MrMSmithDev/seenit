@@ -1,0 +1,41 @@
+@import '~@styles/_variables';
+
+.editPictureContainer {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .picturePreview {
+        border: 3px solid $deep-blue;
+        border-radius: 50%;
+        height: 200px;
+        object-fit: cover;
+        width: 200px;
+    }
+
+    .pictureInput {
+        width: 115px;
+
+        &::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        &::before {
+            content: 'Upload Image';
+            display: inline-block;
+            border: 2px solid $deep-blue;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 3px 5px;
+            outline: none;
+            white-space: nowrap;
+            width: 100px;
+            user-select: none;
+            text-align: center;
+
+            -webkit-user-select: none;
+        }
+    }
+}

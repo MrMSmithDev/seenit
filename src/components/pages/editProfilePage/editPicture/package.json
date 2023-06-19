@@ -1,0 +1,8 @@
+{
+    "name": "edit-picture",
+    "version": "1.0.0",
+    "main": "EditPicture.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
