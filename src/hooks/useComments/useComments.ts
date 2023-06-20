@@ -14,14 +14,16 @@ import {
   Query,
   QuerySnapshot,
   Firestore,
-  QueryDocumentSnapshot
+  QueryDocumentSnapshot,
+  DocumentReference,
+  increment
 } from 'firebase/firestore'
 import useAuth from '@hooks/useAuth'
-import { CommentType } from 'src/customTypes/types'
+import { CommentType, UserInteraction } from 'src/customTypes/types'
 
 // function editComment
 // function deleteComment
-// function loadMyComments
+
 const generateCommentID = (): string => {
   const commentID: number = Math.floor(Math.random() * Date.now())
   const formattedID: string = commentID.toLocaleString(undefined, { maximumSignificantDigits: 9 })
@@ -57,7 +59,9 @@ function useComments() {
         ID: commentID,
         timeStamp: serverTimestamp(),
         authorID: user?.uid,
-        body: commentBody
+        body: commentBody,
+        score: 0,
+        userInteractions: []
       })
       addCommentToPost(postID, commentID)
       return true
@@ -107,23 +111,67 @@ function useComments() {
     }
   }
 
-  // Comment points
-  // async function loadCommentUserPoint(): Promise<boolean> {
-  //   try {
-  //     const userRef = doc(collection(getFirestore(), 'users'), user?.uid)
-  //     const userDoc = await getDoc(userRef)
+  async function updateUserInteractions(
+    commentID: string,
+    userID: string,
+    newInteraction: number
+  ): Promise<void> {
+    try {
+      const commentsDB: CollectionReference = collection(firestoreDB, 'comments')
+      const commentsQuery: Query = query(commentsDB, where('ID', '==', commentID))
+      const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
 
-  //   } catch (error) {
-  //     console.error('Error loading comment points:', error)
-  //     throw error
-  //   }
-  // }
+      const commentRef: DocumentReference = querySnapshot?.docs[0]?.ref
+      const interactionData: UserInteraction[] = querySnapshot?.docs[0]?.data()?.userInteraction
+
+      let hasFound = false
+      const updatedInteractionData: UserInteraction[] = interactionData?.map((interaction) => {
+        const key = Object.keys(interaction)[0]
+        if (key === userID) {
+          hasFound = true
+          return { key: newInteraction }
+        } else {
+          return interaction
+        }
+      })
+      if (!hasFound) {
+        updatedInteractionData.push({ userID: newInteraction })
+      }
+      await updateDoc(commentRef, {
+        userInteractions: updatedInteractionData
+      })
+    } catch (error) {
+      console.error('Error updating comment points:', error)
+      throw error
+    }
+  }
+
+  async function incrementCommentScore(commentID: string, incrementAmount: number): Promise<void> {
+    try {
+      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
+      const querySnapshot: QuerySnapshot = await getDocs(
+        query(commentDB, where('ID', '==', commentID))
+      )
+
+      const commentRef: DocumentReference = querySnapshot.docs[0].ref
+
+      await updateDoc(commentRef, {
+        favorites: increment(incrementAmount)
+      })
+    } catch (error) {
+      console.error('Error incrementing favorite count:', error)
+      throw error
+    }
+  }
 
   return {
     writeComment,
     loadCommentFeed,
 
-    loadUsersComments
+    loadUsersComments,
+
+    updateUserInteractions,
+    incrementCommentScore
   }
 }
 
