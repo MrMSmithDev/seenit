@@ -28,7 +28,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
   return (
     <div className={style.commentContainer} data-comment-post-id={comment.postID}>
-      <VoteContainer />
+      <VoteContainer comment={comment} />
       <div className={style.comment}>
         <div className={style.commentTimestamp}>
           {[
