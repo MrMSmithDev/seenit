@@ -13,14 +13,6 @@ export interface PostType {
   favorites?: number
 }
 
-export interface CommentType {
-  ID: string
-  postID: string
-  timeStamp: Timestamp
-  authorID: string
-  body: string
-}
-
 export interface UserType {
   uid: string
   displayName: string
@@ -30,3 +22,16 @@ export interface UserType {
 }
 
 export type PostCollection = PostType[]
+
+interface UserInteraction {
+  [key: string]: number
+}
+
+export interface CommentType {
+  ID: string
+  postID: string
+  timeStamp: Timestamp
+  authorID: string
+  body: string
+  userInteractions: UserInteraction[]
+}
