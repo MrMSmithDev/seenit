@@ -23,8 +23,8 @@ export interface UserType {
 
 export type PostCollection = PostType[]
 
-interface UserInteraction {
-  [key: string]: number
+export interface UserInteraction {
+  [id: string]: number
 }
 
 export interface CommentType {
@@ -33,5 +33,6 @@ export interface CommentType {
   timeStamp: Timestamp
   authorID: string
   body: string
+  score: number
   userInteractions: UserInteraction[]
 }
