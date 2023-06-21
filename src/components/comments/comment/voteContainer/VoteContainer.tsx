@@ -19,11 +19,13 @@ const VoteContainer: React.FC<VoteContainerProps> = ({ comment }) => {
   const [commentUserPoints, setCommentUserPoints] = useState<number>(0)
 
   useEffect(() => {
-    comment.userInteractions.forEach((interaction) => {
-      const [key, value] = Object.entries(interaction)[0]
-      if (key === user!.uid) setCommentUserPoints(value)
-    })
-  })
+    if (user) {
+      comment.userInteractions.forEach((interaction) => {
+        const [key, value] = Object.entries(interaction)[0]
+        if (key === user.uid) setCommentUserPoints(value)
+      })
+    }
+  }, [user])
 
   const incrementStatePoints = (change: number): void => {
     setCommentScore((prev) => prev + change)
@@ -63,7 +65,7 @@ const VoteContainer: React.FC<VoteContainerProps> = ({ comment }) => {
       >
         <FontAwesomeIcon icon={faUpLong} />
       </button>
-      <div className={style.faIcon}>{commentScore}</div>
+      <div className={style.faIcon}>{commentUserPoints}</div>
       <button
         className={style.iconButton}
         onClick={decrementCommentPoint}
