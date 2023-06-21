@@ -125,17 +125,22 @@ function useComments() {
       const interactionData: UserInteraction[] = querySnapshot?.docs[0]?.data()?.userInteraction
 
       let hasFound = false
-      const updatedInteractionData: UserInteraction[] = interactionData?.map((interaction) => {
-        const key = Object.keys(interaction)[0]
-        if (key === userID) {
-          hasFound = true
-          return { key: newInteraction }
-        } else {
-          return interaction
-        }
-      })
+
+      // Map out array of interaction based on previous, changing user interaction of current uid
+      // to updated data. If no user interaction already exists, initialize a new array and push
+      // to that
+      const updatedInteractionData: UserInteraction[] =
+        interactionData?.map((interaction) => {
+          const key = Object.keys(interaction)[0]
+          if (key === userID) {
+            hasFound = true
+            return { [key]: newInteraction }
+          } else {
+            return interaction
+          }
+        }) || []
       if (!hasFound) {
-        updatedInteractionData.push({ userID: newInteraction })
+        updatedInteractionData.push({ [userID]: newInteraction })
       }
       await updateDoc(commentRef, {
         userInteractions: updatedInteractionData
