@@ -161,7 +161,7 @@ function useComments() {
       const commentRef: DocumentReference = querySnapshot.docs[0].ref
 
       await updateDoc(commentRef, {
-        favorites: increment(incrementAmount)
+        score: increment(incrementAmount)
       })
     } catch (error) {
       console.error('Error incrementing favorite count:', error)
