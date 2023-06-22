@@ -18,7 +18,7 @@ const EditProfilePage: React.FC = () => {
     favorites: []
   })
 
-  const [currentTempProfilePicture, setTempProfilePicture] = useState<string | File>(
+  const [currentTempProfileImage, setTempProfileImage] = useState<string | File>(
     currentUser.photoURL
   )
   const [currentTempDisplayName, setTempDisplayName] = useState<string>(currentUser.displayName)
@@ -28,7 +28,7 @@ const EditProfilePage: React.FC = () => {
       const loadProfile = async (): Promise<void> => {
         const userProfile: UserType = await loadUserProfile(user.uid)
         setCurrentUser(userProfile)
-        setTempProfilePicture(userProfile.photoURL)
+        setTempProfileImage(userProfile.photoURL)
         setTempDisplayName(userProfile.displayName)
       }
 
@@ -41,7 +41,7 @@ const EditProfilePage: React.FC = () => {
 
   return (
     <div className={style.editProfileContainer}>
-      <EditPicture currentPicture={currentUser.photoURL} setTempPicture={setTempProfilePicture} />
+      <EditPicture setTempImage={setTempProfileImage} />
     </div>
   )
 }
