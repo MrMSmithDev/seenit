@@ -1,0 +1,12 @@
+.editInfoContainer {
+    align-items: center;
+    background-color: red;
+    display: flex;
+    padding: 20px;
+
+    .infoForm {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
