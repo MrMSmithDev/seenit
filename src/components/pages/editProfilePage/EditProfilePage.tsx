@@ -2,6 +2,7 @@ import Loading from '@components/loading'
 import { useAuth, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { UserType } from 'src/customTypes/types'
+import EditInfo from './editInfo/EditInfo'
 import EditPicture from './editPicture'
 
 import style from './EditProfilePage.module.scss'
@@ -15,13 +16,13 @@ const EditProfilePage: React.FC = () => {
     uid: '',
     displayName: '',
     photoURL: '',
-    favorites: []
+    favorites: [],
+    blurb: ''
   })
 
-  const [currentTempProfileImage, setTempProfileImage] = useState<string | File>(
-    currentUser.photoURL
-  )
-  const [currentTempDisplayName, setTempDisplayName] = useState<string>(currentUser.displayName)
+  const [tempProfileImage, setTempProfileImage] = useState<string | File>(currentUser.photoURL)
+  const [tempDisplayName, setTempDisplayName] = useState<string>(currentUser.displayName)
+  const [tempProfileText, setTempProfileText] = useState<string>(currentUser.blurb)
 
   useEffect(() => {
     if (user) {
@@ -37,11 +38,20 @@ const EditProfilePage: React.FC = () => {
     }
   }, [user])
 
+  const handleSaveInfo = () => {
+    console.log(tempDisplayName)
+    console.log(tempProfileText)
+  }
+
   if (isLoading) return <Loading />
 
   return (
     <div className={style.editProfileContainer}>
       <EditPicture setTempImage={setTempProfileImage} />
+      <EditInfo setTempDisplayName={setTempDisplayName} setTempProfileText={setTempProfileText} />
+      <button className={style.saveButton} onClick={handleSaveInfo}>
+        Save Changes
+      </button>
     </div>
   )
 }
