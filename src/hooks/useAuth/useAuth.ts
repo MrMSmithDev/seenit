@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react'
-import useUsers from '@hooks/useUsers'
 import {
   getAuth,
   onAuthStateChanged,
@@ -12,20 +11,14 @@ import {
 
 function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
-  const { updateUserProfile } = useUsers()
 
   useEffect(() => {
-    const updateProfileInfo = async () => {
-      const auth = getAuth()
-      if (auth.currentUser) await updateUserProfile(auth.currentUser)
-      const unsubscribe = onAuthStateChanged(auth, (userChange) => {
-        setUser(userChange)
-      })
+    const auth = getAuth()
+    const unsubscribe = onAuthStateChanged(auth, (userChange) => {
+      setUser(userChange)
+    })
 
-      return () => unsubscribe()
-    }
-
-    updateProfileInfo()
+    return () => unsubscribe()
   }, [])
 
   async function signIn(): Promise<void> {
