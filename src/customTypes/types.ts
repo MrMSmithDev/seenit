@@ -17,7 +17,7 @@ export interface UserType {
   uid: string
   displayName: string
   photoURL: string
-  blurb?: string
+  blurb: string
   favorites?: string[]
 }
 
