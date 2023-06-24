@@ -1,12 +1,47 @@
+@import '~@styles/_variables.scss';
+
 .editInfoContainer {
-    align-items: center;
-    background-color: red;
     display: flex;
+    flex-direction: column;
     padding: 20px;
 
     .infoForm {
         display: flex;
         flex-direction: column;
         gap: 10px;
+
+        .editInfoInputContainer {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            input[type=text], textarea {
+                border: 2px solid $deep-blue;
+                border-radius: none;
+                font-size: 18px;
+                letter-spacing: 2px;
+                padding: 5px 3px;
+                resize: vertical;
+    
+                &:focus {
+                    border-color: #000000;
+                    border-radius: none;
+                    outline: none;
+                }
+    
+                &:valid {
+                    background-color: $light-blue;
+                }
+            }
+
+            textarea {
+                min-height: 100px;
+            }
+            
+        }
     }
 }
