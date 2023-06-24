@@ -9,7 +9,7 @@ import style from './EditProfilePage.module.scss'
 
 const EditProfilePage: React.FC = () => {
   const { user } = useAuth()
-  const { loadUserProfile } = useUsers()
+  const { updateUserProfile, loadUserProfile } = useUsers()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<UserType>({
@@ -38,16 +38,21 @@ const EditProfilePage: React.FC = () => {
     }
   }, [user])
 
-  const handleSaveInfo = () => {
-    console.log(tempDisplayName)
-    console.log(tempProfileText)
+  const handleSaveInfo = async () => {
+    const newUserInfo: UserType = {
+      uid: user!.uid,
+      displayName: tempDisplayName,
+      blurb: tempProfileText,
+      photoURL: ''
+    }
+    await updateUserProfile(user!.uid, newUserInfo)
   }
 
   if (isLoading) return <Loading />
 
   return (
     <div className={style.editProfileContainer}>
-      <h1 className={style.editPostTitle}>Edit Profile</h1>
+      <h1 className={style.editProfileTitle}>Edit Profile</h1>
       <EditPicture setTempImage={setTempProfileImage} />
       <EditInfo
         currentUser={currentUser}
