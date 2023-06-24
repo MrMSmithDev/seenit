@@ -2,7 +2,7 @@ import Loading from '@components/loading'
 import { useAuth, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { UserType } from 'src/customTypes/types'
-import EditInfo from './editInfo/EditInfo'
+import EditInfo from './editInfo'
 import EditPicture from './editPicture'
 
 import style from './EditProfilePage.module.scss'
@@ -47,8 +47,13 @@ const EditProfilePage: React.FC = () => {
 
   return (
     <div className={style.editProfileContainer}>
+      <h1 className={style.editPostTitle}>Edit Profile</h1>
       <EditPicture setTempImage={setTempProfileImage} />
-      <EditInfo setTempDisplayName={setTempDisplayName} setTempProfileText={setTempProfileText} />
+      <EditInfo
+        currentUser={currentUser}
+        setTempDisplayName={setTempDisplayName}
+        setTempProfileText={setTempProfileText}
+      />
       <button className={style.saveButton} onClick={handleSaveInfo}>
         Save Changes
       </button>
