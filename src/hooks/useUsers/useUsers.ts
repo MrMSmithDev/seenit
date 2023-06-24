@@ -23,25 +23,27 @@ import {
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
 
-  async function updateUserProfile(currentUser: User) {
+  async function updateUserProfile(currentUid: string, newUserInfo: UserType) {
     try {
       const userDB: CollectionReference = collection(firestoreDB, 'users')
-      const userRef: DocumentReference = doc(userDB, currentUser.uid)
+      const userRef: DocumentReference = doc(userDB, currentUid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc.exists()) {
         await setDoc(
           userRef,
           {
-            displayName: currentUser?.displayName,
-            photoURL: currentUser?.photoURL
+            displayName: newUserInfo.displayName,
+            photoURL: newUserInfo.photoURL,
+            blurb: newUserInfo.blurb
           },
           { merge: true }
         )
       } else {
         await setDoc(userRef, {
-          uid: currentUser?.uid,
-          displayName: currentUser?.displayName,
-          photoURL: currentUser?.photoURL,
+          uid: newUserInfo?.uid,
+          displayName: newUserInfo?.displayName,
+          photoURL: newUserInfo?.photoURL,
+          blurb: newUserInfo?.blurb,
           favorites: []
         })
       }
