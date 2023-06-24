@@ -5,13 +5,8 @@
     flex-direction: column;
 }
 
-.editPostTitle {
-    color: $deep-blue;
-    font-weight: bold;
-    padding: 10px;
-}
-
-.newPostTitle {
+.editProfileTitle {
+    border-bottom: 2px solid $deep-blue;
     color: $deep-blue;
     font-weight: bold;
     padding: 10px;
