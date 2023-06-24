@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { PostType, UserType } from 'src/customTypes/types'
 
-import { User } from 'firebase/auth'
 import {
   getFirestore,
   collection,
@@ -33,16 +32,14 @@ function useUsers() {
           userRef,
           {
             displayName: newUserInfo.displayName,
-            photoURL: newUserInfo.photoURL,
             blurb: newUserInfo.blurb
           },
           { merge: true }
         )
       } else {
         await setDoc(userRef, {
-          uid: newUserInfo?.uid,
+          uid: currentUid,
           displayName: newUserInfo?.displayName,
-          photoURL: newUserInfo?.photoURL,
           blurb: newUserInfo?.blurb,
           favorites: []
         })
