@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UserType, PostType, FilterQuery } from 'src/customTypes/types'
+import { UserType, PostType, FilterQuery, ImageUploadData } from 'src/customTypes/types'
 import {
   collection,
   addDoc,
@@ -23,6 +23,15 @@ import {
   Query,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
+import {
+  ref,
+  getStorage,
+  StorageReference,
+  uploadBytesResumable,
+  getDownloadURL,
+  UploadMetadata,
+  deleteObject
+} from 'firebase/storage'
 
 function generateID(): string {
   return Date.now().toString()
@@ -34,25 +43,52 @@ function usePosts() {
   //****** Posts ******//
   //*******************//
 
+  async function writeImage(
+    image: File,
+    postID: string,
+    authorID: string
+  ): Promise<ImageUploadData> {
+    try {
+      const filePath = `${authorID}/${postID}`
+      const newImageRef: StorageReference = ref(getStorage(), filePath)
+      const metaData: UploadMetadata = {
+        contentType: 'image/jpeg'
+      }
+      await uploadBytesResumable(newImageRef, image, metaData)
+
+      const imageURL: string = await getDownloadURL(newImageRef)
+      return { publicUrl: imageURL, imageRef: newImageRef }
+    } catch (error) {
+      console.error('Error adding image')
+      throw error
+    }
+  }
+
   async function writePost(post: PostType) {
+    let imageData = null
     const postID = generateID()
 
     try {
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      if (post.image) {
+        imageData = await writeImage(post.image, postID, post.authorID)
+      }
       await addDoc(postDB, {
         ID: postID,
         timeStamp: serverTimestamp(),
         authorID: post.authorID,
         title: post.title,
         body: post.body,
-        comments: 0
+        comments: 0,
+        imageUrl: imageData?.publicUrl || null
       })
-
-      if (post.image) {
-        console.log('Add image here')
-      }
     } catch (error) {
       console.error('Error writing post:', error)
+      // If image has been uploaded, but post fails to upload, remove the
+      //uploaded image
+      if (imageData) {
+        deleteObject(imageData.imageRef)
+      }
       throw error
     }
   }
