@@ -1,3 +1,4 @@
+import { StorageReference } from '@firebase/storage'
 import { OrderByDirection, Timestamp } from 'firebase/firestore'
 
 export interface PostType {
@@ -7,7 +8,7 @@ export interface PostType {
   title: string
   body: string
   image?: File
-  imageId?: string
+  imageURL?: string
   edited?: boolean
   comments?: string[]
   favorites?: number
@@ -40,4 +41,9 @@ export interface CommentType {
 export interface FilterQuery {
   attribute: string
   order: OrderByDirection
+}
+
+export interface ImageUploadData {
+  publicUrl: string
+  imageRef: StorageReference
 }
