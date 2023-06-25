@@ -1,21 +1,16 @@
 import React from 'react'
 
 import style from './PostFilterItem.module.scss'
-import { usePosts } from '@hooks/index'
 
 interface PostFilterItemProps {
   filterText: string
   filterID: string
+  handleFilterClick: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const PostFilterItem: React.FC<PostFilterItemProps> = ({ filterText, filterID }) => {
-  const { setFilter } = usePosts()
-  const handleItemClick = (): void => {
-    setFilter(filterID)
-  }
-
+const PostFilterItem: React.FC<PostFilterItemProps> = ({ filterText, handleFilterClick }) => {
   return (
-    <button className={style.dropItem} onClick={handleItemClick}>
+    <button className={style.dropItem} onClick={handleFilterClick}>
       {filterText}
     </button>
   )

@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import { usePosts } from '@hooks/index'
 import React, { ReactNode, useState } from 'react'
 
 import filters from '@utils/filters.js'
@@ -10,19 +9,36 @@ import PostFilterItem from './postFilterItem'
 
 interface PostFilterBarProps {
   feedTitle?: string
+  filterSetting: string
+  handleFilterChange: (newFilterSetting: string) => void
 }
 
-const PostFilterBar: React.FC<PostFilterBarProps> = ({ feedTitle }) => {
+const PostFilterBar: React.FC<PostFilterBarProps> = ({
+  handleFilterChange,
+  feedTitle,
+  filterSetting
+}) => {
   const [dropIsActive, setDropIsActive] = useState<boolean>(false)
-  const { filter } = usePosts()
 
   const handleDropToggle = (): void => {
     setDropIsActive(!dropIsActive)
   }
 
+  const handleFilterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonElement = e.target as HTMLButtonElement
+    const newFilterSetting: string = buttonElement.textContent || ''
+    handleFilterChange(newFilterSetting)
+    handleDropToggle()
+  }
+
   const dropItems: ReactNode[] = filters.map((filterItem) => {
     return (
-      <PostFilterItem filterText={filterItem.text} filterID={filterItem.id} key={filterItem.id} />
+      <PostFilterItem
+        filterText={filterItem.text}
+        filterID={filterItem.id}
+        handleFilterClick={handleFilterClick}
+        key={filterItem.id}
+      />
     )
   })
 
@@ -32,7 +48,7 @@ const PostFilterBar: React.FC<PostFilterBarProps> = ({ feedTitle }) => {
       <p className={style.filterTitle}>Filter</p>
       <div className={style.dropMenu}>
         <button className={style.dropToggle} onClick={handleDropToggle}>
-          {filter}{' '}
+          {filterSetting}{' '}
           <FontAwesomeIcon
             icon={faCaretDown}
             className={`${style.faIcon} ${dropIsActive ? style.dropIsActive : ''}`}
