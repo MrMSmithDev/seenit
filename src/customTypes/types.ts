@@ -1,4 +1,5 @@
 import { Timestamp } from 'firebase/firestore'
+import { OrderByDirection } from 'firebase/firestore'
 
 export interface PostType {
   ID: string
@@ -35,4 +36,9 @@ export interface CommentType {
   body: string
   score: number
   userInteractions: UserInteraction[]
+}
+
+export interface FilterQuery {
+  attribute: string
+  order: OrderByDirection
 }
