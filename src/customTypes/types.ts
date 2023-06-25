@@ -1,5 +1,4 @@
-import { Timestamp } from 'firebase/firestore'
-import { OrderByDirection } from 'firebase/firestore'
+import { OrderByDirection, Timestamp } from 'firebase/firestore'
 
 export interface PostType {
   ID: string
