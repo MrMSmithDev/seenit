@@ -3,11 +3,25 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
-import { PostType } from 'src/customTypes/types'
+import { FilterQuery, PostType } from 'src/customTypes/types'
 import { usePosts, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
+
+function filterSwitch(filter: string): FilterQuery {
+  // default is set to newest
+  switch (filter.toLowerCase()) {
+    case 'oldest':
+      return { attribute: 'timeStamp', order: 'asc' }
+    case 'top rated':
+      return { attribute: 'favorites', order: 'desc' }
+    case 'lowest rated':
+      return { attribute: 'favorites', order: 'asc' }
+    default:
+      return { attribute: 'timeStamp', order: 'desc' }
+  }
+}
 
 interface PostFeedProps {
   feedTitle: string
@@ -19,8 +33,9 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
+  const [filter, setFilter] = useState<string>('newest')
 
-  const { loadPostFeed, loadUserFavorites, filter } = usePosts()
+  const { loadPostFeed, loadUserFavorites } = usePosts()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
@@ -36,14 +51,20 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   useEffect((): void => {
     const fetchPosts = async (): Promise<void> => {
       let posts
-      if (userID && constraint === 'favorites') posts = await loadUserFavorites(userID)
-      else posts = await loadPostFeed()
+      const queryConstraints: FilterQuery = filterSwitch(filter)
+      if (userID && constraint === 'favorites')
+        posts = await loadUserFavorites(userID, queryConstraints)
+      else posts = await loadPostFeed(queryConstraints)
       setCurrentPosts(posts)
       if (posts) setIsLoading(false)
     }
 
     fetchPosts()
   }, [filter, feedTitle])
+
+  const handleFilterChange = (newFilterSetting: string) => {
+    setFilter(newFilterSetting)
+  }
 
   const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
@@ -53,7 +74,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
   return (
     <div className={style.postFeedContainer}>
-      <PostFilterBar feedTitle={title} />
+      <PostFilterBar
+        feedTitle={title}
+        filterSetting={filter}
+        handleFilterChange={handleFilterChange}
+      />
       <div className={style.postFeed}>{postArr}</div>
     </div>
   )
