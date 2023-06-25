@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { PostType, UserType } from 'src/customTypes/types'
+import { ImageUploadData, PostType, UserType } from 'src/customTypes/types'
 
 import {
   getFirestore,
@@ -21,6 +21,10 @@ import {
 
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
+
+  async function updateUserImage(currentUid: string, image: File): Promise<ImageUploadData> {
+
+  }
 
   async function updateUserProfile(currentUid: string, newUserInfo: UserType) {
     try {
