@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UserType, PostType } from 'src/customTypes/types'
+import { UserType, PostType, FilterQuery } from 'src/customTypes/types'
 import {
   collection,
   addDoc,
@@ -15,7 +15,6 @@ import {
   where,
   getFirestore,
   increment,
-  OrderByDirection,
   Firestore,
   DocumentReference,
   DocumentSnapshot,
@@ -24,33 +23,12 @@ import {
   Query,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
-import { useState } from 'react'
-
-interface FilterQuery {
-  attribute: string
-  order: OrderByDirection
-}
 
 function generateID(): string {
   return Date.now().toString()
 }
 
-function filterSwitch(filter: string): FilterQuery {
-  // default is set to newest
-  switch (filter) {
-    case 'oldest':
-      return { attribute: 'timeStamp', order: 'asc' }
-    case 'highest':
-      return { attribute: 'favorites', order: 'desc' }
-    case 'lowest':
-      return { attribute: 'favorites', order: 'asc' }
-    default:
-      return { attribute: 'timeStamp', order: 'desc' }
-  }
-}
-
 function usePosts() {
-  const [filter, setFilter] = useState('newest')
   const firestoreDB: Firestore = getFirestore()
   //*******************//
   //****** Posts ******//
@@ -79,8 +57,7 @@ function usePosts() {
     }
   }
 
-  async function loadPostFeed(): Promise<PostType[]> {
-    const queryConstraints = filterSwitch(filter)
+  async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
     try {
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const postsQuery: Query = query(
@@ -103,8 +80,10 @@ function usePosts() {
     }
   }
 
-  async function loadUserPostFeed(userID: string): Promise<PostType[]> {
-    const queryConstraints = filterSwitch(filter)
+  async function loadUserPostFeed(
+    userID: string,
+    queryConstraints: FilterQuery
+  ): Promise<PostType[]> {
     try {
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const postsQuery: Query = query(
@@ -128,8 +107,10 @@ function usePosts() {
     }
   }
 
-  async function loadUserFavorites(userID: string): Promise<PostType[]> {
-    // const queryConstraints = filterSwitch(filter)
+  async function loadUserFavorites(
+    userID: string,
+    queryConstraints: FilterQuery
+  ): Promise<PostType[]> {
     try {
       let userFavoriteIDs: string[] = []
 
@@ -152,6 +133,7 @@ function usePosts() {
         }
       }
 
+      console.log(queryConstraints)
       // posts.sort((a: PostType, b: PostType) => {
       //   if (a[queryConstraints.attribute] < b[queryConstraints.attribute]) return -1
       //   if (a[queryConstraints.attribute] > b[queryConstraints.attribute]) return 1
@@ -248,10 +230,7 @@ function usePosts() {
 
     setFavoriteStatus,
     checkFavoriteStatus,
-    incrementFavoriteCount,
-
-    filter,
-    setFilter
+    incrementFavoriteCount
   }
 }
 
