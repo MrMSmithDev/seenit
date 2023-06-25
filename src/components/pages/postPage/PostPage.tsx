@@ -7,6 +7,7 @@ import CommentFeed from '@components/comments/commentFeed'
 import { PostType } from 'src/customTypes/types'
 import { useParams } from 'react-router-dom'
 import { usePosts } from '@hooks/index'
+import Loading from '@components/loading'
 
 const PostPage: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<PostType | null>()
@@ -31,7 +32,7 @@ const PostPage: React.FC = () => {
         <CommentFeed commentIDs={currentPost.comments} />
       </div>
     )
-  else return <div>loading</div>
+  else return <Loading />
 }
 
 export default PostPage
