@@ -46,8 +46,6 @@ const CurrentUserInfo: React.FC = () => {
 
   if (loading) return <Loading />
 
-  console.log(currentUser)
-
   return (
     <div className={style.currentUserContainer}>
       <img className={style.userImg} src={currentUser.photoURL} referrerPolicy="no-referrer" />
