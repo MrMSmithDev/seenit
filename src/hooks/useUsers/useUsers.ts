@@ -18,25 +18,58 @@ import {
   getDocs,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  StorageReference,
+  uploadBytesResumable
+} from '@firebase/storage'
+import useAuth from '@hooks/useAuth'
 
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
+  const { getUserGoogleImage } = useAuth()
 
-  async function updateUserImage(currentUid: string, image: File): Promise<ImageUploadData> {
+  async function updateUserImage(image: File, currentUid: string): Promise<ImageUploadData> {
+    try {
+      const filePath = `${currentUid}/profileImage${image}`
+      const newImageRef: StorageReference = ref(getStorage(), filePath)
+      const metaData = {
+        contentType: 'image/jpeg'
+      }
+      await uploadBytesResumable(newImageRef, image, metaData)
 
+      const imageURL: string = await getDownloadURL(newImageRef)
+      return { publicUrl: imageURL, imageRef: newImageRef }
+    } catch (error) {
+      console.error('Error uploading profile picture', error)
+      throw error
+    }
   }
 
   async function updateUserProfile(currentUid: string, newUserInfo: UserType) {
+    let imageData: ImageUploadData | null = null
+    let imageURL: string
+
+    const userDB: CollectionReference = collection(firestoreDB, 'users')
+    const userRef: DocumentReference = doc(userDB, currentUid)
+
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
-      const userRef: DocumentReference = doc(userDB, currentUid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
+      if (newUserInfo.image) {
+        imageData = await updateUserImage(newUserInfo.image, currentUid)
+        imageURL = imageData.publicUrl
+      } else {
+        imageURL = getUserGoogleImage()!
+      }
       if (userDoc.exists()) {
         await setDoc(
           userRef,
           {
-            displayName: newUserInfo.displayName,
-            blurb: newUserInfo.blurb
+            displayName: newUserInfo?.displayName,
+            blurb: newUserInfo?.blurb,
+            photoURL: imageURL
           },
           { merge: true }
         )
@@ -50,6 +83,21 @@ function useUsers() {
       }
     } catch (error) {
       console.error('Error updating user information:', error)
+      // If image has been uploaded, but profile fails to update, revert photoURL
+      // to google profile image
+      try {
+        if (imageData) {
+          await setDoc(
+            userRef,
+            {
+              photoURL: getUserGoogleImage()
+            },
+            { merge: true }
+          )
+        }
+      } catch (nestedError) {
+        console.error(nestedError)
+      }
       throw error
     }
   }
@@ -61,7 +109,17 @@ function useUsers() {
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       return userDoc.data() as UserType
     } catch (error) {
-      console.error('Error loading userProfile:', error)
+      console.error('Error loading user profile:', error)
+      throw error
+    }
+  }
+
+  async function loadProfileImage(uid: string): Promise<string> {
+    try {
+      const userData = await loadUserProfile(uid)
+      return userData.photoURL
+    } catch (error) {
+      console.error('Error loading profile image:', error)
       throw error
     }
   }
@@ -104,6 +162,8 @@ function useUsers() {
     updateUserProfile,
 
     loadUserProfile,
+    loadProfileImage,
+
     getUsersDisplayName,
     getUsersFavoriteCount
   }
