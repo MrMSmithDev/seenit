@@ -1,5 +1,5 @@
-async function resizeImage(file: File, maxSize: number): Promise<File | boolean> {
-  if (!file || !file.type.match(/image.*/)) return false
+async function resizeImage(file: File, maxSize: number): Promise<File> {
+  if (!file || !file.type.match(/image.*/)) return file
 
   const image = new Image()
   const canvas: HTMLCanvasElement = document.createElement('canvas')
@@ -25,8 +25,7 @@ async function resizeImage(file: File, maxSize: number): Promise<File | boolean>
   canvas.getContext('2d')!.drawImage(image, 0, 0, width, height)
   const resizedImage: Blob | null = await new Promise((rs) => canvas.toBlob(rs, 'image/jpeg', 1))
 
-  if (resizedImage) return new File([resizedImage], file.name, { type: resizedImage.type })
-  else return false
+  return new File([resizedImage!], file.name, { type: resizedImage!.type })
 }
 
 export default resizeImage
