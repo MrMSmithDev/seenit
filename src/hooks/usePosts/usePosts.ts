@@ -59,13 +59,13 @@ function usePosts() {
       const imageURL: string = await getDownloadURL(newImageRef)
       return { publicUrl: imageURL, imageRef: newImageRef }
     } catch (error) {
-      console.error('Error adding image')
+      console.error('Error uploading image:', error)
       throw error
     }
   }
 
   async function writePost(post: PostType) {
-    let imageData = null
+    let imageData: ImageUploadData | null = null
     const postID = generateID()
 
     try {
@@ -85,7 +85,7 @@ function usePosts() {
     } catch (error) {
       console.error('Error writing post:', error)
       // If image has been uploaded, but post fails to upload, remove the
-      //uploaded image
+      // uploaded image
       if (imageData) {
         deleteObject(imageData.imageRef)
       }
