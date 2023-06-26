@@ -1,8 +1,0 @@
-{
-    "name": "months",
-    "version": "1.0.0",
-    "main": "months.ts",
-    "dependencies": {
-
-    }
-}
