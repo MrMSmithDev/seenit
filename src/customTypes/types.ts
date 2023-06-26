@@ -20,6 +20,7 @@ export interface UserType {
   photoURL: string
   blurb: string
   favorites?: string[]
+  image?: File | null
 }
 
 export type PostCollection = PostType[]
