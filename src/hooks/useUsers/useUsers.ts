@@ -39,7 +39,7 @@ function useUsers() {
       const metaData = {
         contentType: 'image/jpeg'
       }
-      const compressedImage = await resizeImage(image, 200)
+      const compressedImage = await resizeImage(image, 400)
       await uploadBytesResumable(newImageRef, compressedImage, metaData)
 
       const imageURL: string = await getDownloadURL(newImageRef)
