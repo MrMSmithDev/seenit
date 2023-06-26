@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import useAuth from '@hooks/useAuth'
 
 import style from './EditPicture.module.scss'
+import { useAuth, useUsers } from '@hooks/index'
 
 interface EditPictureProps {
   setTempImage: (arg0: null | File) => void
@@ -10,12 +10,17 @@ interface EditPictureProps {
 const EditPicture: React.FC<EditPictureProps> = ({ setTempImage }) => {
   const [imagePreview, setImagePreview] = useState<string>('')
 
-  const { getUserGoogleImage, user } = useAuth()
+  const { user } = useAuth()
+  const { loadProfileImage } = useUsers()
 
   useEffect(() => {
     if (user) {
-      const userImage = getUserGoogleImage()
-      if (userImage) setImagePreview(userImage)
+      const loadImage = async (): Promise<void> => {
+        const userImage = await loadProfileImage(user.uid)
+        setImagePreview(userImage)
+      }
+
+      loadImage()
     }
   }, [user])
 
