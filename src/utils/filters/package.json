@@ -1,0 +1,8 @@
+{
+    "name": "filters",
+    "version": "1.0.0",
+    "main": "filters.ts",
+    "dependencies": {
+
+    }
+}
