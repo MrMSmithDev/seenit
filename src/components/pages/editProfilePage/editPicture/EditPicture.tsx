@@ -4,17 +4,17 @@ import useAuth from '@hooks/useAuth'
 import style from './EditPicture.module.scss'
 
 interface EditPictureProps {
-  setTempImage: (arg0: string | File) => void
+  setTempImage: (arg0: null | File) => void
 }
 
 const EditPicture: React.FC<EditPictureProps> = ({ setTempImage }) => {
   const [imagePreview, setImagePreview] = useState<string>('')
 
-  const { getUserImage, user } = useAuth()
+  const { getUserGoogleImage, user } = useAuth()
 
   useEffect(() => {
     if (user) {
-      const userImage = getUserImage()
+      const userImage = getUserGoogleImage()
       if (userImage) setImagePreview(userImage)
     }
   }, [user])
