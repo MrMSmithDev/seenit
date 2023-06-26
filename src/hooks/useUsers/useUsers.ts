@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { ImageUploadData, PostType, UserType } from 'src/customTypes/types'
+import resizeImage from '@utils/resizeImage'
 
 import {
   getFirestore,
@@ -38,7 +39,8 @@ function useUsers() {
       const metaData = {
         contentType: 'image/jpeg'
       }
-      await uploadBytesResumable(newImageRef, image, metaData)
+      const compressedImage = await resizeImage(image, 200)
+      await uploadBytesResumable(newImageRef, compressedImage, metaData)
 
       const imageURL: string = await getDownloadURL(newImageRef)
       return { publicUrl: imageURL, imageRef: newImageRef }
@@ -61,7 +63,7 @@ function useUsers() {
         imageData = await updateUserImage(newUserInfo.image, currentUid)
         imageURL = imageData.publicUrl
       } else {
-        imageURL = getUserGoogleImage()!
+        imageURL = newUserInfo.photoURL
       }
       if (userDoc.exists()) {
         await setDoc(
