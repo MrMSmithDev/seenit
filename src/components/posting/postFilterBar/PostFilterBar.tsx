@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import React, { ReactNode, useState } from 'react'
 
-import filters from '@utils/filters.js'
+import filters from '@utils/filters'
 
 import style from './PostFilterBar.module.scss'
 import PostFilterItem from './postFilterItem'

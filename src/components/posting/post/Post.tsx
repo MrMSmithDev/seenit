@@ -7,7 +7,7 @@ import { PostType, UserType } from 'src/customTypes/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
-import months from '@utils/months.js'
+import { months } from '@utils/misc/index'
 
 import style from './Post.module.scss'
 import Loading from '@components/loading'
@@ -26,7 +26,12 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [favoriteCount, setFavoriteCount] = useState<number>(0)
   const [userHasFavorite, setUserHasFavorite] = useState<boolean>(false)
-  const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
+  const [author, setAuthor] = useState<UserType>({
+    uid: '',
+    displayName: '',
+    photoURL: '',
+    blurb: ''
+  })
 
   useEffect(() => {
     const loadFavoriteStatus = async (): Promise<void> => {
