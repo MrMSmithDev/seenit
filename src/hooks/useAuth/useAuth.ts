@@ -34,7 +34,7 @@ function useAuth() {
     return user?.displayName || null
   }
 
-  function getUserImage(): string | null {
+  function getUserGoogleImage(): string | null {
     return user?.photoURL || null
   }
 
@@ -44,7 +44,7 @@ function useAuth() {
     signOutUser,
 
     getUserName,
-    getUserImage
+    getUserGoogleImage
   }
 }
 
