@@ -20,7 +20,7 @@ const EditProfilePage: React.FC = () => {
     blurb: ''
   })
 
-  const [tempProfileImage, setTempProfileImage] = useState<string | File>(currentUser.photoURL)
+  const [tempProfileImage, setTempProfileImage] = useState<null | File>()
   const [tempDisplayName, setTempDisplayName] = useState<string>(currentUser.displayName)
   const [tempProfileText, setTempProfileText] = useState<string>(currentUser.blurb)
 
@@ -29,7 +29,6 @@ const EditProfilePage: React.FC = () => {
       const loadProfile = async (): Promise<void> => {
         const userProfile: UserType = await loadUserProfile(user.uid)
         setCurrentUser(userProfile)
-        setTempProfileImage(userProfile.photoURL)
         setTempDisplayName(userProfile.displayName)
       }
 
@@ -43,7 +42,8 @@ const EditProfilePage: React.FC = () => {
       uid: user!.uid,
       displayName: tempDisplayName,
       blurb: tempProfileText,
-      photoURL: ''
+      photoURL: '',
+      image: tempProfileImage
     }
     await updateUserProfile(user!.uid, newUserInfo)
   }
