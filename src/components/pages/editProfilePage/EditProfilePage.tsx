@@ -30,6 +30,7 @@ const EditProfilePage: React.FC = () => {
         const userProfile: UserType = await loadUserProfile(user.uid)
         setCurrentUser(userProfile)
         setTempDisplayName(userProfile.displayName)
+        setTempProfileText(userProfile.blurb)
       }
 
       loadProfile()
@@ -42,7 +43,7 @@ const EditProfilePage: React.FC = () => {
       uid: user!.uid,
       displayName: tempDisplayName,
       blurb: tempProfileText,
-      photoURL: '',
+      photoURL: currentUser.photoURL,
       image: tempProfileImage
     }
     await updateUserProfile(user!.uid, newUserInfo)
