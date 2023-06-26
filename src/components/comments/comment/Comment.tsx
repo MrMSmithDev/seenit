@@ -3,7 +3,7 @@ import { CommentType, UserType } from 'src/customTypes/types'
 import VoteContainer from './voteContainer'
 import useUsers from '@hooks/useUsers'
 
-import months from '@utils/months'
+import { months } from '@utils/misc/index'
 
 import style from './Comment.module.scss'
 import AuthorInfo from '@components/users/authorInfo'
@@ -13,7 +13,12 @@ interface CommentProps {
 }
 
 const Comment: React.FC<CommentProps> = ({ comment }) => {
-  const [author, setAuthor] = useState<UserType>({ uid: '', displayName: '', photoURL: '' })
+  const [author, setAuthor] = useState<UserType>({
+    uid: '',
+    displayName: '',
+    photoURL: '',
+    blurb: ''
+  })
   const { loadUserProfile } = useUsers()
   const timePosted: Date = comment.timeStamp.toDate()
 
