@@ -22,8 +22,14 @@ async function resizeImage(file: File, maxSize: number): Promise<File> {
 
   canvas.width = width
   canvas.height = height
-  canvas.getContext('2d')!.drawImage(image, 0, 0, width, height)
-  const resizedImage: Blob | null = await new Promise((rs) => canvas.toBlob(rs, 'image/jpeg', 1))
+
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D
+  context.clearRect(0, 0, width, height)
+  context.fillStyle = 'transparent'
+  context.fillRect(0, 0, width, height)
+  context.drawImage(image, 0, 0, width, height)
+
+  const resizedImage: Blob | null = await new Promise((rs) => canvas.toBlob(rs, 'image/png', 1))
 
   return new File([resizedImage!], file.name, { type: resizedImage!.type })
 }
