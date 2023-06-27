@@ -13,12 +13,23 @@ const NewPost: React.FC = () => {
   const { user } = useAuth()
   const { writePost } = usePosts()
 
-  useEffect(() => {
+  useEffect((): void => {
     if (postImage) {
       const previewURL = URL.createObjectURL(postImage)
       setImagePreview(previewURL)
     }
   }, [postImage])
+
+  const setNewImage = (imageFile: File | null): void => {
+    if (imageFile != null) {
+      const previewURL: string = URL.createObjectURL(imageFile)
+      console.log(imageFile)
+      setImagePreview(previewURL)
+    } else {
+      console.log(imageFile)
+      setImagePreview(null)
+    }
+  }
 
   const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
@@ -26,7 +37,8 @@ const NewPost: React.FC = () => {
       ID: '',
       authorID: user!.uid,
       title: postTitle,
-      body: postBody
+      body: postBody,
+      image: postImage
     }
     await writePost(postObject)
   }
@@ -37,13 +49,10 @@ const NewPost: React.FC = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const files: FileList | null = (e.target as HTMLInputElement).files
-    if (files) {
+    if (files && files[0] && files[0].type.match(/image.*/)) {
       const imageFile: File = files[0]
-      if (imageFile && imageFile.type.match(/image.*/)) setPostImage(imageFile)
-      else {
-        setPostImage(null)
-      }
-    } else setPostImage(null)
+      setNewImage(imageFile)
+    } else setNewImage(null)
   }
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -51,6 +60,12 @@ const NewPost: React.FC = () => {
   }
 
   // Create logic to toggle publish button if inputs not validated
+
+  const imagePreviewElement = imagePreview ? (
+    <div className={style.imagePreviewContainer}>
+      <img className={style.imagePreview} src={imagePreview} />
+    </div>
+  ) : null
 
   return (
     <div className={style.newPostContainer}>
@@ -73,6 +88,7 @@ const NewPost: React.FC = () => {
           <label htmlFor="post-image">Add Image</label>
           <input type="file" onChange={handleImageChange} />
         </div>
+        {imagePreviewElement}
         <div className={style.inputContainer}>
           <label htmlFor="">Post Body</label>
           <textarea
