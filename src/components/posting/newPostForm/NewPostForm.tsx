@@ -6,6 +6,7 @@ import style from './NewPostForm.module.scss'
 
 const NewPost: React.FC = () => {
   const [postTitle, setPostTitle] = useState<string>('')
+  const [postImage, setPostImage] = useState<File | null>()
   const [postBody, setPostBody] = useState<string>('')
   const { user } = useAuth()
   const { writePost } = usePosts()
@@ -23,6 +24,17 @@ const NewPost: React.FC = () => {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPostTitle(e.target.value)
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const files: FileList | null = (e.target as HTMLInputElement).files
+    if (files) {
+      const imageFile: File = files[0]
+      if (imageFile && imageFile.type.match(/image.*/)) setPostImage(imageFile)
+      else {
+        setPostImage(null)
+      }
+    } else setPostImage(null)
   }
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -50,7 +62,7 @@ const NewPost: React.FC = () => {
         </div>
         <div className={style.inputContainer}>
           <label htmlFor="post-image">Add Image</label>
-          <input type="file" />
+          <input type="file" onChange={handleImageChange} />
         </div>
         <div className={style.inputContainer}>
           <label htmlFor="">Post Body</label>
