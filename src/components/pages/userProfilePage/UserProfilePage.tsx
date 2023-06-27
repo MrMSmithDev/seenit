@@ -13,6 +13,7 @@ const UserProfilePage: React.FC = () => {
     uid: '',
     displayName: '',
     photoURL: '',
+    blurb: '',
     favorites: []
   })
 
