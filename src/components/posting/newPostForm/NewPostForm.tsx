@@ -1,5 +1,5 @@
 import { useAuth, usePosts } from '@hooks/index'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PostType } from 'src/customTypes/types'
 
 import style from './NewPostForm.module.scss'
@@ -8,8 +8,17 @@ const NewPost: React.FC = () => {
   const [postTitle, setPostTitle] = useState<string>('')
   const [postImage, setPostImage] = useState<File | null>()
   const [postBody, setPostBody] = useState<string>('')
+  const [imagePreview, setImagePreview] = useState<string | null>()
+
   const { user } = useAuth()
   const { writePost } = usePosts()
+
+  useEffect(() => {
+    if (postImage) {
+      const previewURL = URL.createObjectURL(postImage)
+      setImagePreview(previewURL)
+    }
+  }, [postImage])
 
   const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
