@@ -7,7 +7,7 @@ export interface PostType {
   authorID: string
   title: string
   body: string
-  image?: File
+  image?: File | null
   imageURL?: string
   edited?: boolean
   comments?: string[]
