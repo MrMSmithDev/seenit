@@ -3,7 +3,6 @@ import { CommentType } from 'src/customTypes/types'
 import useComments from '@hooks/useComments'
 
 import style from './CommentFeed.module.scss'
-// import { useParams } from 'react-router-dom'
 import Comment from '../comment'
 
 interface CommentFeedProps {
@@ -11,22 +10,25 @@ interface CommentFeedProps {
 }
 
 const CommentFeed: React.FC<CommentFeedProps> = ({ commentIDs }) => {
-  const [currentComments, setCurrentComments] = useState<CommentType[]>([])
-  // const { postID } = useParams()
+  const [currentComments, setCurrentComments] = useState<ReactNode[]>([])
   const { loadCommentFeed } = useComments()
 
   useEffect((): void => {
     if (commentIDs) {
-      const commentFeed = loadCommentFeed(commentIDs)
-      setCurrentComments(commentFeed)
+      const loadComments = async () => {
+        const commentFeed: CommentType[] = await loadCommentFeed(commentIDs)
+        const commentArr: ReactNode[] = commentFeed.map((comment: CommentType) => (
+          <Comment comment={comment} key={comment.ID} />
+        ))
+
+        setCurrentComments(commentArr)
+      }
+
+      loadComments()
     }
   }, [])
 
-  const commentArr: ReactNode[] = currentComments.map((comment: CommentType) => {
-    return <Comment comment={comment} key={comment.ID} />
-  })
-
-  return <div className={style.commentFeed}>{commentArr}</div>
+  return <div className={style.commentFeed}>{currentComments}</div>
 }
 
 export default CommentFeed
