@@ -23,7 +23,6 @@ const NewPost: React.FC = () => {
   const setNewImage = (imageFile: File | null): void => {
     if (imageFile != null) {
       const previewURL: string = URL.createObjectURL(imageFile)
-      console.log(imageFile)
       setImagePreview(previewURL)
     } else {
       console.log(imageFile)
