@@ -71,21 +71,22 @@ function useComments() {
     }
   }
 
-  function loadCommentFeed(commentIDs: string[]): CommentType[] {
+  async function loadCommentFeed(commentIDs: string[]): Promise<CommentType[]> {
     try {
-      const comments: CommentType[] = []
+      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
 
-      commentIDs.forEach(async (id) => {
-        const commentDB: CollectionReference = collection(firestoreDB, 'comments')
+      const commentPromises: Promise<CommentType | undefined>[] = commentIDs.map(async (id) => {
         const commentQuery: Query = query(commentDB, where('ID', '==', id))
 
         const querySnapshot: QuerySnapshot = await getDocs(commentQuery)
         const commentDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
 
-        if (commentDoc?.exists()) comments.push(commentDoc.data() as CommentType)
+        if (commentDoc?.exists()) return commentDoc.data() as CommentType
+        return undefined
       })
 
-      return comments
+      const commentArr: Array<CommentType | undefined> = await Promise.all(commentPromises)
+      return commentArr.filter((comment): comment is CommentType => comment !== undefined)
     } catch (error) {
       console.error('Error loading comments:', error)
       throw error
