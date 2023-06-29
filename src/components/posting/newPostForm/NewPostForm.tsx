@@ -21,11 +21,11 @@ const NewPost: React.FC = () => {
   }, [postImage])
 
   const setNewImage = (imageFile: File | null): void => {
+    setPostImage(imageFile)
     if (imageFile != null) {
       const previewURL: string = URL.createObjectURL(imageFile)
       setImagePreview(previewURL)
     } else {
-      console.log(imageFile)
       setImagePreview(null)
     }
   }
