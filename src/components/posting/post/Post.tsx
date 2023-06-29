@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 import { useAuth, usePosts, useUsers } from '@hooks/index'
@@ -57,8 +57,6 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     }
   }, [currentPost])
 
-  let post: ReactNode
-
   function toggleFavorite(): void {
     setFavoriteStatus(user!.uid, currentPost.ID)
     if (!userHasFavorite) {
@@ -73,42 +71,38 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   if (isLoading) return <Loading />
 
-  if (currentPost) {
-    const timePosted: Date = currentPost.timeStamp!.toDate()
+  const timePosted: Date = currentPost.timeStamp!.toDate()
 
-    post = (
-      <div className={style.post}>
-        <p className={style.headline}>
-          <button className={style.favoriteButton} onClick={toggleFavorite}>
-            <FontAwesomeIcon
-              className={style.starIcon}
-              icon={userHasFavorite ? solidStar : hollowStar}
-            />
-          </button>
-          <span className={style.postTitle}>{currentPost.title}</span>
+  return (
+    <div className={style.post}>
+      <p className={style.headline}>
+        <button className={style.favoriteButton} onClick={toggleFavorite}>
+          <FontAwesomeIcon
+            className={style.starIcon}
+            icon={userHasFavorite ? solidStar : hollowStar}
+          />
+        </button>
+        <span className={style.postTitle}>{currentPost.title}</span>
+      </p>
+      <p className={style.postBody}>{currentPost.body}</p>
+      <div className={style.postInfo}>
+        <p className={style.postTimestamp}>
+          {[
+            `${timePosted.getHours()}:${timePosted.getMinutes()} `,
+            `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
+          ]}
         </p>
-        <p className={style.postBody}>{currentPost.body}</p>
-        <div className={style.postInfo}>
-          <p className={style.postTimestamp}>
-            {[
-              `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-              `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
-            ]}
-          </p>
-          <p className={style.postCommentCount}>
-            {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
-          </p>
-          <p className={style.postFavoriteCount}>
-            {favoriteCount}
-            <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
-          </p>
-          <AuthorInfo author={author} bold={true} link={true} />
-        </div>
+        <p className={style.postCommentCount}>
+          {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+        </p>
+        <p className={style.postFavoriteCount}>
+          {favoriteCount}
+          <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
+        </p>
+        <AuthorInfo author={author} bold={true} link={true} />
       </div>
-    )
-  }
-
-  return <React.Fragment>{post}</React.Fragment>
+    </div>
+  )
 }
 
 export default Post
