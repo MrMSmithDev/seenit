@@ -58,7 +58,7 @@ const NewPost: React.FC = () => {
     setPostBody(e.target.value)
   }
 
-  // Create logic to toggle publish button if inputs not validated
+  // TODO: Create logic to toggle publish button if inputs not validated
 
   const imagePreviewElement = imagePreview ? (
     <div className={style.imagePreviewContainer}>
