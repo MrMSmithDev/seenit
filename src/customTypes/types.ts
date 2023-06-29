@@ -8,7 +8,7 @@ export interface PostType {
   title: string
   body: string
   image?: File | null
-  imageURL?: string
+  imageUrl?: string
   edited?: boolean
   comments?: string[]
   favorites?: number
