@@ -21,7 +21,12 @@ interface PostProps {
 const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
   const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
-  const [author, setAuthor] = useState<UserType>({ uid: '', displayName: ' ', photoURL: '' })
+  const [author, setAuthor] = useState<UserType>({
+    uid: '',
+    displayName: ' ',
+    photoURL: '',
+    blurb: ''
+  })
 
   const { ID, authorID, timeStamp, title, comments } = currentPost
 
@@ -62,6 +67,11 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
     setUserHasFavorite(!userHasFavorite)
   }
 
+  let postImage: React.ReactNode | null = null
+
+  if (currentPost.imageUrl)
+    postImage = <img className={style.postImage} src={currentPost.imageUrl} />
+
   const timePosted: Date = timeStamp!.toDate()
   const postAddressTitle: string = generateAddressTitle(title)
 
@@ -76,6 +86,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
         </button>
         <span className={style.postTitle}>{title}</span>
       </p>
+      {postImage}
       <p className={style.postBody}>{currentPost.body}</p>
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>

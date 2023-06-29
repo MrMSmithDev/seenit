@@ -69,6 +69,11 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     setUserHasFavorite(!userHasFavorite)
   }
 
+  let postImage: React.ReactNode | null = null
+
+  if (currentPost.imageUrl)
+    postImage = <img className={style.postImage} src={currentPost.imageUrl} />
+
   if (isLoading) return <Loading />
 
   const timePosted: Date = currentPost.timeStamp!.toDate()
@@ -84,6 +89,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
         </button>
         <span className={style.postTitle}>{currentPost.title}</span>
       </p>
+      {postImage}
       <p className={style.postBody}>{currentPost.body}</p>
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>
