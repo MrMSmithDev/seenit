@@ -80,7 +80,8 @@ function usePosts() {
         title: post.title,
         body: post.body,
         comments: 0,
-        imageUrl: imageData?.publicUrl || null
+        imageUrl: imageData?.publicUrl || null,
+        favorites: 0
       })
     } catch (error) {
       console.error('Error writing post:', error)
