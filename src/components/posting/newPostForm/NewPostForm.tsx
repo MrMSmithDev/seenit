@@ -1,6 +1,7 @@
 import { useAuth, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { PostType } from 'src/customTypes/types'
+import { useNavigate } from 'react-router-dom'
 
 import style from './NewPostForm.module.scss'
 
@@ -12,6 +13,8 @@ const NewPost: React.FC = () => {
 
   const { user } = useAuth()
   const { writePost } = usePosts()
+
+  const navigate = useNavigate()
 
   useEffect((): void => {
     if (postImage) {
@@ -40,6 +43,7 @@ const NewPost: React.FC = () => {
       image: postImage
     }
     await writePost(postObject)
+    navigate('/')
   }
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
