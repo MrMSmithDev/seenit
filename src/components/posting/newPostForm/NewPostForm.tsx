@@ -89,7 +89,7 @@ const NewPost: React.FC = () => {
         </div>
         <div className={style.inputContainer}>
           <label htmlFor="post-image">Add Image</label>
-          <input type="file" onChange={handleImageChange} />
+          <input className={style.imageInput} type="file" onChange={handleImageChange} />
         </div>
         {imagePreviewElement}
         <div className={style.inputContainer}>
