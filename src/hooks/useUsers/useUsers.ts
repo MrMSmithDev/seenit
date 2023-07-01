@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { ImageUploadData, PostType, UserType } from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
+import useAuth from '@hooks/useAuth'
 
 import {
   getFirestore,
@@ -26,7 +27,6 @@ import {
   StorageReference,
   uploadBytesResumable
 } from '@firebase/storage'
-import useAuth from '@hooks/useAuth'
 
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
