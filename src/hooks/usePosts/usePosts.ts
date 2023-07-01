@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { UserType, PostType, FilterQuery, ImageUploadData } from 'src/customTypes/types'
+import resizeImage from '@utils/resizeImage'
 import {
   collection,
   addDoc,
@@ -54,7 +55,8 @@ function usePosts() {
       const metaData: UploadMetadata = {
         contentType: 'image/jpeg'
       }
-      await uploadBytesResumable(newImageRef, image, metaData)
+      const resizedImage = await resizeImage(image, 1080)
+      await uploadBytesResumable(newImageRef, resizedImage, metaData)
 
       const imageURL: string = await getDownloadURL(newImageRef)
       return { publicUrl: imageURL, imageRef: newImageRef }
