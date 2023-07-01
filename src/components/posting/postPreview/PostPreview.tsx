@@ -72,6 +72,9 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   if (currentPost.imageUrl)
     postImage = <img className={style.postImage} src={currentPost.imageUrl} />
 
+  // Set bodyLength of preview depending on image
+  const bodyLength: number = postImage ? 1 : 3
+
   const timePosted: Date = timeStamp!.toDate()
   const postAddressTitle: string = generateAddressTitle(title)
 
@@ -87,7 +90,9 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
         <span className={style.postTitle}>{title}</span>
       </p>
       {postImage}
-      <p className={style.postBody}>{currentPost.body}</p>
+      <p className={style.postBody} style={{ WebkitLineClamp: bodyLength }}>
+        {currentPost.body}
+      </p>
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>
           {[
