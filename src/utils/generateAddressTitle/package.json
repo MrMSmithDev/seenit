@@ -1,0 +1,8 @@
+{
+    "name": "generate-address-title",
+    "version": "1.0.0",
+    "main": "generateAddressTitle.ts",
+    "dependencies": {
+
+    }
+}
