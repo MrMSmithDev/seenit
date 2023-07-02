@@ -1,9 +1,10 @@
 import { useAuth, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import { PostType } from 'src/customTypes/types'
+import { ApiReturn, PostType } from 'src/customTypes/types'
 import { useNavigate } from 'react-router-dom'
 
 import style from './NewPostForm.module.scss'
+import generateAddressTitle from '@utils/generateAddressTitle'
 
 const NewPost: React.FC = () => {
   const [postTitle, setPostTitle] = useState<string>('')
@@ -13,7 +14,6 @@ const NewPost: React.FC = () => {
 
   const { user } = useAuth()
   const { writePost } = usePosts()
-
   const navigate = useNavigate()
 
   useEffect((): void => {
@@ -33,19 +33,6 @@ const NewPost: React.FC = () => {
     }
   }
 
-  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    e.preventDefault()
-    const postObject: PostType = {
-      ID: '',
-      authorID: user!.uid,
-      title: postTitle,
-      body: postBody,
-      image: postImage
-    }
-    await writePost(postObject)
-    navigate('/')
-  }
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPostTitle(e.target.value)
   }
@@ -60,6 +47,21 @@ const NewPost: React.FC = () => {
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setPostBody(e.target.value)
+  }
+
+  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+    e.preventDefault()
+    const postObject: PostType = {
+      ID: '',
+      authorID: user!.uid,
+      title: postTitle,
+      body: postBody,
+      image: postImage
+    }
+    const result: ApiReturn = await writePost(postObject)
+    if (result.success) {
+      navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
+    } else navigate('/')
   }
 
   // TODO: Create logic to toggle publish button if inputs not validated
