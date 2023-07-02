@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { UserType, PostType, FilterQuery, ImageUploadData } from 'src/customTypes/types'
+import { UserType, PostType, FilterQuery, ImageUploadData, ApiReturn } from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
 import {
   collection,
@@ -66,7 +66,7 @@ function usePosts() {
     }
   }
 
-  async function writePost(post: PostType) {
+  async function writePost(post: PostType): Promise<ApiReturn> {
     let imageData: ImageUploadData | null = null
     const postID = generateID()
 
@@ -75,7 +75,7 @@ function usePosts() {
       if (post.image) {
         imageData = await writeImage(post.image, postID, post.authorID)
       }
-      await addDoc(postDB, {
+      const result: DocumentReference = await addDoc(postDB, {
         ID: postID,
         timeStamp: serverTimestamp(),
         authorID: post.authorID,
@@ -85,6 +85,7 @@ function usePosts() {
         imageUrl: imageData?.publicUrl || null,
         favorites: 0
       })
+      if (result) return { success: true, reference: result }
     } catch (error) {
       console.error('Error writing post:', error)
       // If image has been uploaded, but post fails to upload, remove the
@@ -94,6 +95,7 @@ function usePosts() {
       }
       throw error
     }
+    return { success: false, reference: null }
   }
 
   async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
