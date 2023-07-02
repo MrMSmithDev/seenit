@@ -1,5 +1,5 @@
 import { StorageReference } from '@firebase/storage'
-import { OrderByDirection, Timestamp } from 'firebase/firestore'
+import { DocumentReference, OrderByDirection, Timestamp } from 'firebase/firestore'
 
 export interface PostType {
   ID: string
@@ -47,4 +47,9 @@ export interface FilterQuery {
 export interface ImageUploadData {
   publicUrl: string
   imageRef: StorageReference
+}
+
+export interface ApiReturn {
+  success: boolean
+  reference: DocumentReference | null
 }
