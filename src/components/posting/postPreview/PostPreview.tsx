@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import generateAddressTitle from '@utils/generateAddressTitle'
 
 import { useAuth, usePosts, useUsers } from '@hooks/index'
 import style from './PostPreview.module.scss'
@@ -10,9 +11,6 @@ import { PostLink } from '@routes/posts'
 import AuthorInfo from '@components/users/authorInfo'
 
 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
-const generateAddressTitle = (title: string) => {
-  return title.toLowerCase().replace(/[^a-z0-9␣]/gi, '')
-}
 
 interface PostProps {
   currentPost: PostType
