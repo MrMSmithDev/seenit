@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import useComments from '@hooks/useComments'
+import Modal from '@components/modal'
+import { useComments, useNotification } from '@hooks/index'
 
 import style from './NewCommentForm.module.scss'
 import { useParams } from 'react-router-dom'
@@ -8,26 +9,17 @@ import { useParams } from 'react-router-dom'
 const NewCommentForm: React.FC = () => {
   const { postID } = useParams()
   const [commentBody, setCommentBody] = useState<string>('')
-  const [commentSuccess, setCommentSuccess] = useState<boolean>(false)
   const { writeComment } = useComments()
 
-  useEffect((): void => {
-    let timeoutID
-    if (commentSuccess)
-      timeoutID = setTimeout(() => {
-        setCommentSuccess(false)
-      }, 3000)
-
-    return clearTimeout(timeoutID)
-  }, [commentSuccess])
+  const notify = useNotification()
 
   const uploadComment = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
     if (commentBody.match(/[a-z|0-9]/gi)) {
-      const resultBool = await writeComment(postID!, commentBody)
+      const resultBool: boolean = await writeComment(postID!, commentBody)
       if (resultBool) {
         setCommentBody('')
-        setCommentSuccess(true)
+        notify.toggle('Comment Added')
       }
     }
   }
@@ -35,12 +27,6 @@ const NewCommentForm: React.FC = () => {
   const handleCommentBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     setCommentBody(e.target.value)
   }
-
-  const successMessage: React.ReactNode = (
-    <div>
-      <p>Comment added</p>
-    </div>
-  )
 
   return (
     <div className={style.newCommentContainer}>
@@ -58,7 +44,7 @@ const NewCommentForm: React.FC = () => {
           Confirm
         </button>
       </form>
-      {commentSuccess ? successMessage : null}
+      <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
     </div>
   )
 }
