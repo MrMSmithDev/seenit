@@ -1,0 +1,8 @@
+{
+    "name": "use-posts",
+    "version": "1.0.0",
+    "main": "usePosts.ts",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
