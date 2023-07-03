@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 function useModal() {
   const [isShowing, setIsShowing] = useState<boolean>(false)
-  const [currentMessage, setCurrentMessage] = useState<string>('')
+  const [message, setMessage] = useState<string>('')
 
   useEffect(() => {
     let modalTimeout: NodeJS.Timeout
@@ -17,14 +17,14 @@ function useModal() {
     }
   }, [isShowing])
 
-  function toggle(message = '') {
-    setCurrentMessage(message)
+  function toggle(newMessage = '') {
+    setMessage(newMessage)
     setIsShowing(!isShowing)
   }
 
   return {
     isShowing,
-    currentMessage,
+    message,
     toggle
   }
 }
