@@ -1,7 +1,7 @@
 {
-    "name": "use-posts",
+    "name": "use-notification",
     "version": "1.0.0",
-    "main": "usePosts.ts",
+    "main": "useNotification.ts",
     "dependencies": {
         "react": "^18.2.0"
     }
