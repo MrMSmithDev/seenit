@@ -19,9 +19,9 @@ const NewCommentForm: React.FC = () => {
       const resultBool: boolean = await writeComment(postID!, commentBody)
       if (resultBool) {
         setCommentBody('')
-        notify.toggle('Comment Added')
+        notify.toggle('Comment Published')
       } else {
-        notify.toggle('Error adding comment')
+        notify.toggle('Error publishing comment')
       }
     }
   }
