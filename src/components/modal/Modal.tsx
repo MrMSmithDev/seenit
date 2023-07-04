@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({ message, isShowing, toggle }) => {
       <div className={style.modalOverlay}>
         <div className={style.modalContainer}>
           <p>{message}</p>
-          <button onClick={toggle}><FontAwesomeIcon icon={faCircleXmark}/></button>
+          <button className={style.closeModal} onClick={toggle}><FontAwesomeIcon icon={faCircleXmark}/></button>
         </div>
       </div>,
       document.body
