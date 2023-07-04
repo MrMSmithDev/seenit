@@ -1,7 +1,8 @@
-import { useAuth, usePosts } from '@hooks/index'
+import { useAuth, useNotification, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { ApiReturn, PostType } from 'src/customTypes/types'
 import { useNavigate } from 'react-router-dom'
+import Modal from '@components/modal'
 
 import style from './NewPostForm.module.scss'
 import generateAddressTitle from '@utils/generateAddressTitle'
@@ -14,6 +15,7 @@ const NewPost: React.FC = () => {
 
   const { user } = useAuth()
   const { writePost } = usePosts()
+  const notify = useNotification()
   const navigate = useNavigate()
 
   useEffect((): void => {
@@ -61,7 +63,11 @@ const NewPost: React.FC = () => {
     const result: ApiReturn = await writePost(postObject)
     if (result.success) {
       navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
-    } else navigate('/')
+      notify.toggle('Post Published')
+    } else {
+      navigate('/')
+      notify.toggle('Error publishing post')
+    }
   }
 
   // TODO: Create logic to toggle publish button if inputs not validated
@@ -109,6 +115,7 @@ const NewPost: React.FC = () => {
       <button className={style.postSubmitButton} onClick={writeNewPost}>
         Publish
       </button>
+      <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
     </div>
   )
 }
