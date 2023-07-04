@@ -1,0 +1,50 @@
+@import '~@styles/_variables.scss'; 
+
+.modalOverlay {
+    align-items: flex-end;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px; 
+    position: fixed;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 10000;
+
+    .modalContainer {
+        animation: .5s float-in 1 ease-in-out;
+        background-color: $deep-blue;
+        color: #FFF;
+        display: grid;
+        height: 80px;
+        place-content: center;
+        pointer-events: all;
+        position: relative;
+        width: 200px;
+    }
+
+    .closeModal {
+        background-color: inherit;
+        border: none;
+        color: #FFF;
+        cursor: pointer;
+        font-size: 16px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+@keyframes float-in {
+    0% {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    100% {
+        opacity: 100%;
+        transform: translateY(0);
+    }
+}
