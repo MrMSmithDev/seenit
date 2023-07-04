@@ -20,6 +20,8 @@ const NewCommentForm: React.FC = () => {
       if (resultBool) {
         setCommentBody('')
         notify.toggle('Comment Added')
+      } else {
+        notify.toggle('Error adding comment')
       }
     }
   }
