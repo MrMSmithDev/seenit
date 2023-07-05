@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ImageUploadData, PostType, UserType } from 'src/customTypes/types'
+import { ApiReturn, ImageUploadData, PostType, UserType } from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
 import useAuth from '@hooks/useAuth'
 
@@ -50,7 +50,7 @@ function useUsers() {
     }
   }
 
-  async function updateUserProfile(currentUid: string, newUserInfo: UserType) {
+  async function updateUserProfile(currentUid: string, newUserInfo: UserType): Promise<ApiReturn> {
     let imageData: ImageUploadData | null = null
     let imageURL: string
 
@@ -83,8 +83,9 @@ function useUsers() {
           favorites: []
         })
       }
+      return { success: true, reference: userRef }
     } catch (error) {
-      console.error('Error updating user information:', error)
+      console.error(error)
       // If image has been uploaded, but profile fails to update, revert photoURL
       // to google profile image
       try {
@@ -100,7 +101,7 @@ function useUsers() {
       } catch (nestedError) {
         console.error(nestedError)
       }
-      throw error
+      return { success: false, reference: null, error: 'Error updating user information' }
     }
   }
 
