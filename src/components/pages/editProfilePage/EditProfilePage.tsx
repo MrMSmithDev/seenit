@@ -1,15 +1,20 @@
 import Loading from '@components/loading'
-import { useAuth, useUsers } from '@hooks/index'
+import { useAuth, useNotification, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import { UserType } from 'src/customTypes/types'
+import { ApiReturn, UserType } from 'src/customTypes/types'
 import EditInfo from './editInfo'
 import EditPicture from './editPicture'
 
+import { useNavigate } from 'react-router-dom'
+
 import style from './EditProfilePage.module.scss'
+import Modal from '@components/modal'
 
 const EditProfilePage: React.FC = () => {
   const { user } = useAuth()
   const { updateUserProfile, loadUserProfile } = useUsers()
+  const navigate = useNavigate()
+  const notify = useNotification()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<UserType>({
@@ -46,7 +51,13 @@ const EditProfilePage: React.FC = () => {
       photoURL: currentUser.photoURL,
       image: tempProfileImage
     }
-    await updateUserProfile(user!.uid, newUserInfo)
+    const result: ApiReturn = await updateUserProfile(user!.uid, newUserInfo)
+    if (result.success) {
+      navigate(`/users/profile/${user!.uid}`)
+      notify.toggle('Profile updated')
+    } else {
+      notify.toggle('Error updating profile')
+    }
   }
 
   if (isLoading) return <Loading />
@@ -63,6 +74,7 @@ const EditProfilePage: React.FC = () => {
       <button className={style.saveButton} onClick={handleSaveInfo}>
         Save Changes
       </button>
+      <Modal isShowing={notify.isShowing} message={notify.message} toggle={notify.toggle} />
     </div>
   )
 }
