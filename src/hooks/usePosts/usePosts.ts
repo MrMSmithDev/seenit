@@ -87,15 +87,14 @@ function usePosts() {
       })
       if (result) return { success: true, reference: result }
     } catch (error) {
-      console.error('Error writing post:', error)
+      console.error(error)
       // If image has been uploaded, but post fails to upload, remove the
       // uploaded image
       if (imageData) {
         deleteObject(imageData.imageRef)
       }
-      throw error
     }
-    return { success: false, reference: null }
+    return { success: false, reference: null, error: 'Error publishing post' }
   }
 
   async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
