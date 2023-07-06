@@ -10,7 +10,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentUserInfo: React.FC = () => {
   const { user } = useAuth()
-  const { getUsersFavoriteCount, loadUserProfile } = useUsers()
+  const { getUsersFavoriteCount, setProfileListener } = useUsers()
 
   const [loading, setLoading] = useState<boolean>(true)
   const [usersFavoriteCount, setUsersFavoriteCount] = useState<number>(0)
@@ -24,7 +24,7 @@ const CurrentUserInfo: React.FC = () => {
   useEffect(() => {
     if (user) {
       const loadProfile = async () => {
-        const activeUser: UserType = await loadUserProfile(user.uid)
+        const activeUser: UserType = await setProfileListener(user.uid)
         setCurrentUser(activeUser)
         setLoading(false)
       }
