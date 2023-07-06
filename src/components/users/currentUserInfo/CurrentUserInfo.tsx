@@ -23,13 +23,12 @@ const CurrentUserInfo: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      const loadProfile = async () => {
-        const activeUser: UserType = await setProfileListener(user.uid)
-        setCurrentUser(activeUser)
-        setLoading(false)
+      const updateCurrentUser = (userData: UserType) => {
+        setCurrentUser(userData)
       }
 
-      loadProfile()
+      setProfileListener(user.uid, updateCurrentUser)
+      if (currentUser) setLoading(false)
     }
   }, [user])
 
