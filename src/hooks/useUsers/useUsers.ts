@@ -106,24 +106,18 @@ function useUsers() {
     }
   }
 
-  async function setProfileListener(uid: string): Promise<UserType> {
+  function setProfileListener(uid: string, updateCurrentUser: (userData: UserType) => void): void {
     try {
       const userDB: CollectionReference = collection(firestoreDB, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
-
-      const userSnapshot: DocumentSnapshot = await getDoc(userRef)
-      const userData: UserType = userSnapshot.data() as UserType
 
       // Listener for any changes
       onSnapshot(userRef, (snapshot: DocumentSnapshot) => {
         if (snapshot.exists()) {
           const updatedData: UserType = snapshot.data() as UserType
-          Object.assign(userData, updatedData)
+          updateCurrentUser(updatedData)
         }
-        console.log('hi snapshot')
       })
-
-      return userData
     } catch (error) {
       console.error('Error loading user profile:', error)
       throw error
