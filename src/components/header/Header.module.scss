@@ -12,6 +12,10 @@
 }
 
 .headerLogo {
-    height: 40px;
+    height: 20px;
     margin-right: auto;
+
+    @media screen and (min-width: $breakpoint-medium) {
+        height: 40px;
+    }
 }

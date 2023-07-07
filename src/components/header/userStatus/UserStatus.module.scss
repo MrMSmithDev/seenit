@@ -17,8 +17,13 @@
 
     border: 3px solid #ffffff;
     border-radius: 50%;
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
+
+    @media screen and (min-width: $breakpoint-medium) {
+        height: 30px;
+        width: 30px;
+    }
 }
 
 .userIcon {
@@ -28,7 +33,7 @@
 .dropDownMenu {
     position: absolute;
     width: calc(100% + 10px);
-    bottom: -47px;
+    bottom: -42px;
     right: calc(-100% - 20px);
 
     &.isActive {
@@ -50,5 +55,9 @@
         font-weight: bold;
         padding: 5px;
         width: 100%;
+    }
+
+    @media screen and (min-width: $breakpoint-medium) {
+        bottom: -47px;
     }
 }
