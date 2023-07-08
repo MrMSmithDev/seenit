@@ -12,6 +12,7 @@ const NewPost: React.FC = () => {
   const [postImage, setPostImage] = useState<File | null>()
   const [postBody, setPostBody] = useState<string>('')
   const [imagePreview, setImagePreview] = useState<string | null>()
+  const [isValid, setIsValid] = useState<boolean>(false)
 
   const { user } = useAuth()
   const { writePost } = usePosts()
@@ -34,6 +35,11 @@ const NewPost: React.FC = () => {
       setImagePreview(null)
     }
   }
+
+  useEffect((): void => {
+    if (!postImage && postBody.length == 0) setIsValid(false)
+    else setIsValid(true)
+  }, [postTitle, postImage, postBody])
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPostTitle(e.target.value)
@@ -69,8 +75,6 @@ const NewPost: React.FC = () => {
       notify.toggle('Error publishing post')
     }
   }
-
-  // TODO: Create logic to toggle publish button if inputs not validated
 
   const imagePreviewElement = imagePreview ? (
     <div className={style.imagePreviewContainer}>
@@ -111,8 +115,20 @@ const NewPost: React.FC = () => {
             required
           />
         </div>
+        <p
+          className={style.postRequirements}
+          style={isValid ? { display: 'none' } : { display: 'block' }}
+        >
+          You must include a title with an image or a body that has a length of at least 5 to
+          publish this post
+        </p>
       </form>
-      <button className={style.postSubmitButton} onClick={writeNewPost}>
+      <button
+        className={style.postSubmitButton}
+        onClick={writeNewPost}
+        style={isValid ? { opacity: 1 } : { opacity: 0.2 }}
+        disabled={!isValid}
+      >
         Publish
       </button>
       <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
