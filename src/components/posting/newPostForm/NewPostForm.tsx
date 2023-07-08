@@ -37,8 +37,8 @@ const NewPost: React.FC = () => {
   }
 
   useEffect((): void => {
-    if (!postImage && postBody.length == 0) setIsValid(false)
-    else setIsValid(true)
+    if (!!postTitle && (!!postImage || postBody.length > 0)) setIsValid(true)
+    else setIsValid(false)
   }, [postTitle, postImage, postBody])
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -95,7 +95,7 @@ const NewPost: React.FC = () => {
             onChange={handleTitleChange}
             minLength={3}
             maxLength={120}
-            placeholder="required"
+            placeholder="Required"
             required
           />
         </div>
@@ -111,7 +111,7 @@ const NewPost: React.FC = () => {
             name="post-body"
             onChange={handleBodyChange}
             minLength={10}
-            placeholder="required"
+            placeholder={!postImage ? 'Required' : 'Not required with an image'}
             required
           />
         </div>
