@@ -1,5 +1,7 @@
 .main {
     display: grid;
+    grid-template-areas: "nav main user";
+
     grid-template-columns: 1fr 3fr 1fr;
 
     >div:nth-of-type(2) {
