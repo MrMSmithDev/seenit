@@ -2,6 +2,7 @@
 
 .userBar {
     align-items: flex-start;
+    background-color: #FFF;
     display: flex;
     flex-direction: row;
     gap: 14px;
@@ -39,6 +40,7 @@
 
     @media screen and (min-width: $breakpoint-medium) {
         align-self: flex-start;
+        background-color: transparent;
         flex-direction: column;
         padding: 20px;
         top: 60px;
