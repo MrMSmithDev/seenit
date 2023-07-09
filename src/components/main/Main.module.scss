@@ -1,8 +1,15 @@
-.main {
-    display: grid;
-    grid-template-areas: "nav main user";
+@import '~@styles/_variables.scss';
 
-    grid-template-columns: 1fr 3fr 1fr;
+.main {
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: $breakpoint-medium) {
+        display: grid;
+        grid-template-areas: "nav main user";
+
+        grid-template-columns: 1fr 3fr 1fr;
+    }
 
     >div:nth-of-type(2) {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
