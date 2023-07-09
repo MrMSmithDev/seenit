@@ -2,15 +2,13 @@
 
 .userBar {
     align-items: flex-start;
-    align-self: start;
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: row;
+    gap: 14px;
     grid-area: nav;
-    padding: 20px;
+    padding: 5px;
     position: sticky;
-    top: 60px;
-    width: 275px;
+    top: 40px;
 
     .sidebarLink {
         background-color: inherit;
@@ -19,7 +17,38 @@
         font-size: 18px;
         padding: 5px;
         position: relative;
-        text-align: left;
+        text-align: center;
+        white-space: nowrap;
         width: 100%;
+
+        &:hover {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 10px;
+            transform: scale(1.01)
+        }
+
+        &:not(:last-of-type)::after {
+            content: '';
+            background-color: $deep-blue;
+            position: absolute;
+            top: 5px;
+            right: -6%;
+            bottom: 5px;
+            width: 1px;
+        }
+    }
+
+    @media screen and (min-width: $breakpoint-medium) {
+        align-self: flex-start;
+        flex-direction: column;
+        padding: 20px;
+        top: 60px;
+
+        .sidebarLink {
+            text-align: left;
+
+            &:not(:last-of-type)::after {
+                display: none;
+            }
+        }
     }
 }
