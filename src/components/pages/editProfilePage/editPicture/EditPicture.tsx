@@ -25,10 +25,10 @@ const EditPicture: React.FC<EditPictureProps> = ({ setTempImage }) => {
   }, [user])
 
   const handleImageInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       const imageFile = e.target.files[0]
-      setTempImage(imageFile)
       const preview = URL.createObjectURL(imageFile)
+      setTempImage(imageFile)
       setImagePreview(preview)
     }
   }
