@@ -7,11 +7,11 @@ import { PostType, UserType } from 'src/customTypes/types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
-import { months } from '@utils/misc/index'
 
 import style from './Post.module.scss'
 import Loading from '@components/loading'
 import AuthorInfo from '@components/users/authorInfo'
+import formatTime from '@utils/formatTime'
 
 interface PostProps {
   currentPost: PostType
@@ -77,6 +77,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   if (isLoading) return <Loading />
 
   const timePosted: Date = currentPost.timeStamp!.toDate()
+  const formattedTime: string = formatTime(timePosted)
 
   return (
     <div className={style.post}>
@@ -92,12 +93,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       {postImage}
       <p className={style.postBody}>{currentPost.body}</p>
       <div className={style.postInfo}>
-        <p className={style.postTimestamp}>
-          {[
-            `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-            `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
-          ]}
-        </p>
+        <p className={style.postTimestamp}>{formattedTime}</p>
         <p className={style.postCommentCount}>
           {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
         </p>

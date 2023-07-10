@@ -9,8 +9,7 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
 import { PostLink } from '@routes/posts'
 import AuthorInfo from '@components/users/authorInfo'
-
-const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+import formatTime from '@utils/formatTime'
 
 interface PostProps {
   currentPost: PostType
@@ -74,6 +73,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const bodyLength: number = postImage ? 1 : 3
 
   const timePosted: Date = timeStamp!.toDate()
+  const formattedTime: string = formatTime(timePosted)
   const postAddressTitle: string = generateAddressTitle(title)
 
   const postComponent = (
@@ -92,12 +92,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
         {currentPost.body}
       </p>
       <div className={style.postInfo}>
-        <p className={style.postTimestamp}>
-          {[
-            `${timePosted.getHours()}:${timePosted.getMinutes()} `,
-            `${timePosted.getDate()} ${months[timePosted.getMonth()]} ${timePosted.getFullYear()}`
-          ]}
-        </p>
+        <p className={style.postTimestamp}>{formattedTime}</p>
         <p className={style.postCommentCount}>
           {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
         </p>
