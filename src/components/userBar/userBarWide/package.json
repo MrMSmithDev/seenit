@@ -1,0 +1,8 @@
+{
+    "name": "user-bar-wide",
+    "version": "1.0.0",
+    "main": "UserBarWide.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}

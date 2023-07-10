@@ -1,0 +1,24 @@
+@import '~@styles/_variables.scss';
+
+.userBarLarge {
+    align-items: flex-start;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+    grid-area: nav;
+    padding: 5px;
+    position: sticky;
+    top: 40px;
+    z-index: 1;
+
+    @media screen and (min-width: $breakpoint-medium) {
+        align-self: flex-start;
+        background-color: transparent;
+        box-shadow: none;
+        flex-direction: column;
+        padding: 20px;
+        top: 60px;
+    }
+}
