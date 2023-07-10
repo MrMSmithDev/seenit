@@ -1,0 +1,54 @@
+@import '~@styles/_variables.scss';
+
+.userProfilePageContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.userBlurb {
+    padding: 20px;
+    position:relative;
+    white-space: pre-wrap;
+
+    &::before {
+        background-color: $deep-blue;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: -5px;
+    }
+
+    &::after {
+        background-color: $deep-blue;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        bottom: -5px;
+    }
+}
+
+.editProfileButton {
+    align-self: center;
+    background-color: inherit;
+    border: 2px solid $deep-blue;
+    color: $deep-blue;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 3px 30px;
+    width:fit-content;
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        transform: scale(1.01)
+    }
+
+    &:active {
+        transform: scale(.9) !important;
+    }
+}
