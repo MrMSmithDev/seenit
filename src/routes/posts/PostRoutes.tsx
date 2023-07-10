@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 
 import NewPostForm from '@components/posting/newPostForm'
@@ -11,6 +11,11 @@ import EditProfilePage from '@components/pages/editProfilePage'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()
+  useLayoutEffect(() => {
+    // Scroll to top on change of current path name
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   return (
     <Routes>
       <Route key={location.pathname} path="/" element={<PostFeed feedTitle="Home" />} />
