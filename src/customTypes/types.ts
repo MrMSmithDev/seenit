@@ -20,6 +20,7 @@ export interface UserType {
   photoURL: string
   blurb: string
   favorites?: string[]
+  posts?: string[]
   image?: File | null
 }
 
