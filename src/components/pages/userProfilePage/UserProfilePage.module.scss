@@ -32,8 +32,14 @@
     }
 }
 
-.editProfileButton {
-    align-self: center;
+.profileLinksContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px;
+}
+
+.profilePageButton, .profileLink {
     background-color: inherit;
     border: 2px solid $deep-blue;
     color: $deep-blue;
@@ -41,7 +47,8 @@
     font-weight: bold;
     margin-top: 20px;
     padding: 3px 30px;
-    width:fit-content;
+    text-align: center;
+    width: 100px;
 
     &:hover {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -52,3 +59,4 @@
         transform: scale(.9) !important;
     }
 }
+

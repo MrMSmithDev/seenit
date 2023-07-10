@@ -1,15 +1,16 @@
 import Loading from '@components/loading'
-import UserProfileHeading from '@components/users/userProfileHeading'
+import UserProfileHeading from './userProfileHeading'
 import React, { useEffect, useState } from 'react'
 import useUsers from '@hooks/useUsers'
 import { Link, useParams } from 'react-router-dom'
 import { UserType } from 'src/customTypes/types'
 
 import style from './UserProfilePage.module.scss'
+import { useAuth } from '@hooks/index'
 
 const UserProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [user, setUser] = useState<UserType>({
+  const [selectedUser, setSelectedUser] = useState<UserType>({
     uid: '',
     displayName: '',
     photoURL: '',
@@ -17,13 +18,14 @@ const UserProfilePage: React.FC = () => {
     favorites: []
   })
 
+  const { user } = useAuth()
   const { userID } = useParams()
   const { loadUserProfile } = useUsers()
 
   useEffect(() => {
     const loadUser = async (): Promise<void> => {
       const userData: UserType = await loadUserProfile(userID!)
-      setUser(userData)
+      setSelectedUser(userData)
       if (userData) setIsLoading(false)
     }
 
@@ -32,13 +34,32 @@ const UserProfilePage: React.FC = () => {
 
   if (isLoading) return <Loading />
 
-  return (
-    <div className={style.userProfilePageContainer}>
-      <UserProfileHeading user={user} />
-      <div className={style.userBlurb}>{user.blurb}</div>
-      <Link className={style.editProfileButton} to="/edit-profile/">
+  const editProfile: React.ReactNode | null =
+    user!.uid === selectedUser.uid ? (
+      <Link className={style.profilePageButton} to="/edit-profile/">
         Edit Profile
       </Link>
+    ) : null
+
+  return (
+    <div className={style.userProfilePageContainer}>
+      <UserProfileHeading user={selectedUser} />
+      <div className={style.userBlurb}>{selectedUser.blurb}</div>
+      <div className={style.profileLinksContainer}>
+        <Link
+          className={style.profileLink}
+          to={`/users/${selectedUser.uid}/posts`}
+        >{`${selectedUser.displayName}'s Posts`}</Link>
+        <Link
+          className={style.profileLink}
+          to={`/users/${selectedUser.uid}/favorites`}
+        >{`${selectedUser.displayName}'s Favorites`}</Link>
+        <Link
+          className={style.profileLink}
+          to={`/users/${selectedUser.uid}/comments`}
+        >{`${selectedUser.displayName}'s Comments`}</Link>
+      </div>
+      {editProfile}
     </div>
   )
 }
