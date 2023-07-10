@@ -1,0 +1,8 @@
+{
+    "name": "user-stats",
+    "version": "1.0.0",
+    "main": "UserStats.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
