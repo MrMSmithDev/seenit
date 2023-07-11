@@ -26,15 +26,9 @@ const UserStats: React.FC<UserStatsProps> = ({ user }) => {
 
   return (
     <div className={style.userStatsContainer}>
-      <p className={style.statPara}>
-        <span className={style.statNum}>{userStats.posts}</span> posts
-      </p>
-      <p className={style.statPara}>
-        <span className={style.statNum}>{userStats.posts}</span> comments
-      </p>
-      <p className={style.statPara}>
-        <span className={style.statNum}>{userStats.posts}</span> favorites
-      </p>
+      <p className={style.statPara}>{userStats.posts} posts</p>
+      <p className={style.statPara}>{userStats.comments} comments</p>
+      <p className={style.statPara}>{userStats.favorites} favorites</p>
     </div>
   )
 }
