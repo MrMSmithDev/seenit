@@ -1,27 +1,42 @@
+import { useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import { UserType } from 'src/customTypes/types'
+import { StatsType, UserType } from 'src/customTypes/types'
 
 import style from './UserStats.module.scss'
-
-interface StatsType {
-  favorites: number
-  posts: number
-  comments: number
-}
 
 interface UserStatsProps {
   user: UserType
 }
 
 const UserStats: React.FC<UserStatsProps> = ({ user }) => {
-  const [userStats, setuserStats] = useState()
+  const { getUsersStats } = useUsers()
+  const [userStats, setUserStats] = useState<StatsType>()
+
   useEffect(() => {
-    const loadUserStats = async (): Promise<StatsType> => {}
+    if (!userStats) {
+      const loadStats = async () => {
+        const retrievedStats: StatsType = await getUsersStats(user.uid)
+        setUserStats(retrievedStats)
+      }
+      loadStats()
+    }
+  }, [])
 
-    const retrievedStats = loadUserStats()
-  })
+  if (!userStats) return null
 
-  return <div className={style.userStatsContainer}></div>
+  return (
+    <div className={style.userStatsContainer}>
+      <p className={style.statPara}>
+        <span className={style.statNum}>{userStats.posts}</span> posts
+      </p>
+      <p className={style.statPara}>
+        <span className={style.statNum}>{userStats.posts}</span> comments
+      </p>
+      <p className={style.statPara}>
+        <span className={style.statNum}>{userStats.posts}</span> favorites
+      </p>
+    </div>
+  )
 }
 
 export default UserStats
