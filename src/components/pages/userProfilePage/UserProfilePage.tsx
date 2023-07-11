@@ -7,6 +7,7 @@ import { UserType } from 'src/customTypes/types'
 
 import style from './UserProfilePage.module.scss'
 import { useAuth } from '@hooks/index'
+import UserStats from './userStats'
 
 const UserProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -15,7 +16,9 @@ const UserProfilePage: React.FC = () => {
     displayName: '',
     photoURL: '',
     blurb: '',
-    favorites: []
+    favorites: [],
+    posts: 0,
+    comments: 0
   })
 
   const { user } = useAuth()
@@ -30,7 +33,7 @@ const UserProfilePage: React.FC = () => {
     }
 
     loadUser()
-  }, [])
+  })
 
   if (isLoading) return <Loading />
 
@@ -44,6 +47,7 @@ const UserProfilePage: React.FC = () => {
   return (
     <div className={style.userProfilePageContainer}>
       <UserProfileHeading user={selectedUser} />
+      <UserStats user={selectedUser} />
       <div className={style.userBlurb}>{selectedUser.blurb}</div>
       <div className={style.profileLinksContainer}>
         <Link
