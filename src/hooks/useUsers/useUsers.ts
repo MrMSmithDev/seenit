@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ApiReturn, ImageUploadData, PostType, UserType } from 'src/customTypes/types'
+import { ApiReturn, ImageUploadData, PostType, StatsType, UserType } from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
 import useAuth from '@hooks/useAuth'
 
@@ -19,7 +19,9 @@ import {
   Query,
   getDocs,
   QueryDocumentSnapshot,
-  onSnapshot
+  onSnapshot,
+  updateDoc,
+  increment
 } from 'firebase/firestore'
 import {
   getDownloadURL,
@@ -81,7 +83,9 @@ function useUsers() {
           uid: currentUid,
           displayName: newUserInfo?.displayName,
           blurb: newUserInfo?.blurb,
-          favorites: []
+          favorites: [],
+          posts: 0,
+          comments: 0
         })
       }
       return { success: true, reference: userRef }
@@ -151,7 +155,7 @@ function useUsers() {
       const userDB: CollectionReference = collection(firestoreDB, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
-      const userData = userDoc.data() as UserType
+      const userData: UserType = userDoc.data() as UserType
       return userData.displayName
     } catch (error) {
       console.error('Error loading users display name:', error)
@@ -180,6 +184,50 @@ function useUsers() {
     }
   }
 
+  async function getUsersStats(uid: string): Promise<StatsType> {
+    try {
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, uid)
+      const userDoc: DocumentSnapshot = await getDoc(userRef)
+      const userData: UserType = userDoc.data() as UserType
+
+      return {
+        favorites: userData.favorites?.length || 0,
+        posts: userData.posts || 0,
+        comments: userData.comments || 0
+      }
+    } catch (error) {
+      console.error('Error loading users post count:', error)
+      throw error
+    }
+  }
+
+  async function incrementPostCount(uid: string): Promise<void> {
+    try {
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, uid)
+
+      await updateDoc(userRef, {
+        favorites: increment(1)
+      })
+    } catch (error) {
+      console.error('Error incrementing post count:', error)
+    }
+  }
+
+  async function incrementCommentCount(uid: string): Promise<void> {
+    try {
+      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userRef: DocumentReference = doc(userDB, uid)
+
+      await updateDoc(userRef, {
+        comments: increment(1)
+      })
+    } catch (error) {
+      console.error('Error incrementing comment count:', error)
+    }
+  }
+
   return {
     updateUserProfile,
 
@@ -188,7 +236,11 @@ function useUsers() {
     loadProfileImage,
 
     getUsersDisplayName,
-    getUsersFavoriteCount
+    getUsersFavoriteCount,
+    getUsersStats,
+
+    incrementPostCount,
+    incrementCommentCount
   }
 }
 
