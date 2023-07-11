@@ -3,7 +3,7 @@
 .currentUserContainer {
     align-items: center;
     align-self: start;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 20px;
     grid-area: user;
@@ -11,6 +11,10 @@
     position: sticky;
     top: 60px;
     width: 275px;
+
+    @media screen and (min-width: $breakpoint-medium) {
+        display:flex
+    }
 }
 
 .userImg {
