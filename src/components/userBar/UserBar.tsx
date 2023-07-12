@@ -8,10 +8,10 @@ const UserBar: React.FC = () => {
   const { user } = useAuth()
 
   return (
-    <React.Fragment>
+    <div>
       <UserBarWide user={user!} />
       <UserBarSlim user={user!} />
-    </React.Fragment>
+    </div>
   )
 }
 
