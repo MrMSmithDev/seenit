@@ -4,7 +4,7 @@
     align-items: flex-start;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 10px;
-    display: flex;
+    display: none;
     flex-direction: row;
     gap: 14px;
     grid-area: nav;
@@ -17,6 +17,7 @@
         align-self: flex-start;
         background-color: transparent;
         box-shadow: none;
+        display: flex;
         flex-direction: column;
         padding: 20px;
         top: 60px;
