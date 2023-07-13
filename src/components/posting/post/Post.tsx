@@ -30,7 +30,9 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     uid: '',
     displayName: '',
     photoURL: '',
-    blurb: ''
+    blurb: '',
+    posts: 0,
+    comments: 0
   })
 
   useEffect(() => {
