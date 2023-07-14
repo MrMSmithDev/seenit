@@ -1,0 +1,8 @@
+{
+    "name": "post-controls",
+    "version": "1.0.0",
+    "main": "PostControls.tsx",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
