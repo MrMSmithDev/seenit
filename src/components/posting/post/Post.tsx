@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PostControls from '@components/posting/postControls'
 
 import { useParams } from 'react-router-dom'
 import { useAuth, usePosts, useUsers } from '@hooks/index'
@@ -72,9 +73,14 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   }
 
   let postImage: React.ReactNode | null = null
+  let postControls: React.ReactNode | null = null
 
   if (currentPost.imageUrl)
     postImage = <img className={style.postImage} src={currentPost.imageUrl} />
+
+  if (user && currentPost.authorID === user.uid) {
+    postControls = <PostControls postID={currentPost.ID} />
+  }
 
   if (isLoading) return <Loading />
 
@@ -92,6 +98,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
         </button>
         <span className={style.postTitle}>{currentPost.title}</span>
       </p>
+      {postControls}
       {postImage}
       <p className={style.postBody}>{currentPost.body}</p>
       <div className={style.postInfo}>
