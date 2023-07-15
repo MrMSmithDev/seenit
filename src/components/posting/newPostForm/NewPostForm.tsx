@@ -1,13 +1,17 @@
 import { useAuth, useNotification, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
 import { ApiReturn, PostType } from 'src/customTypes/types'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Modal from '@components/modal'
 
 import style from './NewPostForm.module.scss'
 import generateAddressTitle from '@utils/generateAddressTitle'
 
-const NewPost: React.FC = () => {
+interface PostFormProps {
+  toEdit?: boolean
+}
+
+const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
   const [postTitle, setPostTitle] = useState<string>('')
   const [postImage, setPostImage] = useState<File | null>()
   const [postBody, setPostBody] = useState<string>('')
@@ -15,7 +19,7 @@ const NewPost: React.FC = () => {
   const [isValid, setIsValid] = useState<boolean>(false)
 
   const { user } = useAuth()
-  const { writePost } = usePosts()
+  const { writePost, loadCurrentPost } = usePosts()
   const notify = useNotification()
   const navigate = useNavigate()
 
@@ -57,6 +61,25 @@ const NewPost: React.FC = () => {
     setPostBody(e.target.value)
   }
 
+  // If editing a post, retrieve postID from URL parameters
+  const { postID } = useParams()
+
+  useEffect(() => {
+    if (postID) {
+      const loadPost = async () => {
+        const postToEdit = await loadCurrentPost(postID)
+        if (postToEdit) {
+          setPostTitle(postToEdit.title)
+          setPostBody(postToEdit.body)
+          if (postToEdit.imageUrl) {
+            console.log('EDIT ME')
+          }
+        }
+      }
+      loadPost()
+    }
+  }, [postID])
+
   const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.preventDefault()
     const postObject: PostType = {
@@ -71,8 +94,7 @@ const NewPost: React.FC = () => {
       navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
       notify.toggle('Post Published')
     } else {
-      navigate('/')
-      notify.toggle('Error publishing post')
+      notify.toggle('Error publishing post, please try again later')
     }
   }
 
@@ -84,7 +106,7 @@ const NewPost: React.FC = () => {
 
   return (
     <div className={style.newPostContainer}>
-      <h1 className={style.newPostTitle}>New Post</h1>
+      <h1 className={style.newPostTitle}>{toEdit ? 'Edit' : 'New'} Post</h1>
       <form className={style.newPostForm}>
         <div className={style.inputContainer}>
           <label htmlFor="post-title">Post Title</label>
@@ -136,4 +158,4 @@ const NewPost: React.FC = () => {
   )
 }
 
-export default NewPost
+export default PostForm
