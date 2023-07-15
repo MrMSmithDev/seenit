@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 
-import NewPostForm from '@components/posting/newPostForm'
+import PostForm from '@components/posting/newPostForm'
 import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
@@ -19,7 +19,12 @@ const PostRoutes: React.FC = () => {
   return (
     <Routes>
       <Route key={location.pathname} path="/" element={<PostFeed feedTitle="Home" />} />
-      <Route key={`${location.pathname}-new-post`} path="/posts/new" element={<NewPostForm />} />
+      <Route key={`${location.pathname}-new-post`} path="/posts/new" element={<PostForm />} />
+      <Route
+        key={`${location.pathname}-edit-post`}
+        path="/posts/:postID/edit"
+        element={<PostForm toEdit={true} />}
+      />
       <Route
         key={`${location.pathname}-post`}
         path="/posts/:postID/:postTitle"
