@@ -22,7 +22,9 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
     uid: '',
     displayName: ' ',
     photoURL: '',
-    blurb: ''
+    blurb: '',
+    comments: 0,
+    posts: 0
   })
 
   const { ID, authorID, timeStamp, title, comments } = currentPost

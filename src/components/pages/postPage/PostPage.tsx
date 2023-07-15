@@ -17,7 +17,16 @@ const PostPage: React.FC = () => {
 
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
-      const retrievedPost = await loadCurrentPost(postID!)
+      let retrievedPost: PostType | null = null
+      while (!retrievedPost) {
+        try {
+          retrievedPost = await loadCurrentPost(postID!)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      // retrievedPost = (await loadCurrentPost(postID!)) || null
+      // console.log(retrievedPost)
       setCurrentPost(retrievedPost)
     }
 
