@@ -1,0 +1,8 @@
+{
+    "name": "image-url-to-file",
+    "version": "1.0.0",
+    "main": "imageUrlToFile.ts",
+    "dependencies": {
+
+    }
+}
