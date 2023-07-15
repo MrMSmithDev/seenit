@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 
-import PostForm from '@components/posting/newPostForm'
+import PostForm from '@components/posting/PostForm'
 import PostFeed from '@components/posting/postFeed'
 import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
