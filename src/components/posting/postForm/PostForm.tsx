@@ -4,7 +4,7 @@ import { ApiReturn, PostType } from 'src/customTypes/types'
 import { useNavigate, useParams } from 'react-router-dom'
 import Modal from '@components/modal'
 
-import style from './NewPostForm.module.scss'
+import style from './PostForm.module.scss'
 import generateAddressTitle from '@utils/generateAddressTitle'
 
 interface PostFormProps {
