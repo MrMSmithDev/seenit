@@ -68,12 +68,12 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
     if (postID) {
       const loadPost = async () => {
         const postToEdit = await loadCurrentPost(postID)
+        console.log(!!postToEdit)
         if (postToEdit) {
           setPostTitle(postToEdit.title)
           setPostBody(postToEdit.body)
-          if (postToEdit.imageUrl) {
-            console.log('EDIT ME')
-          }
+          // if (postToEdit.imageUrl) {
+          // }
         }
       }
       loadPost()
@@ -118,6 +118,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
             minLength={3}
             maxLength={120}
             placeholder="Required"
+            value={postTitle}
             required
           />
         </div>
@@ -134,6 +135,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
             onChange={handleBodyChange}
             minLength={10}
             placeholder={!postImage ? 'Required' : 'Not required with an image'}
+            value={postBody}
             required
           />
         </div>
