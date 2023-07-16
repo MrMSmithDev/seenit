@@ -1,11 +1,12 @@
 import { useAuth, useNotification, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import { ApiReturn, PostType } from 'src/customTypes/types'
+import { ApiReturn, PostEdit, PostType } from 'src/customTypes/types'
 import { useNavigate, useParams } from 'react-router-dom'
 import Modal from '@components/modal'
 
 import style from './PostForm.module.scss'
 import generateAddressTitle from '@utils/generateAddressTitle'
+import imageUrlToFile from '@utils/imageUrlToFile'
 
 interface PostFormProps {
   toEdit?: boolean
@@ -19,7 +20,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
   const [isValid, setIsValid] = useState<boolean>(false)
 
   const { user } = useAuth()
-  const { writePost, loadCurrentPost } = usePosts()
+  const { writePost, editPost, loadCurrentPost } = usePosts()
   const notify = useNotification()
   const navigate = useNavigate()
 
@@ -64,24 +65,24 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
   // If editing a post, retrieve postID from URL parameters
   const { postID } = useParams()
 
-  useEffect(() => {
+  useEffect((): void => {
     if (postID) {
       const loadPost = async () => {
         const postToEdit = await loadCurrentPost(postID)
-        console.log(!!postToEdit)
         if (postToEdit) {
           setPostTitle(postToEdit.title)
           setPostBody(postToEdit.body)
-          // if (postToEdit.imageUrl) {
-          // }
+          if (postToEdit.imageUrl) {
+            const imageFile: File = await imageUrlToFile(postToEdit.imageUrl)
+            setPostImage(imageFile)
+          }
         }
       }
       loadPost()
     }
   }, [postID])
 
-  const writeNewPost = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
-    e.preventDefault()
+  const writeNewPost = async (): Promise<void> => {
     const postObject: PostType = {
       ID: '',
       authorID: user!.uid,
@@ -92,10 +93,31 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
     const result: ApiReturn = await writePost(postObject)
     if (result.success) {
       navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
-      notify.toggle('Post Published')
+      notify.toggle('Post published')
     } else {
-      notify.toggle('Error publishing post, please try again later')
+      notify.toggle(`${result.error}, please try again later`)
     }
+  }
+
+  const makePostEdit = async (): Promise<void> => {
+    const postObject: PostEdit = {
+      ID: postID!,
+      title: postTitle,
+      body: postBody
+    }
+    const result: ApiReturn = await editPost(postObject)
+    if (result.success) {
+      navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
+      notify.toggle('Post edited')
+    } else {
+      notify.toggle(`${result.error}, please try again later`)
+    }
+  }
+
+  const submitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (postID) makePostEdit()
+    else writeNewPost()
   }
 
   const imagePreviewElement = imagePreview ? (
@@ -149,7 +171,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
       </form>
       <button
         className={style.postSubmitButton}
-        onClick={writeNewPost}
+        onClick={submitForm}
         style={isValid ? { opacity: 1 } : { opacity: 0.2 }}
         disabled={!isValid}
       >
