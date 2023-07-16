@@ -14,6 +14,11 @@ export interface PostType {
   favorites?: number
 }
 
+export interface PostEdit {
+  title: string
+  body: string
+}
+
 export interface UserType {
   uid: string
   displayName: string
