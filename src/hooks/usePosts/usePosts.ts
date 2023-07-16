@@ -1,5 +1,12 @@
 /* eslint-disable no-console */
-import { UserType, PostType, FilterQuery, ImageUploadData, ApiReturn } from 'src/customTypes/types'
+import {
+  UserType,
+  PostType,
+  FilterQuery,
+  ImageUploadData,
+  ApiReturn,
+  PostEdit
+} from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
 import {
   collection,
@@ -95,6 +102,26 @@ function usePosts() {
       }
     }
     return { success: false, reference: null, error: 'Error publishing post' }
+  }
+
+  async function editPost(editedPost: PostEdit): Promise<ApiReturn> {
+    const postDB: CollectionReference = collection(firestoreDB, 'posts')
+    const postRef: DocumentReference = doc(postDB, editedPost.ID)
+
+    try {
+      const postDoc: DocumentSnapshot = await getDoc(postRef)
+      if (postDoc.exists()) {
+        await setDoc(postRef, {
+          title: editedPost.title,
+          body: editedPost.body,
+          edited: true
+        })
+        return { success: true, reference: postRef }
+      }
+    } catch (error) {
+      console.log('Error editing post:', error)
+    }
+    return { success: false, reference: null, error: 'Error editing post' }
   }
 
   async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
@@ -262,10 +289,11 @@ function usePosts() {
 
   return {
     writePost,
+    editPost,
+
     loadPostFeed,
     loadUserPostFeed,
     loadUserFavorites,
-
     loadCurrentPost,
 
     setFavoriteStatus,
