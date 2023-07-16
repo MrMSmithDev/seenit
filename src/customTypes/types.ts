@@ -15,6 +15,7 @@ export interface PostType {
 }
 
 export interface PostEdit {
+  ID: string
   title: string
   body: string
 }
