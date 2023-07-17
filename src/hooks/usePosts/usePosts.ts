@@ -106,17 +106,24 @@ function usePosts() {
 
   async function editPost(editedPost: PostEdit): Promise<ApiReturn> {
     const postDB: CollectionReference = collection(firestoreDB, 'posts')
-    const postRef: DocumentReference = doc(postDB, editedPost.ID)
 
     try {
-      const postDoc: DocumentSnapshot = await getDoc(postRef)
+      const querySnapshot: QuerySnapshot = await getDocs(
+        query(postDB, where('ID', '==', editedPost.ID))
+      )
+      const postDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
+      console.log(postDoc)
       if (postDoc.exists()) {
-        await setDoc(postRef, {
-          title: editedPost.title,
-          body: editedPost.body,
-          edited: true
-        })
-        return { success: true, reference: postRef }
+        await setDoc(
+          postDoc.ref,
+          {
+            title: editedPost.title,
+            body: editedPost.body,
+            edited: true
+          },
+          { merge: true }
+        )
+        return { success: true, reference: postDoc.ref }
       }
     } catch (error) {
       console.log('Error editing post:', error)
@@ -219,8 +226,8 @@ function usePosts() {
       const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
-      const postData: QueryDocumentSnapshot = querySnapshot.docs[0]
-      return postData.data() as PostType
+      const postDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
+      return postDoc.data() as PostType
     } catch (error) {
       console.error('Error loading post:', error)
       throw error
