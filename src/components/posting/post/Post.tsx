@@ -101,6 +101,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       {postControls}
       {postImage}
       <p className={style.postBody}>{currentPost.body}</p>
+      {currentPost.edited ? <p className={style.edited}>* This post has been edited *</p> : null}
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>{formattedTime}</p>
         <p className={style.postCommentCount}>
