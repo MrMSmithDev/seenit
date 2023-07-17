@@ -104,13 +104,15 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       {currentPost.edited ? <p className={style.edited}>* This post has been edited *</p> : null}
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>{formattedTime}</p>
-        <p className={style.postCommentCount}>
-          {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
-        </p>
-        <p className={style.postFavoriteCount}>
-          {favoriteCount}
-          <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
-        </p>
+        <div className={style.postCounts}>
+          <p className={style.postCommentCount}>
+            {currentPost.comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+          </p>
+          <p className={style.postFavoriteCount}>
+            {favoriteCount}
+            <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
+          </p>
+        </div>
         <AuthorInfo author={author} bold={true} link={true} />
       </div>
     </div>

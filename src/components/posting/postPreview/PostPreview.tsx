@@ -95,13 +95,15 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
       </p>
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>{formattedTime}</p>
-        <p className={style.postCommentCount}>
-          {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
-        </p>
-        <p className={style.postFavoriteCount}>
-          {favoriteCount}
-          <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
-        </p>
+        <div className={style.postCounts}>
+          <p className={style.postCommentCount}>
+            {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
+          </p>
+          <p className={style.postFavoriteCount}>
+            {favoriteCount}
+            <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
+          </p>
+        </div>
         <AuthorInfo author={author} bold={true} />
       </div>
     </div>
