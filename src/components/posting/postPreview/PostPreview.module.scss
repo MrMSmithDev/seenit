@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .post {
     background-color: #FFF;
     border-radius: 10px;
@@ -54,6 +56,8 @@
     align-items: center;
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .postAuthor, .postTimestamp, .postCommentCount, .postFavoriteCount {
@@ -69,7 +73,10 @@
 .authorContainer {
     align-items: center;
     display: flex;
-    margin-left: auto;
+
+    @media screen and (min-width: $breakpoint-small) {
+        margin-left: auto;
+    }
 }
 
 .postAuthorImg {
@@ -77,4 +84,9 @@
     height: 20px;
     margin-right: 10px;
     width: 20px;
+}
+
+.postCounts {
+    display: flex;
+    gap: 15px;
 }
