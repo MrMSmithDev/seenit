@@ -1,0 +1,8 @@
+{
+    "name": "deleted-post",
+    "version": "1.0.0",
+    "main": "deletedPost.ts",
+    "dependencies": {
+
+    }
+}
