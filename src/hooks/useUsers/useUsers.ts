@@ -30,7 +30,7 @@ import {
   StorageReference,
   uploadBytesResumable
 } from '@firebase/storage'
-import emptyUser from '@utils/placeholders/emptyUser/emptyUser'
+import emptyUser from '@utils/placeholders/emptyUser'
 
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
