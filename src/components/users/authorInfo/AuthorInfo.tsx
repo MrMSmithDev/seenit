@@ -11,22 +11,29 @@ interface AuthorInfoProps {
 }
 
 const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold, link }) => {
+  let imgElement: React.ReactNode | null = null
+  if (author.photoURL.length > 0) {
+    imgElement = (
+      <img
+        className={style.postAuthorImg}
+        src={author.photoURL}
+        alt="User's image"
+        referrerPolicy="no-referrer"
+      />
+    )
+  }
+
   if (link)
     return (
       <Link className={style.authorContainer} to={`/users/profile/${author.uid}`}>
-        <img className={style.postAuthorImg} src={author.photoURL} alt="User's image" />
+        {imgElement}
         <p className={`${style.postAuthor} ${bold ? style.bold : null}`}>{author.displayName}</p>
       </Link>
     )
   else
     return (
       <div className={style.authorContainer}>
-        <img
-          className={style.postAuthorImg}
-          src={author.photoURL}
-          alt="User's image"
-          referrerPolicy="no-referrer"
-        />
+        {imgElement}
         <p className={`${style.postAuthor} ${bold ? style.bold : null}`}>{author.displayName}</p>
       </div>
     )

@@ -2,7 +2,7 @@ import { UserType } from 'src/customTypes/types'
 
 const emptyUser: UserType = {
   uid: '',
-  displayName: 'Not Found',
+  displayName: 'Author not Found',
   photoURL: '',
   blurb: '',
   comments: 0,
