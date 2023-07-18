@@ -30,6 +30,7 @@ import {
   StorageReference,
   uploadBytesResumable
 } from '@firebase/storage'
+import emptyUser from '@utils/placeholders/emptyUser/emptyUser'
 
 function useUsers() {
   const firestoreDB: Firestore = getFirestore()
@@ -124,7 +125,6 @@ function useUsers() {
       })
     } catch (error) {
       console.error('Error loading user profile:', error)
-      throw error
     }
   }
 
@@ -133,11 +133,11 @@ function useUsers() {
       const userDB: CollectionReference = collection(firestoreDB, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
-      return userDoc.data() as UserType
+      if (userDoc) return userDoc.data() as UserType
     } catch (error) {
       console.error('Error loading user profile:', error)
-      throw error
     }
+    return emptyUser
   }
 
   async function loadProfileImage(uid: string): Promise<string> {
@@ -146,8 +146,8 @@ function useUsers() {
       return userData.photoURL
     } catch (error) {
       console.error('Error loading profile image:', error)
-      throw error
     }
+    return ''
   }
 
   async function getUsersDisplayName(uid: string): Promise<string> {
@@ -159,8 +159,8 @@ function useUsers() {
       return userData.displayName
     } catch (error) {
       console.error('Error loading users display name:', error)
-      throw error
     }
+    return ''
   }
 
   async function getUsersFavoriteCount(uid: string): Promise<number> {
@@ -180,8 +180,8 @@ function useUsers() {
       return result
     } catch (error) {
       console.error('Error loading users favorite count:', error)
-      throw error
     }
+    return 0
   }
 
   async function getUsersStats(uid: string): Promise<StatsType> {
@@ -198,8 +198,8 @@ function useUsers() {
       }
     } catch (error) {
       console.error('Error loading users post count:', error)
-      throw error
     }
+    return { favorites: 0, posts: 0, comments: 0 }
   }
 
   async function incrementPostCount(uid: string): Promise<void> {
