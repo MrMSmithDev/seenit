@@ -146,8 +146,19 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
         </div>
         <div className={style.inputContainer}>
           <label htmlFor="post-image">Add Image</label>
-          <input className={style.imageInput} type="file" onChange={handleImageChange} />
+          <input
+            className={style.imageInput}
+            type="file"
+            onChange={handleImageChange}
+            disabled={!!postID}
+          />
         </div>
+        <p
+          className={style.postRequirements}
+          style={!postID ? { display: 'none' } : { display: 'block' }}
+        >
+          Images cannot be added or changed when editing a post
+        </p>
         {imagePreviewElement}
         <div className={style.inputContainer}>
           <label htmlFor="">Post Body</label>
@@ -169,12 +180,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
           publish this post
         </p>
       </form>
-      <button
-        className={style.postSubmitButton}
-        onClick={submitForm}
-        style={isValid ? { opacity: 1 } : { opacity: 0.2 }}
-        disabled={!isValid}
-      >
+      <button className={style.postSubmitButton} onClick={submitForm} disabled={!isValid}>
         Publish
       </button>
       <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
