@@ -52,7 +52,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
     if (currentPost) {
       const loadAuthorProfile = async (): Promise<void> => {
         const firestoreAuthor = await loadUserProfile(currentPost.authorID)
-        setAuthor(firestoreAuthor)
+        if (firestoreAuthor) setAuthor(firestoreAuthor)
       }
 
       loadAuthorProfile()

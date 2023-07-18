@@ -17,10 +17,10 @@ interface PostProps {
 
 const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const [userHasFavorite, setUserHasFavorite] = useState(false)
-  const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites!)
+  const [favoriteCount, setFavoriteCount] = useState<number>(currentPost.favorites || 0)
   const [author, setAuthor] = useState<UserType>({
     uid: '',
-    displayName: ' ',
+    displayName: '',
     photoURL: '',
     blurb: '',
     comments: 0,
@@ -36,7 +36,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   useEffect((): void => {
     const loadAuthorProfile = async (): Promise<void> => {
       const firestoreAuthor: UserType = await loadUserProfile(authorID)
-      setAuthor(firestoreAuthor)
+      if (firestoreAuthor) setAuthor(firestoreAuthor)
     }
 
     loadAuthorProfile()
@@ -74,7 +74,8 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   // Set bodyLength of preview depending on image
   const bodyLength: number = postImage ? 1 : 3
 
-  const timePosted: Date = timeStamp!.toDate()
+  // Set time if post not deleted else return now
+  const timePosted: Date = timeStamp ? timeStamp.toDate() : new Date()
   const formattedTime: string = formatTime(timePosted)
   const postAddressTitle: string = generateAddressTitle(title)
 
@@ -100,7 +101,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
             {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
           </p>
           <p className={style.postFavoriteCount}>
-            {favoriteCount}
+            {favoriteCount ? favoriteCount : 0}
             <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
           </p>
         </div>
