@@ -23,7 +23,7 @@ const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
       <button className={style.postControl} onClick={editOnClick}>
         Edit
       </button>
-      <button className={style.postControl} onClick={deleteOnClick}>
+      <button className={style.postControl} onClick={deleteOnClick} disabled={true}>
         Delete
       </button>
     </div>

@@ -12,4 +12,8 @@
     font-style: italic;
     text-align: center;
     vertical-align: center;
+
+    &:disabled {
+        opacity: 0.2;
+    }
 }
