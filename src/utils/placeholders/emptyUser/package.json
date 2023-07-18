@@ -1,0 +1,8 @@
+{
+    "name": "empty-user",
+    "version": "1.0.0",
+    "main": "emptyUser.ts",
+    "dependencies": {
+
+    }
+}
