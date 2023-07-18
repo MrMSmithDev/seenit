@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 
 import style from './PostControls.module.scss'
 
@@ -8,12 +8,24 @@ interface PostControlsProps {
 }
 
 const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
+  const navigate: NavigateFunction = useNavigate()
+
+  const editOnClick = (): void => {
+    navigate(`/posts/${postID}/edit`)
+  }
+
+  const deleteOnClick = (): void => {
+    console.log('deleting post')
+  }
+
   return (
     <div className={style.postControlsContainer}>
-      <Link className={style.postControl} to={`/posts/${postID}/edit`}>
+      <button className={style.postControl} onClick={editOnClick}>
         Edit
-      </Link>
-      <button className={style.postControl}>Delete</button>
+      </button>
+      <button className={style.postControl} onClick={deleteOnClick}>
+        Delete
+      </button>
     </div>
   )
 }
