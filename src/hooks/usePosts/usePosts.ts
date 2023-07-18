@@ -40,7 +40,7 @@ import {
   UploadMetadata,
   deleteObject
 } from 'firebase/storage'
-import deletedPost from '@utils/deletedPost/deletedPost'
+import deletedPost from '@utils/placeholders/deletedPost/deletedPost'
 
 function generateID(): string {
   return Date.now().toString()
