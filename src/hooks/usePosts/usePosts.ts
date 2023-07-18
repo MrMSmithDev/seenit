@@ -40,6 +40,7 @@ import {
   UploadMetadata,
   deleteObject
 } from 'firebase/storage'
+import deletedPost from '@utils/deletedPost/deletedPost'
 
 function generateID(): string {
   return Date.now().toString()
@@ -150,8 +151,8 @@ function usePosts() {
       return posts
     } catch (error) {
       console.error('Error loading posts:', error)
-      throw error
     }
+    return []
   }
 
   async function loadUserPostFeed(
@@ -217,8 +218,8 @@ function usePosts() {
       return posts
     } catch (error) {
       console.error('Error loading users favorites:', error)
-      throw error
     }
+    return []
   }
 
   async function loadCurrentPost(postID: string): Promise<PostType> {
@@ -230,8 +231,8 @@ function usePosts() {
       return postDoc.data() as PostType
     } catch (error) {
       console.error('Error loading post:', error)
-      throw error
     }
+    return deletedPost
   }
 
   async function setFavoriteStatus(userID: string, postID: string): Promise<void> {
@@ -256,7 +257,6 @@ function usePosts() {
       )
     } catch (error) {
       console.error('Error changing favorite status:', error)
-      throw error
     }
   }
 
@@ -266,11 +266,10 @@ function usePosts() {
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData = userDoc?.data() as UserType
       if (userData?.favorites?.includes(postID)) return true
-      return false
     } catch (error) {
       console.error('Error checking favorites:', error)
-      throw error
     }
+    return false
   }
 
   async function incrementFavoriteCount(postID: string, incrementAmount: number): Promise<void> {
@@ -285,14 +284,8 @@ function usePosts() {
       })
     } catch (error) {
       console.error('Error incrementing favorite count:', error)
-      throw error
     }
   }
-
-  // async function editPost(post: PostType): Promise<void> {
-  //   const
-  // }
-  // function deletePost
 
   return {
     writePost,
