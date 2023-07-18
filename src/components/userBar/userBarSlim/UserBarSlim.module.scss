@@ -6,10 +6,12 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 10px;
     padding: 5px 7px;
     position: sticky;
-    overflow-x: hidden;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     top: 40px;
     white-space: nowrap;
     z-index: 1;
+    -webkit-overflow-scrolling: touch;
 
     @media screen and (min-width: $breakpoint-small) {
         display: flex;
@@ -18,21 +20,35 @@
     @media screen and (min-width: $breakpoint-medium) {
         display: none;
     }
-}
 
-.carouselOuter {
+    // Custom scrollbar styles
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 
+    &::-webkit-scrollbar {
+        height: 2px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: inherit;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 4px;
+      }
 }
 
 .carouselItem {
     display: inline-block;
+    scroll-snap-align: start;
     width: 100vw;
 
     &:not(:last-of-type) {
         margin-right: 14px;
     }
 
-    @media screen and (min-width: 460px) {
+    @media screen and (min-width: 360px) {
         width: calc(50vw - 14px);
     }
 
