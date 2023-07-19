@@ -4,11 +4,17 @@ import style from './CommentControls.module.scss'
 
 interface CommentControlsProps {
   commentID: string
+  editState: boolean
+  setEditState: (change: boolean) => void
 }
 
-const CommentControls: React.FC<CommentControlsProps> = ({ commentID }) => {
+const CommentControls: React.FC<CommentControlsProps> = ({
+  commentID,
+  editState,
+  setEditState
+}) => {
   const editOnClick = (): void => {
-    console.log('Edit comment:', commentID)
+    setEditState(!editState)
   }
 
   const deleteOnClick = (): void => {
@@ -18,7 +24,7 @@ const CommentControls: React.FC<CommentControlsProps> = ({ commentID }) => {
   return (
     <div className={style.commentControlsContainer}>
       <button className={style.commentControl} onClick={editOnClick}>
-        Edit
+        {editState ? 'Cancel' : 'Edit'}
       </button>
       <button className={style.commentControl} onClick={deleteOnClick}>
         Delete
