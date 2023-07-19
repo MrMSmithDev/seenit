@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss'; 
+
 .newCommentContainer {
     background-color: #c9c9c9;
     padding: 10px;
@@ -17,9 +19,23 @@
     .confirmButton {
         align-self: flex-end;
         background-color: #fff;
-        border: 1px solid black;
+        border: 1px solid $deep-blue;
+        color: $deep-blue;
         cursor: pointer;
         padding: 1px 10px;
+
+        &:disabled {
+            opacity: 0.2;
+        }
+    
+        &:not(:disabled):hover {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            transform: scale(1.01)
+        }
+    
+        &:active {
+            transform: scale(.9) !important;
+        }
     }
 
     p {

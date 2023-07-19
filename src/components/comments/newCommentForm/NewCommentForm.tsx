@@ -43,7 +43,7 @@ const NewCommentForm: React.FC = () => {
           onChange={handleCommentBodyChange}
         />
         <button className={style.confirmButton} type="submit" onClick={uploadComment}>
-          Confirm
+          Publish
         </button>
       </form>
       <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
