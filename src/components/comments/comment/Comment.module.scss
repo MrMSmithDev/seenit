@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .commentContainer {
     display: flex;
     gap: 10px;
@@ -30,7 +32,7 @@
     }
 
     .commentBody {
-        margin: 5px 0 5px 0;
+        margin: 10px 0;
     }
 
     .commentInfo {
@@ -46,6 +48,48 @@
                 border-radius: 50%;
                 height: 20px;
                 width: 20px;
+            }
+        }
+    }
+
+    .editContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 10px 0;
+
+        .editCommentInput {
+            border: 1px solid gray;
+            border-radius: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            min-height: 40px;
+            padding: 5px 3px;
+            resize: vertical;
+        }
+
+        .submitCommentEdit {
+            align-self: center;
+            background-color: inherit;
+            border: 2px solid $deep-blue;
+            color: $deep-blue;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 3px 30px;
+            width:fit-content;
+        
+            &:disabled {
+                opacity: 0.2;
+            }
+        
+            &:not(:disabled):hover {
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transform: scale(1.01)
+            }
+        
+            &:active {
+                transform: scale(.9) !important;
             }
         }
     }
