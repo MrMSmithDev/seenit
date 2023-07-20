@@ -72,7 +72,7 @@ function useComments() {
     return false
   }
 
-  async function editComment(commentID: string, commentBody: string): Promise<void> {
+  async function editComment(commentID: string, commentBody: string): Promise<boolean> {
     try {
       const commentQuery: Query = query(commentDB, where('ID', '==', commentID))
       const querySnapshot: QuerySnapshot = await getDocs(commentQuery)
@@ -87,9 +87,11 @@ function useComments() {
           { merge: true }
         )
       }
+      return true
     } catch (error) {
       console.error('Error editing comment:', error)
     }
+    return false
   }
 
   async function loadCommentFeed(commentIDs: string[]): Promise<CommentType[]> {
