@@ -16,7 +16,8 @@ import {
   Firestore,
   QueryDocumentSnapshot,
   DocumentReference,
-  increment
+  increment,
+  setDoc
 } from 'firebase/firestore'
 import useAuth from '@hooks/useAuth'
 import { CommentType, UserInteraction } from 'src/customTypes/types'
@@ -47,13 +48,13 @@ async function addCommentToPost(postID: string, commentID: string): Promise<void
 
 function useComments() {
   const firestoreDB: Firestore = getFirestore()
+  const commentDB: CollectionReference = collection(firestoreDB, 'comments')
   const { user } = useAuth()
 
   async function writeComment(postID: string, commentBody: string): Promise<boolean> {
     const commentID: string = generateCommentID()
 
     try {
-      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
       await addDoc(commentDB, {
         postID,
         ID: commentID,
@@ -67,14 +68,32 @@ function useComments() {
       return true
     } catch (error) {
       console.error('Error writing comment:', error)
-      throw error
+    }
+    return false
+  }
+
+  async function editComment(commentID: string, commentBody: string): Promise<void> {
+    try {
+      const commentQuery: Query = query(commentDB, where('ID', '==', commentID))
+      const querySnapshot: QuerySnapshot = await getDocs(commentQuery)
+
+      const commentDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
+      if (commentDoc.exists()) {
+        await setDoc(
+          commentDoc.ref,
+          {
+            body: commentBody
+          },
+          { merge: true }
+        )
+      }
+    } catch (error) {
+      console.error('Error editing comment:', error)
     }
   }
 
   async function loadCommentFeed(commentIDs: string[]): Promise<CommentType[]> {
     try {
-      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
-
       const commentPromises: Promise<CommentType | undefined>[] = commentIDs.map(async (id) => {
         const commentQuery: Query = query(commentDB, where('ID', '==', id))
 
@@ -95,8 +114,7 @@ function useComments() {
 
   async function loadUsersComments(userID: string): Promise<CommentType[]> {
     try {
-      const commentsDB: CollectionReference = collection(firestoreDB, 'comments')
-      const commentsQuery: Query = query(commentsDB, where('authorID', '==', userID), limit(20))
+      const commentsQuery: Query = query(commentDB, where('authorID', '==', userID), limit(20))
 
       const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
       const comments: CommentType[] = []
@@ -118,8 +136,7 @@ function useComments() {
     newInteraction: number
   ): Promise<void> {
     try {
-      const commentsDB: CollectionReference = collection(firestoreDB, 'comments')
-      const commentsQuery: Query = query(commentsDB, where('ID', '==', commentID))
+      const commentsQuery: Query = query(commentDB, where('ID', '==', commentID))
       const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
 
       const commentRef: DocumentReference = querySnapshot?.docs[0]?.ref
@@ -154,7 +171,6 @@ function useComments() {
 
   async function incrementCommentScore(commentID: string, incrementAmount: number): Promise<void> {
     try {
-      const commentDB: CollectionReference = collection(firestoreDB, 'comments')
       const querySnapshot: QuerySnapshot = await getDocs(
         query(commentDB, where('ID', '==', commentID))
       )
@@ -172,8 +188,9 @@ function useComments() {
 
   return {
     writeComment,
-    loadCommentFeed,
+    editComment,
 
+    loadCommentFeed,
     loadUsersComments,
 
     updateUserInteractions,
