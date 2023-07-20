@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CommentType, UserType } from 'src/customTypes/types'
 import VoteContainer from './voteContainer'
-import { useAuth, useUsers } from '@hooks/index'
+import { useAuth, useComments, useUsers } from '@hooks/index'
 
 import formatTime from '@utils/formatTime'
 
@@ -17,7 +17,9 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({ comment }) => {
   const [author, setAuthor] = useState<UserType>(emptyUser)
   const [editing, setEditing] = useState<boolean>(false)
+  const [editBody, setEditBody] = useState<string>(comment.body)
   const { user } = useAuth()
+  const { editComment } = useComments()
   const { loadUserProfile } = useUsers()
 
   const timePosted: Date = comment.timeStamp.toDate()
@@ -32,6 +34,18 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
     loadAuthor()
   }, [])
 
+  const handleEditBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditBody(e.target.value)
+  }
+
+  const writeFunctionEdit = async () => {
+    const resultBool = await editComment(comment.ID, editBody)
+    if (resultBool) {
+      // Logic to change current comment here
+      setEditing(false)
+    }
+  }
+
   let commentControlsElement: React.ReactNode | null
   if (user) {
     commentControlsElement =
@@ -45,8 +59,14 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   if (editing)
     commentState = (
       <div className={style.editContainer}>
-        <textarea className={style.editCommentInput} value={comment.body} />
-        <button className={style.submitCommentEdit}>Publish edit</button>
+        <textarea
+          className={style.editCommentInput}
+          onChange={handleEditBodyChange}
+          value={editBody}
+        />
+        <button className={style.submitCommentEdit} onClick={writeFunctionEdit}>
+          Publish edit
+        </button>
       </div>
     )
   else commentState = <p className={style.commentBody}>{comment.body}</p>
