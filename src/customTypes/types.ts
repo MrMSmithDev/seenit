@@ -51,6 +51,7 @@ export interface CommentType {
   body: string
   score: number
   userInteractions: UserInteraction[]
+  edited?: boolean
 }
 
 export interface FilterQuery {
