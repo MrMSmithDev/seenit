@@ -82,7 +82,8 @@ function useComments() {
         await setDoc(
           commentDoc.ref,
           {
-            body: commentBody
+            body: commentBody,
+            edited: true
           },
           { merge: true }
         )
