@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { CommentType, UserType } from 'src/customTypes/types'
 import VoteContainer from './voteContainer'
-import { useAuth, useComments, useUsers } from '@hooks/index'
+import Modal from '@components/modal'
+import { useAuth, useComments, useNotification, useUsers } from '@hooks/index'
 
 import formatTime from '@utils/formatTime'
 
@@ -17,9 +18,12 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({ comment }) => {
   const [author, setAuthor] = useState<UserType>(emptyUser)
   const [editing, setEditing] = useState<boolean>(false)
+  const [commentBody, setCommentBody] = useState<string>(comment.body)
   const [editBody, setEditBody] = useState<string>(comment.body)
+
   const { user } = useAuth()
   const { editComment } = useComments()
+  const notify = useNotification()
   const { loadUserProfile } = useUsers()
 
   const timePosted: Date = comment.timeStamp.toDate()
@@ -38,11 +42,14 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
     setEditBody(e.target.value)
   }
 
-  const writeFunctionEdit = async () => {
+  const writeFunctionEdit = async (): Promise<void> => {
     const resultBool = await editComment(comment.ID, editBody)
     if (resultBool) {
-      // Logic to change current comment here
+      setCommentBody(editBody)
       setEditing(false)
+      notify.toggle('Comment edited')
+    } else {
+      notify.toggle('Unable to edit comment, please try again later')
     }
   }
 
@@ -69,7 +76,13 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         </button>
       </div>
     )
-  else commentState = <p className={style.commentBody}>{comment.body}</p>
+  else
+    commentState = (
+      <React.Fragment>
+        <p className={style.commentBody}>{commentBody}</p>
+        {comment.edited ? <p className={style.edited}>* This comment has been edited *</p> : null}
+      </React.Fragment>
+    )
 
   return (
     <div className={style.commentContainer} data-comment-post-id={comment.postID}>
@@ -82,6 +95,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
           <AuthorInfo author={author} link={true} />
         </div>
       </div>
+      <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
     </div>
   )
 }
