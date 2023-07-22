@@ -182,6 +182,16 @@ function usePosts() {
     }
   }
 
+  function sortUserFavorites(favoriteArr: PostType[], queryConstraints: FilterQuery): PostType[] {
+    if (favoriteArr.length < 2) return favoriteArr
+
+    const attribute = queryConstraints.attribute
+    const sortedArr: PostType[] = favoriteArr.sort((a: PostType, b: PostType) => {
+      return a[attribute] - b[attribute]
+    })
+    return sortedArr
+  }
+
   async function loadUserFavorites(
     userID: string,
     queryConstraints: FilterQuery
@@ -208,12 +218,10 @@ function usePosts() {
         }
       }
 
+      console.log(posts[0].timeStamp?.seconds)
       console.log(queryConstraints)
       // posts.sort((a: PostType, b: PostType) => {
-      //   if (a[queryConstraints.attribute] < b[queryConstraints.attribute]) return -1
-      //   if (a[queryConstraints.attribute] > b[queryConstraints.attribute]) return 1
-      //   return 0
-      // })
+      // const sortedPosts = sortUserFavorites(posts)
 
       return posts
     } catch (error) {
