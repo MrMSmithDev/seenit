@@ -55,7 +55,7 @@ export interface CommentType {
 }
 
 export interface FilterQuery {
-  attribute: string
+  attribute: 'timeStamp' | 'favorites'
   order: OrderByDirection
 }
 
