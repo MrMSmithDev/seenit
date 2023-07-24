@@ -11,27 +11,27 @@ import Loading from '@components/loading'
 
 const PostPage: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<PostType | null>()
+  const [loading, setLoading] = useState<boolean>(true)
 
   const { loadCurrentPost } = usePosts()
   const { postID } = useParams()
 
   useEffect(() => {
     const loadPost = async (): Promise<void> => {
-      let retrievedPost: PostType | null = null
-      while (!retrievedPost) {
-        try {
-          retrievedPost = await loadCurrentPost(postID!)
-        } catch (error) {
-          console.log(error)
-        }
+      try {
+        const retrievedPost: PostType = await loadCurrentPost(postID!)
+        setCurrentPost(retrievedPost)
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+        setLoading(false)
       }
-      // retrievedPost = (await loadCurrentPost(postID!)) || null
-      // console.log(retrievedPost)
-      setCurrentPost(retrievedPost)
     }
 
     loadPost()
-  }, [])
+  }, [postID])
+
+  if (loading) return <Loading />
 
   if (currentPost)
     return (
