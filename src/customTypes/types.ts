@@ -67,5 +67,6 @@ export interface ImageUploadData {
 export interface ApiReturn {
   success: boolean
   reference: DocumentReference | null
+  id?: string
   error?: string
 }

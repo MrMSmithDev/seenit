@@ -93,7 +93,7 @@ function usePosts() {
         imageUrl: imageData?.publicUrl || null,
         favorites: 0
       })
-      if (result) return { success: true, reference: result }
+      if (result) return { success: true, reference: result, id: postID }
     } catch (error) {
       console.error(error)
       // If image has been uploaded, but post fails to upload, remove the
@@ -124,7 +124,7 @@ function usePosts() {
           },
           { merge: true }
         )
-        return { success: true, reference: postDoc.ref }
+        return { success: true, reference: postDoc.ref, id: editedPost.ID }
       }
     } catch (error) {
       console.log('Error editing post:', error)
