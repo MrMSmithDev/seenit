@@ -184,14 +184,18 @@ function usePosts() {
 
   function sortUserFavorites(favoriteArr: PostType[], queryConstraints: FilterQuery): PostType[] {
     if (favoriteArr.length < 2) return favoriteArr
+    let sortedArr: PostType[] = []
 
-    console.log(queryConstraints)
+    if (queryConstraints.attribute === 'favorites')
+      sortedArr = favoriteArr.sort((a: PostType, b: PostType) => {
+        return a.favorites! - b.favorites!
+      })
+    else if (queryConstraints.attribute === 'timeStamp')
+      sortedArr = favoriteArr.sort((a: PostType, b: PostType) => {
+        return a.timeStamp!.seconds - b.timeStamp!.seconds
+      })
 
-    // const attribute = queryConstraints.attribute
-    const sortedArr: PostType[] = favoriteArr.sort((a: PostType, b: PostType) => {
-      return a.favorites! - b.favorites!
-    })
-    if (queryConstraints.order === 'asc') return sortedArr.reverse()
+    if (queryConstraints.order === 'desc') return sortedArr.reverse()
     return sortedArr
   }
 
