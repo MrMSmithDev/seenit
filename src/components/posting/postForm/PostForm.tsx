@@ -92,7 +92,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
     }
     const result: ApiReturn = await writePost(postObject)
     if (result.success) {
-      // navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
+      navigate(`/posts/${result.id!}/${generateAddressTitle(postTitle)}`)
       notify.toggle('Post published')
     } else {
       notify.toggle(`${result.error}, please try again later`)
@@ -107,7 +107,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
     }
     const result: ApiReturn = await editPost(postObject)
     if (result.success) {
-      // navigate(`/${result.reference?.path}/${generateAddressTitle(postTitle)}`)
+      navigate(`/posts/${result.id}/${generateAddressTitle(postTitle)}`)
       notify.toggle('Post edited')
     } else {
       notify.toggle(`${result.error}, please try again later`)
