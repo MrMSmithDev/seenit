@@ -138,7 +138,7 @@ function usePosts() {
       const postsQuery: Query = query(
         postDB,
         orderBy(queryConstraints.attribute, queryConstraints.order),
-        limit(20)
+        limit(10)
       )
 
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
@@ -187,13 +187,17 @@ function usePosts() {
     let sortedArr: PostType[] = []
 
     if (queryConstraints.attribute === 'favorites')
-      sortedArr = favoriteArr.sort((a: PostType, b: PostType) => {
-        return a.favorites! - b.favorites!
-      })
+      sortedArr = [
+        ...favoriteArr.sort((a: PostType, b: PostType) => {
+          return a.favorites! - b.favorites!
+        })
+      ]
     else if (queryConstraints.attribute === 'timeStamp')
-      sortedArr = favoriteArr.sort((a: PostType, b: PostType) => {
-        return a.timeStamp!.seconds - b.timeStamp!.seconds
-      })
+      sortedArr = [
+        ...favoriteArr.sort((a: PostType, b: PostType) => {
+          return a.timeStamp!.seconds - b.timeStamp!.seconds
+        })
+      ]
 
     if (queryConstraints.order === 'desc') return sortedArr.reverse()
     return sortedArr
@@ -228,7 +232,7 @@ function usePosts() {
       const sortedPosts = sortUserFavorites(posts, queryConstraints)
       console.log(sortedPosts)
 
-      return posts
+      return sortedPosts
     } catch (error) {
       console.error('Error loading users favorites:', error)
     }
