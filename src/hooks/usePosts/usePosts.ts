@@ -230,8 +230,6 @@ function usePosts() {
       }
 
       const sortedPosts = sortUserFavorites(posts, queryConstraints)
-      console.log(sortedPosts)
-
       return sortedPosts
     } catch (error) {
       console.error('Error loading users favorites:', error)
