@@ -185,10 +185,13 @@ function usePosts() {
   function sortUserFavorites(favoriteArr: PostType[], queryConstraints: FilterQuery): PostType[] {
     if (favoriteArr.length < 2) return favoriteArr
 
-    const attribute = queryConstraints.attribute
+    console.log(queryConstraints)
+
+    // const attribute = queryConstraints.attribute
     const sortedArr: PostType[] = favoriteArr.sort((a: PostType, b: PostType) => {
-      return a[attribute] - b[attribute]
+      return a.favorites! - b.favorites!
     })
+    if (queryConstraints.order === 'asc') return sortedArr.reverse()
     return sortedArr
   }
 
@@ -218,10 +221,8 @@ function usePosts() {
         }
       }
 
-      console.log(posts[0].timeStamp?.seconds)
-      console.log(queryConstraints)
-      // posts.sort((a: PostType, b: PostType) => {
-      // const sortedPosts = sortUserFavorites(posts)
+      const sortedPosts = sortUserFavorites(posts, queryConstraints)
+      console.log(sortedPosts)
 
       return posts
     } catch (error) {
