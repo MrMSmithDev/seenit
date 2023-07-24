@@ -23,6 +23,10 @@ function filterSwitch(filter: string): FilterQuery {
   }
 }
 
+function saveFilterToLocal(filter: string): void {
+  localStorage.setItem('filter', filter)
+}
+
 interface PostFeedProps {
   feedTitle: string
   constraint?: string
@@ -37,6 +41,12 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
   const { loadPostFeed, loadUserFavorites } = usePosts()
   const { getUsersDisplayName } = useUsers()
+
+  useEffect((): void => {
+    // Load locally stored filter value
+    const savedFilterSetting: string | null = localStorage.getItem('filter')
+    if (savedFilterSetting) setFilter(savedFilterSetting)
+  })
 
   useEffect((): void => {
     const createTitle = async () => {
@@ -64,6 +74,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
   const handleFilterChange = (newFilterSetting: string) => {
     setFilter(newFilterSetting)
+    saveFilterToLocal(newFilterSetting)
   }
 
   const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
