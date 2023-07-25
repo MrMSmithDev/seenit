@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function useModal() {
+function useNotification() {
   const [isShowing, setIsShowing] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
 
@@ -29,4 +29,4 @@ function useModal() {
   }
 }
 
-export default useModal
+export default useNotification
