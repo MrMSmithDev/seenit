@@ -4,6 +4,7 @@ import { FilterQuery, PostType } from 'src/customTypes/types'
 import {
   collection,
   CollectionReference,
+  DocumentReference,
   getDocs,
   getFirestore,
   limit,
@@ -15,32 +16,45 @@ import {
   where
 } from 'firebase/firestore'
 
-function useModal(queryConstraints: FilterQuery, userID: string | null = null) {
+function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null = null) {
+  const postDB: CollectionReference = collection(getFirestore(), 'posts')
+
   const [posts, setPosts] = useState<PostType[]>([])
-  const firestoreDB = getFirestore()
+  const [postsQuery, setPostsQuery] = useState<Query>(
+    query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
+  )
 
   useEffect(() => {
-    try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
-      const postsQuery: Query = query(
-        postDB,
-        where('authorID', '==', userID),
-        orderBy(queryConstraints.attribute, queryConstraints.order),
-        limit(20)
+    if (userID) {
+      const queryWithUser: Query = query(
+        query(
+          postDB,
+          where('authorID', '==', userID),
+          orderBy(queryConstraints.attribute, queryConstraints.order),
+          limit(10)
+        )
       )
-
-      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
-      const tempPosts: PostType[] = []
-
-      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-        const post = currentDoc.data() as PostType
-        tempPosts.push(post)
-      })
-      setPosts(tempPosts)
-    } catch (error) {
-      console.error('Error loading users posts:', error)
-      throw error
+      setPostsQuery(queryWithUser)
     }
+  }, [])
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
+        const tempPosts: PostType[] = []
+
+        querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
+          const post = currentDoc.data() as PostType
+          tempPosts.push(post)
+        })
+        setPosts(tempPosts)
+      } catch (error) {
+        console.error('Error loading users posts:', error)
+        throw error
+      }
+    }
+    loadPosts()
   }, [])
 
   return {
@@ -48,4 +62,4 @@ function useModal(queryConstraints: FilterQuery, userID: string | null = null) {
   }
 }
 
-export default useModal
+export default useInfiniteScroll
