@@ -24,6 +24,8 @@ function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null 
     query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
   )
 
+  const [lastRef, setLastRef] = useState<DocumentReference>()
+
   useEffect(() => {
     if (userID) {
       const queryWithUser: Query = query(
@@ -39,7 +41,7 @@ function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null 
   }, [])
 
   useEffect(() => {
-    const loadPosts = async () => {
+    const loadInitialPosts = async () => {
       try {
         const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
         const tempPosts: PostType[] = []
@@ -49,16 +51,24 @@ function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null 
           tempPosts.push(post)
         })
         setPosts(tempPosts)
+
+        const [lastDoc] = querySnapshot.docs.slice(-1)
+        setLastRef(lastDoc.ref)
       } catch (error) {
         console.error('Error loading users posts:', error)
         throw error
       }
     }
-    loadPosts()
+    loadInitialPosts()
   }, [])
 
+  const loadNextPosts = () => {
+    console.log(lastRef)
+  }
+
   return {
-    posts
+    posts,
+    loadNextPosts
   }
 }
 
