@@ -4,7 +4,7 @@ import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
 import { FilterQuery, PostType } from 'src/customTypes/types'
-import { usePosts, useUsers } from '@hooks/index'
+import { useInfiniteScroll, usePosts, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
@@ -12,6 +12,8 @@ import Loading from '@components/loading'
 function filterSwitch(filter: string): FilterQuery {
   // default is set to newest
   switch (filter.toLowerCase()) {
+    case 'newest':
+      return { attribute: 'timeStamp', order: 'desc' }
     case 'oldest':
       return { attribute: 'timeStamp', order: 'asc' }
     case 'top rated':
@@ -39,7 +41,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
   const [filter, setFilter] = useState<string>('newest')
 
-  const { loadPostFeed, loadUserFavorites } = usePosts()
+  const scroll = useInfiniteScroll()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
@@ -60,13 +62,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
   useEffect((): void => {
     const fetchPosts = async (): Promise<void> => {
-      let posts
       const queryConstraints: FilterQuery = filterSwitch(filter)
-      if (userID && constraint === 'favorites')
-        posts = await loadUserFavorites(userID, queryConstraints)
-      else posts = await loadPostFeed(queryConstraints)
-      setCurrentPosts(posts)
-      if (posts) setIsLoading(false)
+      if (userID && constraint === 'favorites') await scroll.startScroll(queryConstraints, userID)
+      await scroll.startScroll(queryConstraints)
+      setCurrentPosts(scroll.posts)
+      if (scroll.posts.length > 0) setIsLoading(false)
     }
 
     fetchPosts()
