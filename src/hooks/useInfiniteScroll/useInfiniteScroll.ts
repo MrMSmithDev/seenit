@@ -26,7 +26,7 @@ function useInfiniteScroll() {
 
   const [lastRef, setLastRef] = useState<DocumentReference>()
 
-  function setQuery(queryConstraints: FilterQuery, userID: string | null = null): void {
+  function setQuery(queryConstraints: FilterQuery, userID: string | null): void {
     let queryToSet: Query
     if (userID) {
       queryToSet = query(
@@ -39,18 +39,17 @@ function useInfiniteScroll() {
       )
     } else {
       queryToSet = query(
-        query(
-          postDB,
-          where('authorID', '==', userID),
-          orderBy(queryConstraints.attribute, queryConstraints.order),
-          limit(10)
-        )
+        query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
       )
     }
     setPostsQuery(queryToSet)
   }
 
-  async function startFeed(): void {
+  async function startScroll(
+    queryConstraints: FilterQuery,
+    userID: string | null = null
+  ): Promise<void> {
+    setQuery(queryConstraints, userID)
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const tempPosts: PostType[] = []
@@ -75,6 +74,7 @@ function useInfiniteScroll() {
 
   return {
     posts,
+    startScroll,
     loadNextPosts
   }
 }
