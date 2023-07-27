@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
 
 import {
@@ -16,19 +16,20 @@ import {
   where
 } from 'firebase/firestore'
 
-function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null = null) {
+function useInfiniteScroll() {
   const postDB: CollectionReference = collection(getFirestore(), 'posts')
 
   const [posts, setPosts] = useState<PostType[]>([])
   const [postsQuery, setPostsQuery] = useState<Query>(
-    query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
+    query(postDB, orderBy('timeStamp', 'desc'), limit(10))
   )
 
   const [lastRef, setLastRef] = useState<DocumentReference>()
 
-  useEffect(() => {
+  function setQuery(queryConstraints: FilterQuery, userID: string | null = null): void {
+    let queryToSet: Query
     if (userID) {
-      const queryWithUser: Query = query(
+      queryToSet = query(
         query(
           postDB,
           where('authorID', '==', userID),
@@ -36,34 +37,40 @@ function useInfiniteScroll(queryConstraints: FilterQuery, userID: string | null 
           limit(10)
         )
       )
-      setPostsQuery(queryWithUser)
+    } else {
+      queryToSet = query(
+        query(
+          postDB,
+          where('authorID', '==', userID),
+          orderBy(queryConstraints.attribute, queryConstraints.order),
+          limit(10)
+        )
+      )
     }
-  }, [])
+    setPostsQuery(queryToSet)
+  }
 
-  useEffect(() => {
-    const loadInitialPosts = async () => {
-      try {
-        const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
-        const tempPosts: PostType[] = []
+  async function startFeed(): void {
+    try {
+      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
+      const tempPosts: PostType[] = []
 
-        querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-          const post = currentDoc.data() as PostType
-          tempPosts.push(post)
-        })
-        setPosts(tempPosts)
+      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
+        const post = currentDoc.data() as PostType
+        tempPosts.push(post)
+      })
+      setPosts(tempPosts)
 
-        const [lastDoc] = querySnapshot.docs.slice(-1)
-        setLastRef(lastDoc.ref)
-      } catch (error) {
-        console.error('Error loading users posts:', error)
-        throw error
-      }
+      const [lastDoc] = querySnapshot.docs.slice(-1)
+      setLastRef(lastDoc.ref)
+    } catch (error) {
+      console.error('Error loading users posts:', error)
+      throw error
     }
-    loadInitialPosts()
-  }, [])
+  }
 
   const loadNextPosts = () => {
-    console.log(lastRef)
+    if (lastRef) console.log(lastRef)
   }
 
   return {
