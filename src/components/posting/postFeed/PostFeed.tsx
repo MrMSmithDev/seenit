@@ -4,7 +4,7 @@ import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
 import { FilterQuery, PostType } from 'src/customTypes/types'
-import { useInfiniteScroll, usePosts, useUsers } from '@hooks/index'
+import { useInfiniteScroll, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
@@ -38,17 +38,24 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
+  // const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
   const [filter, setFilter] = useState<string>('newest')
+  const [queryConstraints, setQueryConstraints] = useState<FilterQuery>(filterSwitch(filter))
 
-  const scroll = useInfiniteScroll()
+  const { posts, loadScroll } = useInfiniteScroll()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
     // Load locally stored filter value
     const savedFilterSetting: string | null = localStorage.getItem('filter')
-    if (savedFilterSetting) setFilter(savedFilterSetting)
+    if (savedFilterSetting) {
+      setFilter(savedFilterSetting)
+    }
   })
+
+  useEffect((): void => {
+    setQueryConstraints(filterSwitch(filter))
+  }, [filter])
 
   useEffect((): void => {
     const createTitle = async () => {
@@ -61,23 +68,42 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   }, [userID])
 
   useEffect((): void => {
-    const fetchPosts = async (): Promise<void> => {
-      const queryConstraints: FilterQuery = filterSwitch(filter)
-      if (userID && constraint === 'favorites') await scroll.startScroll(queryConstraints, userID)
-      await scroll.startScroll(queryConstraints)
-      setCurrentPosts(scroll.posts)
-      if (scroll.posts.length > 0) setIsLoading(false)
+    const setPosts = async (): Promise<void> => {
+      const fetchPosts = async (): Promise<void> => {
+        if (userID && constraint === 'favorites') await loadScroll(queryConstraints, userID)
+        await loadScroll(queryConstraints)
+        // setCurrentPosts(posts)
+      }
+
+      await fetchPosts()
+      // setCurrentPosts(posts)
+      setIsLoading(false)
     }
 
-    fetchPosts()
+    setPosts()
   }, [filter, feedTitle])
+
+  useEffect(() => {
+    const handleScroll = (): void => {
+      const isNearingBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
+      if (isNearingBottom) {
+        if (userID && constraint === 'favorites') loadScroll(queryConstraints, userID)
+        loadScroll(queryConstraints)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleFilterChange = (newFilterSetting: string) => {
     setFilter(newFilterSetting)
     saveFilterToLocal(newFilterSetting)
   }
 
-  const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
+  const postArr: ReactNode[] = posts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
   })
 
