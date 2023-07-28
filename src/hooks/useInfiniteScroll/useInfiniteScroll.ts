@@ -57,7 +57,7 @@ function useInfiniteScroll() {
     setPostsQuery(queryToSet)
   }
 
-  async function startScroll(
+  async function loadScroll(
     queryConstraints: FilterQuery,
     userID: string | null = null
   ): Promise<void> {
@@ -70,7 +70,7 @@ function useInfiniteScroll() {
         const post = currentDoc.data() as PostType
         tempPosts.push(post)
       })
-      setPosts(tempPosts)
+      setPosts((prevPosts) => [...prevPosts, ...tempPosts])
 
       const [lastDoc] = querySnapshot.docs.slice(-1)
       setLastRef(lastDoc.ref)
@@ -80,14 +80,9 @@ function useInfiniteScroll() {
     }
   }
 
-  const loadNextPosts = () => {
-    if (lastRef) console.log(lastRef)
-  }
-
   return {
     posts,
-    startScroll,
-    loadNextPosts
+    loadScroll
   }
 }
 
