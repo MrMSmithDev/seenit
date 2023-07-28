@@ -13,6 +13,7 @@ import {
   Query,
   QueryDocumentSnapshot,
   QuerySnapshot,
+  startAfter,
   where
 } from 'firebase/firestore'
 
@@ -28,19 +29,30 @@ function useInfiniteScroll() {
 
   function setQuery(queryConstraints: FilterQuery, userID: string | null): void {
     let queryToSet: Query
-    if (userID) {
-      queryToSet = query(
-        query(
-          postDB,
-          where('authorID', '==', userID),
-          orderBy(queryConstraints.attribute, queryConstraints.order),
-          limit(10)
-        )
-      )
+    if (lastRef) {
+      queryToSet = userID
+        ? query(
+            postDB,
+            where('authorID', '==', userID),
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            startAfter(lastRef),
+            limit(10)
+          )
+        : query(
+            postDB,
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            startAfter(lastRef),
+            limit(10)
+          )
     } else {
-      queryToSet = query(
-        query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
-      )
+      queryToSet = userID
+        ? query(
+            postDB,
+            where('authorID', '==', userID),
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            limit(10)
+          )
+        : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
     }
     setPostsQuery(queryToSet)
   }
