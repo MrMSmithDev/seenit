@@ -38,11 +38,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  // const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
   const [filter, setFilter] = useState<string>('newest')
   const [queryConstraints, setQueryConstraints] = useState<FilterQuery>(filterSwitch(filter))
+  const [resetPosts, setResetPosts] = useState<boolean>(false)
 
-  const { posts, loadScroll } = useInfiniteScroll()
+  const { posts, loadScroll, clearPosts } = useInfiniteScroll()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
@@ -51,10 +51,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     if (savedFilterSetting) {
       setFilter(savedFilterSetting)
     }
-  })
+  }, [])
 
   useEffect((): void => {
     setQueryConstraints(filterSwitch(filter))
+    setResetPosts(true)
   }, [filter])
 
   useEffect((): void => {
@@ -70,18 +71,20 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   useEffect((): void => {
     const setPosts = async (): Promise<void> => {
       const fetchPosts = async (): Promise<void> => {
+        if (resetPosts) {
+          clearPosts()
+        }
+
         if (userID && constraint === 'favorites') await loadScroll(queryConstraints, userID)
-        await loadScroll(queryConstraints)
-        // setCurrentPosts(posts)
+        else await loadScroll(queryConstraints)
       }
 
       await fetchPosts()
-      // setCurrentPosts(posts)
       setIsLoading(false)
     }
 
     setPosts()
-  }, [filter, feedTitle])
+  }, [resetPosts])
 
   useEffect(() => {
     const handleScroll = (): void => {
@@ -89,7 +92,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
       if (isNearingBottom) {
         if (userID && constraint === 'favorites') loadScroll(queryConstraints, userID)
-        loadScroll(queryConstraints)
+        else loadScroll(queryConstraints)
       }
     }
 
