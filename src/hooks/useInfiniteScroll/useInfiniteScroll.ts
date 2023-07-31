@@ -28,6 +28,7 @@ function useInfiniteScroll() {
   const [lastRef, setLastRef] = useState<DocumentReference | null>(null)
 
   function setQuery(queryConstraints: FilterQuery, userID: string | null): void {
+    console.log(lastRef)
     let queryToSet: Query
     if (lastRef) {
       queryToSet = userID
@@ -62,7 +63,6 @@ function useInfiniteScroll() {
     userID: string | null = null
   ): Promise<void> {
     setQuery(queryConstraints, userID)
-    console.log('loading')
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const tempPosts: PostType[] = []
@@ -71,9 +71,14 @@ function useInfiniteScroll() {
         const post = currentDoc.data() as PostType
         tempPosts.push(post)
       })
+
+      // If there are no new posts, exit early
+      if (tempPosts.length === 0) return
+
       setPosts((prevPosts) => [...prevPosts, ...tempPosts])
 
       const [lastDoc] = querySnapshot.docs.slice(-1)
+      console.log(lastDoc.ref)
       setLastRef(lastDoc.ref)
     } catch (error) {
       console.error('Error loading users posts:', error)
@@ -81,7 +86,7 @@ function useInfiniteScroll() {
     }
   }
 
-  function clearPosts() {
+  function clearPosts(): void {
     setPosts([])
     setLastRef(null)
   }
