@@ -54,6 +54,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   }, [])
 
   useEffect((): void => {
+    clearPosts()
     setQueryConstraints(filterSwitch(filter))
     setResetPosts(true)
   }, [filter])
