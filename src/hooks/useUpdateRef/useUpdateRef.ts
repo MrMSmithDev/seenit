@@ -1,9 +1,9 @@
 import { useRef } from 'react'
 
-function useUpdateRef<T>() {
-  const ref = useRef<T>()
-  const updateRef = (value: T) => {
-    ref.current = value
+function useUpdateRef<T>(value: T) {
+  const ref = useRef<T>(value)
+  const updateRef = (newValue: T) => {
+    ref.current = newValue
   }
   return [ref, updateRef] as const
 }
