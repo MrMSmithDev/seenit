@@ -1,0 +1,8 @@
+{
+    "name": "use-update-ref",
+    "version": "1.0.0",
+    "main": "useUpdateRef.ts",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
