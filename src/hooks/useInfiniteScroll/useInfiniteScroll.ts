@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
 
 import {
@@ -25,10 +25,6 @@ function useInfiniteScroll() {
   )
 
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null)
-
-  useEffect(() => {
-    console.log(lastDoc)
-  }, [lastDoc])
 
   function setQuery(queryConstraints: FilterQuery, userID: string | null): void {
     console.log(lastDoc)
@@ -80,13 +76,15 @@ function useInfiniteScroll() {
 
       setPosts((prevPosts) => [...prevPosts, ...tempPosts])
 
-      const [tempLastDoc] = querySnapshot.docs.slice(-1)
+      const tempLastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
       console.log(tempLastDoc)
       setLastDoc(tempLastDoc)
     } catch (error) {
       console.error('Error loading users posts:', error)
       throw error
     }
+
+    console.log(posts.length)
   }
 
   function clearPosts(): void {
@@ -94,8 +92,14 @@ function useInfiniteScroll() {
     setLastDoc(null)
   }
 
+  function getPosts(): PostType[] {
+    console.log(posts.length)
+    return posts
+  }
+
   return {
     posts,
+    getPosts,
     loadScroll,
     clearPosts
   }

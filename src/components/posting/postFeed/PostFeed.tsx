@@ -40,9 +40,10 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [filter, setFilter] = useState<string>('newest')
   const [queryConstraints, setQueryConstraints] = useState<FilterQuery>(filterSwitch(filter))
+  const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
   const [resetPosts, setResetPosts] = useState<boolean>(false)
 
-  const { posts, loadScroll, clearPosts } = useInfiniteScroll()
+  const { posts, getPosts, loadScroll, clearPosts } = useInfiniteScroll()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
@@ -54,7 +55,9 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   }, [])
 
   useEffect((): void => {
-    clearPosts()
+    // On initial load, don't call API
+    // if (isLoading) return
+    // if (currentPosts.length > 0) clearPosts()
     setQueryConstraints(filterSwitch(filter))
     setResetPosts(true)
   }, [filter])
@@ -88,13 +91,15 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   }, [resetPosts])
 
   useEffect(() => {
-    const handleScroll = (): void => {
+    const handleScroll = async (): Promise<void> => {
       const isNearingBottom =
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
       if (isNearingBottom) {
-        if (userID && constraint === 'favorites') loadScroll(queryConstraints, userID)
-        else loadScroll(queryConstraints)
+        if (userID && constraint === 'favorites') await loadScroll(queryConstraints, userID)
+        else await loadScroll(queryConstraints)
       }
+      setCurrentPosts(posts)
+      getPosts()
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -107,7 +112,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     saveFilterToLocal(newFilterSetting)
   }
 
-  const postArr: ReactNode[] = posts.map((post: PostType) => {
+  const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
   })
 
