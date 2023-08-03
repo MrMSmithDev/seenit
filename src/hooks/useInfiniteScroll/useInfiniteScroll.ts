@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
 
 import {
@@ -20,28 +20,29 @@ function useInfiniteScroll() {
   const postDB: CollectionReference = collection(getFirestore(), 'posts')
 
   const [posts, setPosts] = useState<PostType[]>([])
-  const [postsQuery, setPostsQuery] = useState<Query>(
-    query(postDB, orderBy('timeStamp', 'desc'), limit(10))
-  )
+  const [lastDoc, setLastDocState] = useState<QueryDocumentSnapshot | null>(null)
 
-  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null)
+  const lastDocRef = useRef<QueryDocumentSnapshot | null>(lastDoc)
+  const setLastDoc = (newDoc: QueryDocumentSnapshot | null): void => {
+    lastDocRef.current = newDoc
+    setLastDocState(newDoc)
+  }
 
-  function setQuery(queryConstraints: FilterQuery, userID: string | null): void {
-    console.log(lastDoc)
+  function setQuery(queryConstraints: FilterQuery, userID: string | null): Query {
     let queryToSet: Query
-    if (lastDoc) {
+    if (lastDocRef.current) {
       queryToSet = userID
         ? query(
             postDB,
             where('authorID', '==', userID),
             orderBy(queryConstraints.attribute, queryConstraints.order),
-            startAfter(lastDoc),
+            startAfter(lastDocRef.current),
             limit(10)
           )
         : query(
             postDB,
             orderBy(queryConstraints.attribute, queryConstraints.order),
-            startAfter(lastDoc),
+            startAfter(lastDocRef.current),
             limit(10)
           )
     } else {
@@ -54,14 +55,14 @@ function useInfiniteScroll() {
           )
         : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
     }
-    setPostsQuery(queryToSet)
+    return queryToSet
   }
 
   async function loadScroll(
     queryConstraints: FilterQuery,
     userID: string | null = null
   ): Promise<void> {
-    setQuery(queryConstraints, userID)
+    const postsQuery = setQuery(queryConstraints, userID)
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const tempPosts: PostType[] = []
@@ -74,17 +75,19 @@ function useInfiniteScroll() {
       // If there are no new posts, exit early
       if (tempPosts.length === 0) return
 
-      setPosts((prevPosts) => [...prevPosts, ...tempPosts])
+      setPosts((prevPosts) => {
+        const filteredPosts = tempPosts.filter(
+          (post: PostType) => !prevPosts.some((prevPost: PostType) => prevPost.ID === post.ID)
+        )
+        return [...prevPosts, ...filteredPosts]
+      })
 
       const tempLastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
-      console.log(tempLastDoc)
       setLastDoc(tempLastDoc)
     } catch (error) {
       console.error('Error loading users posts:', error)
       throw error
     }
-
-    console.log(posts.length)
   }
 
   function clearPosts(): void {
@@ -92,14 +95,8 @@ function useInfiniteScroll() {
     setLastDoc(null)
   }
 
-  function getPosts(): PostType[] {
-    console.log(posts.length)
-    return posts
-  }
-
   return {
     posts,
-    getPosts,
     loadScroll,
     clearPosts
   }
