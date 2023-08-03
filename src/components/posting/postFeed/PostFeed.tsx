@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
@@ -39,11 +39,16 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [filter, setFilter] = useState<string>('newest')
-  const [queryConstraints, setQueryConstraints] = useState<FilterQuery>(filterSwitch(filter))
-  const [currentPosts, setCurrentPosts] = useState<PostType[]>([])
+  const [queryConstraints, setQueryState] = useState<FilterQuery>(filterSwitch(filter))
   const [resetPosts, setResetPosts] = useState<boolean>(false)
 
-  const { posts, getPosts, loadScroll, clearPosts } = useInfiniteScroll()
+  const queryConstraintsRef = useRef<FilterQuery>(queryConstraints)
+  const setQueryConstraints = (newConstraints: FilterQuery): void => {
+    queryConstraintsRef.current = newConstraints
+    setQueryState(newConstraints)
+  }
+
+  const { posts, loadScroll, clearPosts } = useInfiniteScroll()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
@@ -56,10 +61,9 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
   useEffect((): void => {
     // On initial load, don't call API
-    // if (isLoading) return
-    // if (currentPosts.length > 0) clearPosts()
+    if (isLoading) return
+    if (posts.length > 0) clearPosts()
     setQueryConstraints(filterSwitch(filter))
-    setResetPosts(true)
   }, [filter])
 
   useEffect((): void => {
@@ -95,11 +99,10 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
       const isNearingBottom =
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
       if (isNearingBottom) {
-        if (userID && constraint === 'favorites') await loadScroll(queryConstraints, userID)
-        else await loadScroll(queryConstraints)
+        if (userID && constraint === 'favorites')
+          await loadScroll(queryConstraintsRef.current, userID)
+        else await loadScroll(queryConstraintsRef.current)
       }
-      setCurrentPosts(posts)
-      getPosts()
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -112,7 +115,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     saveFilterToLocal(newFilterSetting)
   }
 
-  const postArr: ReactNode[] = currentPosts.map((post: PostType) => {
+  const postArr: ReactNode[] = posts.map((post: PostType) => {
     return <PostPreview currentPost={post} key={post.ID} />
   })
 
