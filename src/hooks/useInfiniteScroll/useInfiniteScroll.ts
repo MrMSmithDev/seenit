@@ -1,3 +1,4 @@
+/* eslint-disable no-console, indent*/
 import { useState, useRef } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
 
