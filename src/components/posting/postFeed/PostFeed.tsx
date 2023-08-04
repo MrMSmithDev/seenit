@@ -18,7 +18,7 @@ function filterSwitch(filter: string): FilterQuery {
       return { attribute: 'timeStamp', order: 'asc' }
     case 'top rated':
       return { attribute: 'favorites', order: 'desc' }
-    case 'lowest rated':
+    case 'low rated':
       return { attribute: 'favorites', order: 'asc' }
     default:
       return { attribute: 'timeStamp', order: 'desc' }
@@ -40,7 +40,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [filter, setFilter] = useState<string>('newest')
   const [queryConstraints, setQueryState] = useState<FilterQuery>(filterSwitch(filter))
-  const [resetPosts, setResetPosts] = useState<boolean>(false)
+  const [resetPosts, setResetPosts] = useState<boolean>(true)
 
   const queryConstraintsRef = useRef<FilterQuery>(queryConstraints)
   const setQueryConstraints = (newConstraints: FilterQuery): void => {
@@ -62,9 +62,11 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   useEffect((): void => {
     // On initial load, don't call API
     if (isLoading) return
-    if (posts.length > 0) clearPosts()
+
+    // On filter change or userID change, reset scroll
+    setResetPosts(true)
     setQueryConstraints(filterSwitch(filter))
-  }, [filter])
+  }, [filter, userID])
 
   useEffect((): void => {
     const createTitle = async () => {
@@ -81,9 +83,10 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
       const fetchPosts = async (): Promise<void> => {
         if (resetPosts) {
           clearPosts()
+          setResetPosts(false)
         }
 
-        if (userID && constraint === 'favorites') await loadScroll(queryConstraints, userID)
+        if (userID) await loadScroll(queryConstraints, userID)
         else await loadScroll(queryConstraints)
       }
 
@@ -91,7 +94,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
       setIsLoading(false)
     }
 
-    setPosts()
+    if (resetPosts) setPosts()
   }, [resetPosts])
 
   useEffect(() => {
