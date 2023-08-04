@@ -7,23 +7,8 @@ import { FilterQuery, PostType } from 'src/customTypes/types'
 import { useInfiniteScroll, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
+import { filterSwitch } from '@utils/filters'
 import Loading from '@components/loading'
-
-function filterSwitch(filter: string): FilterQuery {
-  // default is set to newest
-  switch (filter.toLowerCase()) {
-    case 'newest':
-      return { attribute: 'timeStamp', order: 'desc' }
-    case 'oldest':
-      return { attribute: 'timeStamp', order: 'asc' }
-    case 'top rated':
-      return { attribute: 'favorites', order: 'desc' }
-    case 'low rated':
-      return { attribute: 'favorites', order: 'asc' }
-    default:
-      return { attribute: 'timeStamp', order: 'desc' }
-  }
-}
 
 function saveFilterToLocal(filter: string): void {
   localStorage.setItem('filter', filter)
