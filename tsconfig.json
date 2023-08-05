@@ -27,6 +27,9 @@
       "@components/*": [
         "./src/components/*"
       ],
+      "@customTypes/*": [
+        "./src/customTypes/*"
+      ],
       "@hooks/*": [
         "./src/hooks/*"
       ],
