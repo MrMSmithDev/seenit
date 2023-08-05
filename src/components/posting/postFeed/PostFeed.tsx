@@ -4,7 +4,7 @@ import PostPreview from '@components/posting/postPreview'
 
 import style from './PostFeed.module.scss'
 import { FilterQuery, PostType } from 'src/customTypes/types'
-import { useInfiniteScroll, useUsers } from '@hooks/index'
+import { useInfiniteScrollPosts, useUsers } from '@hooks/index'
 import PostFilterBar from '@components/posting/postFilterBar'
 import { useParams } from 'react-router-dom'
 import { filterSwitch } from '@utils/filters'
@@ -33,7 +33,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     setQueryState(newConstraints)
   }
 
-  const { posts, loadScroll, clearPosts } = useInfiniteScroll()
+  const { posts, loadScroll, clearPosts } = useInfiniteScrollPosts()
   const { getUsersDisplayName } = useUsers()
 
   useEffect((): void => {
