@@ -17,7 +17,7 @@ import {
   where
 } from 'firebase/firestore'
 
-function useInfiniteScroll() {
+function useInfiniteScrollPosts() {
   const postDB: CollectionReference = collection(getFirestore(), 'posts')
 
   const [posts, setPosts] = useState<PostType[]>([])
@@ -103,4 +103,4 @@ function useInfiniteScroll() {
   }
 }
 
-export default useInfiniteScroll
+export default useInfiniteScrollPosts
