@@ -1,25 +1,11 @@
 /* eslint-disable no-console, indent*/
 import { useState, useRef } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
+import { setQuery } from '@utils/setQueries'
 
-import {
-  collection,
-  CollectionReference,
-  getDocs,
-  getFirestore,
-  limit,
-  orderBy,
-  query,
-  Query,
-  QueryDocumentSnapshot,
-  QuerySnapshot,
-  startAfter,
-  where
-} from 'firebase/firestore'
+import { getDocs, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
 
 function useInfiniteScrollPosts() {
-  const postDB: CollectionReference = collection(getFirestore(), 'posts')
-
   const [posts, setPosts] = useState<PostType[]>([])
   const [lastDoc, setLastDocState] = useState<QueryDocumentSnapshot | null>(null)
 
@@ -29,41 +15,11 @@ function useInfiniteScrollPosts() {
     setLastDocState(newDoc)
   }
 
-  function setQuery(queryConstraints: FilterQuery, userID: string | null): Query {
-    let queryToSet: Query
-    if (lastDocRef.current) {
-      queryToSet = userID
-        ? query(
-            postDB,
-            where('authorID', '==', userID),
-            orderBy(queryConstraints.attribute, queryConstraints.order),
-            startAfter(lastDocRef.current),
-            limit(10)
-          )
-        : query(
-            postDB,
-            orderBy(queryConstraints.attribute, queryConstraints.order),
-            startAfter(lastDocRef.current),
-            limit(10)
-          )
-    } else {
-      queryToSet = userID
-        ? query(
-            postDB,
-            where('authorID', '==', userID),
-            orderBy(queryConstraints.attribute, queryConstraints.order),
-            limit(10)
-          )
-        : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
-    }
-    return queryToSet
-  }
-
   async function loadScroll(
     queryConstraints: FilterQuery,
     userID: string | null = null
   ): Promise<void> {
-    const postsQuery = setQuery(queryConstraints, userID)
+    const postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const tempPosts: PostType[] = []
