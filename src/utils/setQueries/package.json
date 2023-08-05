@@ -1,0 +1,8 @@
+{
+    "name": "set-queries",
+    "version": "1.0.0",
+    "main": "setQueries.ts",
+    "dependencies": {
+
+    }
+}
