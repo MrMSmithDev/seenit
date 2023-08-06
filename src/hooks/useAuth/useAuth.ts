@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react'
+import { auth } from 'src/firebase'
 import {
-  getAuth,
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
@@ -13,7 +13,6 @@ function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)
 
   useEffect(() => {
-    const auth = getAuth()
     const unsubscribe = onAuthStateChanged(auth, (userChange) => {
       setUser(userChange)
     })
@@ -23,11 +22,11 @@ function useAuth() {
 
   async function signIn(): Promise<void> {
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(getAuth(), provider)
+    await signInWithPopup(auth, provider)
   }
 
   async function signOutUser(): Promise<void> {
-    await signOut(getAuth())
+    await signOut(auth)
   }
 
   function getUserName(): string | null {

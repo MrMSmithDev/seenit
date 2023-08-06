@@ -4,14 +4,12 @@ import resizeImage from '@utils/resizeImage'
 import useAuth from '@hooks/useAuth'
 
 import {
-  getFirestore,
   collection,
   setDoc,
   doc,
   getDoc,
   DocumentReference,
   DocumentSnapshot,
-  Firestore,
   CollectionReference,
   query,
   where,
@@ -23,23 +21,17 @@ import {
   updateDoc,
   increment
 } from 'firebase/firestore'
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  StorageReference,
-  uploadBytesResumable
-} from '@firebase/storage'
+import { getDownloadURL, ref, StorageReference, uploadBytesResumable } from '@firebase/storage'
 import emptyUser from '@utils/placeholders/emptyUser'
+import { firestore, storage } from 'src/firebase'
 
 function useUsers() {
-  const firestoreDB: Firestore = getFirestore()
   const { getUserGoogleImage } = useAuth()
 
   async function updateUserImage(image: File, currentUid: string): Promise<ImageUploadData> {
     try {
       const filePath = `${currentUid}/profileImage${image}`
-      const newImageRef: StorageReference = ref(getStorage(), filePath)
+      const newImageRef: StorageReference = ref(storage, filePath)
       const metaData = {
         contentType: 'image/jpeg'
       }
@@ -58,7 +50,7 @@ function useUsers() {
     let imageData: ImageUploadData | null = null
     let imageURL: string
 
-    const userDB: CollectionReference = collection(firestoreDB, 'users')
+    const userDB: CollectionReference = collection(firestore, 'users')
     const userRef: DocumentReference = doc(userDB, currentUid)
 
     try {
@@ -113,7 +105,7 @@ function useUsers() {
 
   function setProfileListener(uid: string, updateCurrentUser: (userData: UserType) => void): void {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
 
       // Listener for any changes
@@ -130,7 +122,7 @@ function useUsers() {
 
   async function loadUserProfile(uid: string): Promise<UserType> {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc) return userDoc.data() as UserType
@@ -152,7 +144,7 @@ function useUsers() {
 
   async function getUsersDisplayName(uid: string): Promise<string> {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData: UserType = userDoc.data() as UserType
@@ -165,7 +157,7 @@ function useUsers() {
 
   async function getUsersFavoriteCount(uid: string): Promise<number> {
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
+      const postDB: CollectionReference = collection(firestore, 'posts')
       const postsQuery: Query = query(postDB, where('authorID', '==', uid))
 
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
@@ -186,7 +178,7 @@ function useUsers() {
 
   async function getUsersStats(uid: string): Promise<StatsType> {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData: UserType = userDoc.data() as UserType
@@ -204,7 +196,7 @@ function useUsers() {
 
   async function incrementPostCount(uid: string): Promise<void> {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
 
       await updateDoc(userRef, {
@@ -217,7 +209,7 @@ function useUsers() {
 
   async function incrementCommentCount(uid: string): Promise<void> {
     try {
-      const userDB: CollectionReference = collection(firestoreDB, 'users')
+      const userDB: CollectionReference = collection(firestore, 'users')
       const userRef: DocumentReference = doc(userDB, uid)
 
       await updateDoc(userRef, {

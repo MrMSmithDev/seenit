@@ -21,7 +21,6 @@ import {
   getDocs,
   updateDoc,
   where,
-  getFirestore,
   increment,
   Firestore,
   DocumentReference,
@@ -33,7 +32,6 @@ import {
 } from 'firebase/firestore'
 import {
   ref,
-  getStorage,
   StorageReference,
   uploadBytesResumable,
   getDownloadURL,
@@ -41,13 +39,15 @@ import {
   deleteObject
 } from 'firebase/storage'
 import deletedPost from '@utils/placeholders/deletedPost'
+import { firestore, storage } from 'src/firebase'
 
 function generateID(): string {
   return Date.now().toString()
 }
 
 function usePosts() {
-  const firestoreDB: Firestore = getFirestore()
+  const firestoreDB: Firestore = firestore
+  const postDB: CollectionReference = collection(firestoreDB, 'posts')
   //*******************//
   //****** Posts ******//
   //*******************//
@@ -59,7 +59,7 @@ function usePosts() {
   ): Promise<ImageUploadData> {
     try {
       const filePath = `${authorID}/${postID}`
-      const newImageRef: StorageReference = ref(getStorage(), filePath)
+      const newImageRef: StorageReference = ref(storage, filePath)
       const metaData: UploadMetadata = {
         contentType: 'image/jpeg'
       }
@@ -79,7 +79,6 @@ function usePosts() {
     const postID = generateID()
 
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       if (post.image) {
         imageData = await writeImage(post.image, postID, post.authorID)
       }
@@ -106,8 +105,6 @@ function usePosts() {
   }
 
   async function editPost(editedPost: PostEdit): Promise<ApiReturn> {
-    const postDB: CollectionReference = collection(firestoreDB, 'posts')
-
     try {
       const querySnapshot: QuerySnapshot = await getDocs(
         query(postDB, where('ID', '==', editedPost.ID))
@@ -134,7 +131,6 @@ function usePosts() {
 
   async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const postsQuery: Query = query(
         postDB,
         orderBy(queryConstraints.attribute, queryConstraints.order),
@@ -160,7 +156,6 @@ function usePosts() {
     queryConstraints: FilterQuery
   ): Promise<PostType[]> {
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const postsQuery: Query = query(
         postDB,
         where('authorID', '==', userID),
@@ -215,7 +210,6 @@ function usePosts() {
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
 
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const posts: PostType[] = []
 
       for (const favoriteID of userFavoriteIDs) {
@@ -239,7 +233,6 @@ function usePosts() {
 
   async function loadCurrentPost(postID: string): Promise<PostType> {
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
       const postDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
@@ -289,7 +282,6 @@ function usePosts() {
 
   async function incrementFavoriteCount(postID: string, incrementAmount: number): Promise<void> {
     try {
-      const postDB: CollectionReference = collection(firestoreDB, 'posts')
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
       const postRef: DocumentReference = querySnapshot.docs[0].ref

@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+import { firestore } from 'src/firebase'
 import {
   addDoc,
   arrayUnion,
   collection,
   limit,
   getDocs,
-  getFirestore,
   query,
   serverTimestamp,
   updateDoc,
@@ -33,7 +33,7 @@ const generateCommentID = (): string => {
 
 async function addCommentToPost(postID: string, commentID: string): Promise<void> {
   try {
-    const postDB: CollectionReference = collection(getFirestore(), 'posts')
+    const postDB: CollectionReference = collection(firestore, 'posts')
     const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
 
     const postRef = querySnapshot.docs[0].ref
@@ -47,7 +47,7 @@ async function addCommentToPost(postID: string, commentID: string): Promise<void
 }
 
 function useComments() {
-  const firestoreDB: Firestore = getFirestore()
+  const firestoreDB: Firestore = firestore
   const commentDB: CollectionReference = collection(firestoreDB, 'comments')
   const { user } = useAuth()
 
