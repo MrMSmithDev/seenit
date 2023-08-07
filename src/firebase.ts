@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import { FirebaseStorage, getStorage } from '@firebase/storage'
-import { initializeApp, FirebaseApp } from 'firebase/app'
-import { Auth, getAuth } from 'firebase/auth'
-import { Firestore, getFirestore } from 'firebase/firestore'
+import { initializeApp, FirebaseApp } from '@firebase/app'
+import { Auth, getAuth } from '@firebase/auth'
+import { Firestore, getFirestore } from '@firebase/firestore'
 import { firebaseConfig } from './firebaseConfig'
 
 let app: FirebaseApp
