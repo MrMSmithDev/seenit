@@ -49,8 +49,10 @@ module.exports = {
 			'@customTypes': path.resolve(__dirname, 'src/customTypes'),
 			'@hooks': path.resolve(__dirname, 'src/hooks'),
 			'@routes': path.resolve(__dirname, 'src/routes'),
+			'@src': path.resolve(__dirname, 'src'),
 			'@styles': path.resolve(__dirname, 'src/styles'),
 			'@utils': path.resolve(__dirname, 'src/utils')
 		},
+		extensions: ['.ts', '.tsx', '.js']
 	},
 }

@@ -36,6 +36,9 @@
       "@styles/*": [
         "./src/styles/*"
       ],
+      "@src/*": [
+        "./src/*"
+      ],
       "@routes/*": [
         "./src/routes/*"
       ],
