@@ -1,8 +1,8 @@
 /* eslint-disable no-console, indent*/
+import { firestore } from '@src/firebase'
 import {
   collection,
   CollectionReference,
-  getFirestore,
   limit,
   orderBy,
   query,
@@ -13,16 +13,15 @@ import {
 } from 'firebase/firestore'
 import { FilterQuery } from 'src/customTypes/types'
 
-const postDB: CollectionReference = collection(getFirestore(), 'posts')
+const postDB: CollectionReference = collection(firestore, 'posts')
 
 export function setQuery(
   queryConstraints: FilterQuery,
   userID: string | null,
   lastDoc: QueryDocumentSnapshot | null
 ): Query {
-  let queryToSet: Query
   if (lastDoc) {
-    queryToSet = userID
+    return userID
       ? query(
           postDB,
           where('authorID', '==', userID),
@@ -37,7 +36,7 @@ export function setQuery(
           limit(10)
         )
   } else {
-    queryToSet = userID
+    return userID
       ? query(
           postDB,
           where('authorID', '==', userID),
@@ -46,24 +45,25 @@ export function setQuery(
         )
       : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
   }
-  return queryToSet
 }
 
-// export function setFavoritesQuery(
-//   queryConstraints: FilterQuery,
-//   postsList: string[],
-//   lastDoc: QueryDocumentSnapshot | null
-// ): Query {
-//   return lastDoc
-//     ? query(
-//         postDB,
-//         where('postID', 'in', postsList),
-//         orderBy(queryConstraints.attribute, queryConstraints.order),
-//         startAfter(lastDoc),
-//         limit(10)
-//       )
-//     : query(
-//       postDB,
-//       orderBy(queryConstraints.attribute, queryConstraints.order)
-//     )
-// }
+export function setFavoritesQuery(
+  queryConstraints: FilterQuery,
+  postsList: string[],
+  lastDoc: QueryDocumentSnapshot | null
+): Query {
+  return lastDoc
+    ? query(
+        postDB,
+        where('postID', 'in', postsList),
+        orderBy(queryConstraints.attribute, queryConstraints.order),
+        startAfter(lastDoc),
+        limit(10)
+      )
+    : query(
+        postDB,
+        where('postID', 'in', postsList),
+        orderBy(queryConstraints.attribute, queryConstraints.order),
+        limit(10)
+      )
+}
