@@ -23,7 +23,7 @@ import {
 } from 'firebase/firestore'
 import { getDownloadURL, ref, StorageReference, uploadBytesResumable } from '@firebase/storage'
 import emptyUser from '@utils/placeholders/emptyUser'
-import { firestore, storage } from 'src/firebase'
+import { firestore, storage } from '@src/firebase'
 
 function useUsers() {
   const { getUserGoogleImage } = useAuth()

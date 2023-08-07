@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { firestore } from 'src/firebase'
+import { firestore } from '@src/firebase'
 import {
   addDoc,
   arrayUnion,

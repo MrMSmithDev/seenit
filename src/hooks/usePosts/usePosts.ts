@@ -39,7 +39,7 @@ import {
   deleteObject
 } from 'firebase/storage'
 import deletedPost from '@utils/placeholders/deletedPost'
-import { firestore, storage } from 'src/firebase'
+import { firestore, storage } from '@src/firebase'
 
 function generateID(): string {
   return Date.now().toString()
