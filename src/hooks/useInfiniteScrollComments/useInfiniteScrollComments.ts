@@ -1,35 +1,13 @@
 /* eslint-disable no-console, indent*/
 import { useState, useRef } from 'react'
-import { FilterQuery, PostType } from 'src/customTypes/types'
-import { setFavoritesQuery, setQuery } from '@utils/setQueries'
+import { CommentType } from 'src/customTypes/types'
 
-import {
-  collection,
-  doc,
-  DocumentReference,
-  DocumentSnapshot,
-  getDoc,
-  getDocs,
-  Query,
-  QueryDocumentSnapshot,
-  QuerySnapshot
-} from 'firebase/firestore'
-import { firestore } from '@src/firebase'
+import { getDocs, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import { setCommentsQuery } from '@src/utils/setQueries'
 
-async function getUsersFavorites(userID: string): Promise<string[]> {
-  let userFavoriteIDs: string[] = []
-
-  const userRef: DocumentReference = doc(collection(firestore, 'users'), userID)
-  const userDoc: DocumentSnapshot = await getDoc(userRef)
-
-  if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
-  return userFavoriteIDs
-}
-
-function useInfiniteScrollPosts() {
-  const [posts, setPosts] = useState<PostType[]>([])
+function useInfiniteScrollComments() {
+  const [comments, setComments] = useState<CommentType[]>([])
   const [lastDoc, setLastDocState] = useState<QueryDocumentSnapshot | null>(null)
-  const [usersFavorites, setUsersFavorites] = useState<string[]>([])
 
   const lastDocRef = useRef<QueryDocumentSnapshot | null>(lastDoc)
   const setLastDoc = (newDoc: QueryDocumentSnapshot | null): void => {
@@ -37,66 +15,47 @@ function useInfiniteScrollPosts() {
     setLastDocState(newDoc)
   }
 
-  const favoritesRef = useRef<string[]>(usersFavorites)
-  const setFavorites = (newFavoritesArr: string[]): void => {
-    favoritesRef.current = newFavoritesArr
-    setUsersFavorites(newFavoritesArr)
-  }
-
-  async function loadScroll(
-    queryConstraints: FilterQuery,
-    userID: string | null = null,
-    constraint: 'favorites' | null = null
-  ): Promise<void> {
-    let postsQuery: Query
-    if (userID && constraint) {
-      // If searching for a user's favorites
-      if (!favoritesRef.current.length) {
-        const favoritesList = await getUsersFavorites(userID)
-        setFavorites(favoritesList)
-      }
-      postsQuery = setFavoritesQuery(queryConstraints, favoritesRef.current, lastDocRef.current)
-      // If not searching for a users favorites
-    } else postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
+  async function loadCommentScroll(userID: string): Promise<void> {
+    const commentsQuery = setCommentsQuery(userID, lastDocRef.current)
 
     try {
-      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
-      const tempPosts: PostType[] = []
+      const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
+      const tempComments: CommentType[] = []
 
       querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-        const post = currentDoc.data() as PostType
-        tempPosts.push(post)
+        const comment = currentDoc.data() as CommentType
+        tempComments.push(comment)
       })
 
-      // If there are no new posts, exit early
-      if (tempPosts.length === 0) return
+      // If there are no new comments, exit early
+      if (tempComments.length === 0) return
 
-      setPosts((prevPosts) => {
-        const filteredPosts = tempPosts.filter(
-          (post: PostType) => !prevPosts.some((prevPost: PostType) => prevPost.ID === post.ID)
+      setComments((prevComments) => {
+        const filteredComments = tempComments.filter(
+          (comment: CommentType) =>
+            !prevComments.some((prevComment: CommentType) => prevComment.ID === comment.ID)
         )
-        return [...prevPosts, ...filteredPosts]
+        return [...prevComments, ...filteredComments]
       })
 
       const tempLastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
       setLastDoc(tempLastDoc)
     } catch (error) {
-      console.error('Error loading users posts:', error)
+      console.error('Error loading users comments:', error)
       throw error
     }
   }
 
-  function clearPosts(): void {
-    setPosts([])
+  function clearComments(): void {
+    setComments([])
     setLastDoc(null)
-    setFavorites([])
   }
 
   return {
-    posts,
-    loadScroll,
-    clearPosts
+    comments,
+    loadCommentScroll,
+    clearComments
   }
 }
 
-export default useInfiniteScrollPosts
+export default useInfiniteScrollComments
