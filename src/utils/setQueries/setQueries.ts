@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore'
 import { FilterQuery } from 'src/customTypes/types'
 
+const commentDB: CollectionReference = collection(firestore, 'comments')
 const postDB: CollectionReference = collection(firestore, 'posts')
 
 export function setQuery(
@@ -64,6 +65,18 @@ export function setFavoritesQuery(
         postDB,
         where('ID', 'in', postsList),
         orderBy(queryConstraints.attribute, queryConstraints.order),
+        limit(10)
+      )
+}
+
+export function setCommentsQuery(userID: string, lastDoc: QueryDocumentSnapshot | null): Query {
+  return lastDoc
+    ? query(commentDB, where('authorID', '==', userID), orderBy('timestamp', 'desc'), limit(10))
+    : query(
+        commentDB,
+        where('authorID', '==', userID),
+        orderBy('timestamp', 'desc'),
+        startAfter(lastDoc),
         limit(10)
       )
 }
