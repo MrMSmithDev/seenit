@@ -37,31 +37,27 @@ function useInfiniteScrollPosts() {
     setLastDocState(newDoc)
   }
 
+  const favoritesRef = useRef<string[]>(usersFavorites)
+  const setFavorites = (newFavoritesArr: string[]): void => {
+    favoritesRef.current = newFavoritesArr
+    setUsersFavorites(newFavoritesArr)
+  }
+
   async function loadScroll(
     queryConstraints: FilterQuery,
     userID: string | null = null,
     constraint: 'favorites' | null = null
   ): Promise<void> {
     let postsQuery: Query
-    if (constraint) {
+    if (userID && constraint) {
       // If searching for a user's favorites
-      postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
-    } else {
-      if (userID) {
-        if (usersFavorites.length) {
-          // If userID and usersFavorites present, set query based on that
-          postsQuery = setFavoritesQuery(queryConstraints, usersFavorites, lastDocRef.current)
-        } else {
-          // If userID present, retrieve that user's favorites
-          const favoritesList = await getUsersFavorites(userID)
-          setUsersFavorites(favoritesList)
-          postsQuery = setFavoritesQuery(queryConstraints, favoritesList, lastDocRef.current)
-        }
-      } else {
-        // If no userID is present, set query for all posts
-        postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
+      if (!favoritesRef.current.length) {
+        const favoritesList = await getUsersFavorites(userID)
+        setFavorites(favoritesList)
       }
-    }
+      postsQuery = setFavoritesQuery(queryConstraints, favoritesRef.current, lastDocRef.current)
+      // If not searching for a users favorites
+    } else postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
 
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
@@ -93,6 +89,7 @@ function useInfiniteScrollPosts() {
   function clearPosts(): void {
     setPosts([])
     setLastDoc(null)
+    setFavorites([])
   }
 
   return {
