@@ -1,7 +1,7 @@
 {
-    "name": "use-infinite-scroll",
+    "name": "use-infinite-scroll-posts",
     "version": "1.0.0",
-    "main": "useInfiniteScroll.ts",
+    "main": "useInfiniteScrollPosts.ts",
     "dependencies": {
         "react": "^18.2.0"
     }
