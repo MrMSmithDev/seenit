@@ -71,7 +71,9 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
           setResetPosts(false)
         }
 
-        if (userID) await loadScroll(queryConstraints, userID)
+        if (userID && constraint === 'favorites')
+          await loadScroll(queryConstraints, userID, 'favorites')
+        else if (userID) await loadScroll(queryConstraints, userID)
         else await loadScroll(queryConstraints)
       }
 
