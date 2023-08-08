@@ -52,17 +52,18 @@ export function setFavoritesQuery(
   postsList: string[],
   lastDoc: QueryDocumentSnapshot | null
 ): Query {
+  console.log('Favorite post IDs:', postsList)
   return lastDoc
     ? query(
         postDB,
-        where('postID', 'in', postsList),
+        where('ID', 'in', postsList),
         orderBy(queryConstraints.attribute, queryConstraints.order),
         startAfter(lastDoc),
         limit(10)
       )
     : query(
         postDB,
-        where('postID', 'in', postsList),
+        where('ID', 'in', postsList),
         orderBy(queryConstraints.attribute, queryConstraints.order),
         limit(10)
       )
