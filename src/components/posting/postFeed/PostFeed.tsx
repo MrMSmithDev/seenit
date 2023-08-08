@@ -48,10 +48,10 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
     // On initial load, don't call API
     if (isLoading) return
 
-    // On filter change or userID change, reset scroll
+    // On constraint/filter/userID change, reset scroll
     setResetPosts(true)
     setQueryConstraints(filterSwitch(filter))
-  }, [filter, userID])
+  }, [constraint, filter, userID])
 
   useEffect((): void => {
     const createTitle = async () => {
@@ -73,8 +73,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
 
         if (userID && constraint === 'favorites')
           await loadScroll(queryConstraints, userID, 'favorites')
-        else if (userID) await loadScroll(queryConstraints, userID)
-        else await loadScroll(queryConstraints)
+        else await loadScroll(queryConstraintsRef.current, userID)
       }
 
       await fetchPosts()
@@ -90,15 +89,15 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
       if (isNearingBottom) {
         if (userID && constraint === 'favorites')
-          await loadScroll(queryConstraintsRef.current, userID)
-        else await loadScroll(queryConstraintsRef.current)
+          await loadScroll(queryConstraintsRef.current, userID, constraint)
+        else await loadScroll(queryConstraintsRef.current, userID)
       }
     }
 
     window.addEventListener('scroll', handleScroll)
 
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [userID, constraint])
 
   const handleFilterChange = (newFilterSetting: string) => {
     setFilter(newFilterSetting)
