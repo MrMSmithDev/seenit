@@ -1,13 +1,35 @@
 /* eslint-disable no-console, indent*/
 import { useState, useRef } from 'react'
 import { FilterQuery, PostType } from 'src/customTypes/types'
-import { setQuery } from '@utils/setQueries'
+import { setFavoritesQuery, setQuery } from '@utils/setQueries'
 
-import { getDocs, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  DocumentReference,
+  DocumentSnapshot,
+  getDoc,
+  getDocs,
+  Query,
+  QueryDocumentSnapshot,
+  QuerySnapshot
+} from 'firebase/firestore'
+import { firestore } from '@src/firebase'
+
+async function getUsersFavorites(userID: string): Promise<string[]> {
+  let userFavoriteIDs: string[] = []
+
+  const userRef: DocumentReference = doc(collection(firestore, 'users'), userID)
+  const userDoc: DocumentSnapshot = await getDoc(userRef)
+
+  if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
+  return userFavoriteIDs
+}
 
 function useInfiniteScrollPosts() {
   const [posts, setPosts] = useState<PostType[]>([])
   const [lastDoc, setLastDocState] = useState<QueryDocumentSnapshot | null>(null)
+  const [usersFavorites, setUsersFavorites] = useState<string[]>([])
 
   const lastDocRef = useRef<QueryDocumentSnapshot | null>(lastDoc)
   const setLastDoc = (newDoc: QueryDocumentSnapshot | null): void => {
@@ -17,9 +39,30 @@ function useInfiniteScrollPosts() {
 
   async function loadScroll(
     queryConstraints: FilterQuery,
-    userID: string | null = null
+    userID: string | null = null,
+    constraint: 'favorites' | null = null
   ): Promise<void> {
-    const postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
+    let postsQuery: Query
+    if (constraint) {
+      // If searching for a user's favorites
+      postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
+    } else {
+      if (userID) {
+        if (usersFavorites.length) {
+          // If userID and usersFavorites present, set query based on that
+          postsQuery = setFavoritesQuery(queryConstraints, usersFavorites, lastDocRef.current)
+        } else {
+          // If userID present, retrieve that user's favorites
+          const favoritesList = await getUsersFavorites(userID)
+          setUsersFavorites(favoritesList)
+          postsQuery = setFavoritesQuery(queryConstraints, favoritesList, lastDocRef.current)
+        }
+      } else {
+        // If no userID is present, set query for all posts
+        postsQuery = setQuery(queryConstraints, userID, lastDocRef.current)
+      }
+    }
+
     try {
       const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
       const tempPosts: PostType[] = []
