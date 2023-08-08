@@ -1,0 +1,8 @@
+{
+    "name": "use-infinite-scroll-comments",
+    "version": "1.0.0",
+    "main": "useInfiniteScrollComments.ts",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
