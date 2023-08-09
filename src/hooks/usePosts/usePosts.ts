@@ -1,19 +1,10 @@
 /* eslint-disable no-console */
-import {
-  UserType,
-  PostType,
-  FilterQuery,
-  ImageUploadData,
-  ApiReturn,
-  PostEdit
-} from 'src/customTypes/types'
+import { UserType, PostType, ImageUploadData, ApiReturn, PostEdit } from 'src/customTypes/types'
 import resizeImage from '@utils/resizeImage'
 import {
   collection,
   addDoc,
   query,
-  orderBy,
-  limit,
   setDoc,
   doc,
   serverTimestamp,
@@ -27,7 +18,6 @@ import {
   DocumentSnapshot,
   CollectionReference,
   QuerySnapshot,
-  Query,
   QueryDocumentSnapshot
 } from 'firebase/firestore'
 import {
@@ -129,108 +119,6 @@ function usePosts() {
     return { success: false, reference: null, error: 'Error editing post' }
   }
 
-  async function loadPostFeed(queryConstraints: FilterQuery): Promise<PostType[]> {
-    try {
-      const postsQuery: Query = query(
-        postDB,
-        orderBy(queryConstraints.attribute, queryConstraints.order),
-        limit(10)
-      )
-
-      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
-      const posts: PostType[] = []
-
-      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-        const post = currentDoc.data() as PostType
-        posts.push(post)
-      })
-      return posts
-    } catch (error) {
-      console.error('Error loading posts:', error)
-    }
-    return []
-  }
-
-  async function loadUserPostFeed(
-    userID: string,
-    queryConstraints: FilterQuery
-  ): Promise<PostType[]> {
-    try {
-      const postsQuery: Query = query(
-        postDB,
-        where('authorID', '==', userID),
-        orderBy(queryConstraints.attribute, queryConstraints.order),
-        limit(20)
-      )
-
-      const querySnapshot: QuerySnapshot = await getDocs(postsQuery)
-      const posts: PostType[] = []
-
-      querySnapshot.forEach((currentDoc: QueryDocumentSnapshot) => {
-        const post = currentDoc.data() as PostType
-        posts.push(post)
-      })
-      return posts
-    } catch (error) {
-      console.error('Error loading users posts:', error)
-      throw error
-    }
-  }
-
-  function sortUserFavorites(favoriteArr: PostType[], queryConstraints: FilterQuery): PostType[] {
-    if (favoriteArr.length < 2) return favoriteArr
-    let sortedArr: PostType[] = []
-
-    if (queryConstraints.attribute === 'favorites')
-      sortedArr = [
-        ...favoriteArr.sort((a: PostType, b: PostType) => {
-          return a.favorites! - b.favorites!
-        })
-      ]
-    else if (queryConstraints.attribute === 'timeStamp')
-      sortedArr = [
-        ...favoriteArr.sort((a: PostType, b: PostType) => {
-          return a.timeStamp!.seconds - b.timeStamp!.seconds
-        })
-      ]
-
-    if (queryConstraints.order === 'desc') return sortedArr.reverse()
-    return sortedArr
-  }
-
-  async function loadUserFavorites(
-    userID: string,
-    queryConstraints: FilterQuery
-  ): Promise<PostType[]> {
-    try {
-      let userFavoriteIDs: string[] = []
-
-      // Retrieve favorites list from user
-      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
-      const userDoc: DocumentSnapshot = await getDoc(userRef)
-      if (userDoc.exists()) userFavoriteIDs = userDoc.data().favorites
-
-      const posts: PostType[] = []
-
-      for (const favoriteID of userFavoriteIDs) {
-        const postQuery: Query = query(postDB, where('ID', '==', favoriteID), limit(1))
-        const querySnapshot: QuerySnapshot = await getDocs(postQuery)
-        const postDocs: QueryDocumentSnapshot[] = querySnapshot.docs
-
-        if (postDocs.length > 0) {
-          const postDoc: QueryDocumentSnapshot = postDocs[0]
-          posts.push(postDoc.data() as PostType)
-        }
-      }
-
-      const sortedPosts = sortUserFavorites(posts, queryConstraints)
-      return sortedPosts
-    } catch (error) {
-      console.error('Error loading users favorites:', error)
-    }
-    return []
-  }
-
   async function loadCurrentPost(postID: string): Promise<PostType> {
     try {
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
@@ -297,10 +185,6 @@ function usePosts() {
   return {
     writePost,
     editPost,
-
-    loadPostFeed,
-    loadUserPostFeed,
-    loadUserFavorites,
     loadCurrentPost,
 
     setFavoriteStatus,
