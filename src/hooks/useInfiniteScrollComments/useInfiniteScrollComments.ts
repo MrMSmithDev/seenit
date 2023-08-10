@@ -2,8 +2,8 @@
 import { useState, useRef } from 'react'
 import { CommentType } from 'src/customTypes/types'
 
-import { getDocs, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
-import { setCommentsQuery } from '@src/utils/setQueries'
+import { getDocs, Query, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import { setPostCommentsQuery, setUserCommentsQuery } from '@src/utils/setQueries'
 
 function useInfiniteScrollComments() {
   const [comments, setComments] = useState<CommentType[]>([])
@@ -15,8 +15,10 @@ function useInfiniteScrollComments() {
     setLastDocState(newDoc)
   }
 
-  async function loadCommentScroll(userID: string): Promise<void> {
-    const commentsQuery = setCommentsQuery(userID, lastDocRef.current)
+  async function loadCommentScroll(postID: string | null, userID: string | null): Promise<void> {
+    let commentsQuery: Query
+    if (userID) commentsQuery = setUserCommentsQuery(userID, lastDocRef.current)
+    else commentsQuery = setPostCommentsQuery(postID!, lastDocRef.current)
 
     try {
       const querySnapshot: QuerySnapshot = await getDocs(commentsQuery)
