@@ -75,8 +75,8 @@ export function setCommentsQuery(userID: string, lastDoc: QueryDocumentSnapshot 
         commentDB,
         where('authorID', '==', userID),
         startAfter(lastDoc),
-        orderBy('timestamp', 'desc'),
+        orderBy('timeStamp', 'desc'),
         limit(10)
       )
-    : query(commentDB, where('authorID', '==', userID), orderBy('timestamp', 'desc'), limit(10))
+    : query(commentDB, where('authorID', '==', userID), orderBy('timeStamp', 'desc'), limit(10))
 }
