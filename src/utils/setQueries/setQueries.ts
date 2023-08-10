@@ -71,12 +71,12 @@ export function setFavoritesQuery(
 
 export function setCommentsQuery(userID: string, lastDoc: QueryDocumentSnapshot | null): Query {
   return lastDoc
-    ? query(commentDB, where('authorID', '==', userID), orderBy('timestamp', 'desc'), limit(10))
-    : query(
+    ? query(
         commentDB,
         where('authorID', '==', userID),
-        orderBy('timestamp', 'desc'),
         startAfter(lastDoc),
+        orderBy('timestamp', 'desc'),
         limit(10)
       )
+    : query(commentDB, where('authorID', '==', userID), orderBy('timestamp', 'desc'), limit(10))
 }
