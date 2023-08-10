@@ -69,7 +69,19 @@ export function setFavoritesQuery(
       )
 }
 
-export function setCommentsQuery(userID: string, lastDoc: QueryDocumentSnapshot | null): Query {
+export function setPostCommentsQuery(postID: string, lastDoc: QueryDocumentSnapshot | null): Query {
+  return lastDoc
+    ? query(
+        commentDB,
+        where('postID', '==', postID),
+        startAfter(lastDoc),
+        orderBy('timeStamp', 'desc'),
+        limit(10)
+      )
+    : query(commentDB, where('postID', '==', postID), orderBy('timeStamp', 'desc'), limit(10))
+}
+
+export function setUserCommentsQuery(userID: string, lastDoc: QueryDocumentSnapshot | null): Query {
   return lastDoc
     ? query(
         commentDB,
