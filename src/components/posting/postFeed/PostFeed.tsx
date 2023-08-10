@@ -86,7 +86,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   useEffect(() => {
     const handleScroll = async (): Promise<void> => {
       const isNearingBottom =
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 500
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 250
       if (isNearingBottom) {
         if (userID && constraint === 'favorites')
           await loadScroll(queryConstraintsRef.current, userID, constraint)
