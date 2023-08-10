@@ -48,11 +48,7 @@ const UserCommentFeed: React.FC = () => {
 
   useEffect(() => {
     const setComments = async (): Promise<void> => {
-      const fetchComments = async (): Promise<void> => {
-        await loadCommentScroll(userID!)
-      }
-
-      await fetchComments()
+      await loadCommentScroll(null, userID!)
     }
 
     setComments()
@@ -100,45 +96,19 @@ const UserCommentFeed: React.FC = () => {
     setPostsForComments()
   }, [comments])
 
-  // useEffect(() => {
-  //   const retrieveComments = async (): Promise<void> => {
-  //     const retrievedComments: CommentType[] = await loadUsersComments(userID!)
-  //     const postArr: PostIDsWithComments[] = []
+  useEffect(() => {
+    const handleScroll = async (): Promise<void> => {
+      const isNearingBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 250
+      if (isNearingBottom) {
+        await loadCommentScroll(null, userID!)
+      }
+    }
 
-  //     retrievedComments.forEach((currentComment) => {
-  //       const postID = currentComment.postID
-  //       if (checkPostID(postArr, postID)) {
-  //         const arrIndex = postArr.findIndex((post) => post.postID === currentComment.postID)
-  //         postArr[arrIndex].commentArr.push(currentComment)
-  //       } else {
-  //         postArr[postArr.length] = { postID, commentArr: [currentComment] }
-  //       }
-  //     })
+    window.addEventListener('scroll', handleScroll)
 
-  //     // Sort comments by date for each post:
-  //     postArr.forEach((post) => {
-  //       post.commentArr.sort((a, b) => (a.timeStamp.toDate() < b.timeStamp.toDate() ? -1 : 1))
-  //     })
-
-  //     const feedArr = await Promise.all(
-  //       postArr.map(async (postWithCommentsObj) => {
-  //         const { postID, commentArr } = postWithCommentsObj
-  //         const currentPost = await loadCurrentPost(postID)
-  //         return (
-  //           <div className={style.postWithComments} key={postID}>
-  //             <PostPreview currentPost={currentPost} />
-  //             <Comment comment={commentArr[0]} />
-  //             {commentArr.length > 1 ? <FurtherComments commentArr={commentArr.slice(1)} /> : null}
-  //           </div>
-  //         )
-  //       })
-  //     )
-  //     setFeedData(feedArr)
-  //     setIsLoading(false)
-  //   }
-
-  //   retrieveComments()
-  // }, [])
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [userID])
 
   if (isLoading) return <Loading />
 
