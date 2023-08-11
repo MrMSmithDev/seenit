@@ -33,7 +33,7 @@ const PostPage: React.FC = () => {
       <div className={style.postPage}>
         <Post currentPost={currentPost} />
         <NewCommentForm />
-        <CommentFeed commentIDs={currentPost.comments} />
+        <CommentFeed commentIDs={currentPost.comments} postID={postID}/>
       </div>
     )
   else return <Loading />
