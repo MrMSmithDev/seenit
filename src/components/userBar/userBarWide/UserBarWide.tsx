@@ -50,9 +50,6 @@ const UserBarWide: React.FC<UserBarWideProps> = ({ user }) => {
       >
         My Profile
       </Link>
-      <Link to={'/settings'} className={style.sidebarLink} tabIndex={7} data-testid="sidebarLink">
-        Settings
-      </Link>
     </div>
   )
 }

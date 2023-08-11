@@ -61,14 +61,6 @@ const UserBarSlim: React.FC<UserBarSlimProps> = ({ user }) => {
         >
           My Profile
         </Link>
-        <Link
-          to={'/settings'}
-          className={`${style.sidebarLink} ${localStyle.carouselItem}`}
-          tabIndex={7}
-          data-testid="sidebarLink"
-        >
-          Settings
-        </Link>
       </div>
     </div>
   )
