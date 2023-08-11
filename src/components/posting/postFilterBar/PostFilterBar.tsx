@@ -1,11 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import React, { ReactNode, useState } from 'react'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { filters } from '@utils/filters'
 
-import filters from '@utils/filters'
+import PostFilterItem from './postFilterItem'
 
 import style from './PostFilterBar.module.scss'
-import PostFilterItem from './postFilterItem'
 
 interface PostFilterBarProps {
   feedTitle?: string

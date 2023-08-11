@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react'
+import { auth } from '@src/firebase'
 import {
-  onAuthStateChanged,
   GoogleAuthProvider,
+  onAuthStateChanged,
   signInWithPopup,
   signOut,
   User as FirebaseUser
 } from 'firebase/auth'
-import { auth } from '@src/firebase'
 
 function useAuth() {
   const [user, setUser] = useState<FirebaseUser | null>(null)

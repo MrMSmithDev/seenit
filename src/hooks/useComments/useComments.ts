@@ -1,25 +1,25 @@
 /* eslint-disable no-console */
+import useAuth from '@hooks/useAuth'
 import { firestore } from '@src/firebase'
 import {
   addDoc,
   arrayUnion,
   collection,
-  limit,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
   CollectionReference,
-  Query,
-  QuerySnapshot,
-  Firestore,
-  QueryDocumentSnapshot,
   DocumentReference,
+  Firestore,
+  getDocs,
   increment,
-  setDoc
+  limit,
+  Query,
+  query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where
 } from 'firebase/firestore'
-import useAuth from '@hooks/useAuth'
 import { CommentType, UserInteraction } from 'src/customTypes/types'
 
 // function editComment

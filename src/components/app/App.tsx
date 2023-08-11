@@ -1,15 +1,15 @@
-import Header from '@components/header'
-import LandingPage from '@components/pages/landingPage'
-import Main from '@components/main'
-import UserBar from '@components/userBar'
 import React, { useEffect, useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import Header from '@components/header'
+import Loading from '@components/loading'
+import Main from '@components/main'
+import LandingPage from '@components/pages/landingPage'
+import UserBar from '@components/userBar'
+import CurrentUserInfo from '@components/users/currentUserInfo'
 import useAuth from '@hooks/useAuth'
+import { PostRoutes } from '@routes/posts'
 
 import styles from './App.module.scss'
-import { BrowserRouter } from 'react-router-dom'
-import { PostRoutes } from '@routes/posts'
-import Loading from '@components/loading'
-import CurrentUserInfo from '@components/users/currentUserInfo'
 
 const App: React.FC = () => {
   // Initiate loading screen properly here

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { CommentType, UserType } from 'src/customTypes/types'
-import VoteContainer from './voteContainer'
 import Modal from '@components/modal'
+import AuthorInfo from '@components/users/authorInfo'
 import { useAuth, useComments, useNotification, useUsers } from '@hooks/index'
-
 import formatTime from '@utils/formatTime'
+import emptyUser from '@utils/placeholders/emptyUser'
+import { CommentType, UserType } from 'src/customTypes/types'
+
+import CommentControls from '../commentControls'
+
+import VoteContainer from './voteContainer'
 
 import style from './Comment.module.scss'
-import AuthorInfo from '@components/users/authorInfo'
-import emptyUser from '@utils/placeholders/emptyUser'
-import CommentControls from '../commentControls'
 
 interface CommentProps {
   comment: CommentType

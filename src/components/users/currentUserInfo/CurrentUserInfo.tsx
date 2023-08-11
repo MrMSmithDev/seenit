@@ -1,12 +1,12 @@
-import { useAuth, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import Loading from '@components/loading'
-import { UserType } from 'src/customTypes/types'
 import { Link } from 'react-router-dom'
+import Loading from '@components/loading'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAuth, useUsers } from '@hooks/index'
+import { UserType } from 'src/customTypes/types'
 
 import style from './CurrentUserInfo.module.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentUserInfo: React.FC = () => {
   const { user } = useAuth()
@@ -18,7 +18,9 @@ const CurrentUserInfo: React.FC = () => {
     uid: '',
     displayName: '',
     photoURL: '',
-    blurb: ''
+    blurb: '',
+    posts: 0,
+    comments: 0
   })
 
   useEffect(() => {

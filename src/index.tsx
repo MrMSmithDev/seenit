@@ -2,8 +2,8 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import App from '@components/app'
-
 import { initializeApp } from 'firebase/app'
+
 import { firebaseConfig } from './firebaseConfig'
 
 import '@styles/styles.scss'

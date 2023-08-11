@@ -1,8 +1,8 @@
+import React, { useState } from 'react'
+import Comment from '@components/comments/comment'
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
 import { CommentType } from 'src/customTypes/types'
-import Comment from '@components/comments/comment'
 
 import style from './FurtherComments.module.scss'
 

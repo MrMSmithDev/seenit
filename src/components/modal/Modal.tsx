@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 // Disabled due to conflicting errors with spacing within createPortal
-import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { createPortal } from 'react-dom'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import style from './Modal.module.scss'
 

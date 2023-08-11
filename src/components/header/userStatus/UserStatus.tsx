@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import useAuth from '@hooks/useAuth'
+
 import style from './UserStatus.module.scss'
 
 const UserStatus: React.FC = () => {

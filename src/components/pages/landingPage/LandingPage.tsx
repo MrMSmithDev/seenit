@@ -1,8 +1,8 @@
 import React from 'react'
 import { logo } from '@assets/images'
+import useAuth from '@hooks/useAuth'
 
 import style from './LandingPage.module.scss'
-import useAuth from '@hooks/useAuth'
 
 const LandingPage: React.FC = () => {
   const { signIn } = useAuth()

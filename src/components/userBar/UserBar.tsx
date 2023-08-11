@@ -1,8 +1,7 @@
 import React from 'react'
-import useAuth from '@hooks/useAuth'
-
-import UserBarWide from '@components/userBar/userBarWide'
 import UserBarSlim from '@components/userBar/userBarSlim'
+import UserBarWide from '@components/userBar/userBarWide'
+import useAuth from '@hooks/useAuth'
 
 const UserBar: React.FC = () => {
   const { user } = useAuth()

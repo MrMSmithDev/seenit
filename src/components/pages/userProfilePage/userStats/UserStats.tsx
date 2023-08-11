@@ -1,5 +1,5 @@
-import { useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
+import { useUsers } from '@hooks/index'
 import { StatsType, UserType } from 'src/customTypes/types'
 
 import style from './UserStats.module.scss'

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import PostControls from '@components/posting/postControls'
-
 import { useParams } from 'react-router-dom'
+import Loading from '@components/loading'
+import PostControls from '@components/posting/postControls'
+import AuthorInfo from '@components/users/authorInfo'
+import { faMessage, faStar as hollowStar } from '@fortawesome/free-regular-svg-icons'
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAuth, usePosts, useUsers } from '@hooks/index'
+import formatTime from '@utils/formatTime'
 import { PostType, UserType } from 'src/customTypes/types'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
-import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
-
 import style from './Post.module.scss'
-import Loading from '@components/loading'
-import AuthorInfo from '@components/users/authorInfo'
-import formatTime from '@utils/formatTime'
 
 interface PostProps {
   currentPost: PostType

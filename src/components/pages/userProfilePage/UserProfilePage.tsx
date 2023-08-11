@@ -1,13 +1,14 @@
-import Loading from '@components/loading'
-import UserProfileHeading from './userProfileHeading'
 import React, { useEffect, useState } from 'react'
-import useUsers from '@hooks/useUsers'
 import { Link, useParams } from 'react-router-dom'
+import Loading from '@components/loading'
+import { useAuth } from '@hooks/index'
+import useUsers from '@hooks/useUsers'
 import { UserType } from 'src/customTypes/types'
 
-import style from './UserProfilePage.module.scss'
-import { useAuth } from '@hooks/index'
+import UserProfileHeading from './userProfileHeading'
 import UserStats from './userStats'
+
+import style from './UserProfilePage.module.scss'
 
 const UserProfilePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)

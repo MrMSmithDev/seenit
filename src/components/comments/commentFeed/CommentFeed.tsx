@@ -1,11 +1,11 @@
 import React, { ReactNode, useEffect, useState } from 'react'
+import Loading from '@components/loading'
+import useInfiniteScrollComments from '@hooks/useInfiniteScrollComments/useInfiniteScrollComments'
 import { CommentType } from 'src/customTypes/types'
-// import useComments from '@hooks/useComments'
+
+import Comment from '../comment'
 
 import style from './CommentFeed.module.scss'
-import Comment from '../comment'
-import useInfiniteScrollComments from '@hooks/useInfiniteScrollComments/useInfiniteScrollComments'
-import Loading from '@components/loading'
 
 interface CommentFeedProps {
   commentIDs: string[] | undefined
@@ -13,7 +13,6 @@ interface CommentFeedProps {
 }
 
 const CommentFeed: React.FC<CommentFeedProps> = ({ postID }) => {
-  // const [currentComments, setCurrentComments] = useState<ReactNode[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { comments, loadCommentScroll } = useInfiniteScrollComments()
 

@@ -1,35 +1,35 @@
 /* eslint-disable no-console */
-import { UserType, PostType, ImageUploadData, ApiReturn, PostEdit } from 'src/customTypes/types'
+import { firestore, storage } from '@src/firebase'
+import deletedPost from '@utils/placeholders/deletedPost'
 import resizeImage from '@utils/resizeImage'
 import {
-  collection,
   addDoc,
-  query,
-  setDoc,
+  collection,
+  CollectionReference,
   doc,
-  serverTimestamp,
-  getDoc,
-  getDocs,
-  updateDoc,
-  where,
-  increment,
-  Firestore,
   DocumentReference,
   DocumentSnapshot,
-  CollectionReference,
+  Firestore,
+  getDoc,
+  getDocs,
+  increment,
+  query,
+  QueryDocumentSnapshot,
   QuerySnapshot,
-  QueryDocumentSnapshot
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where
 } from 'firebase/firestore'
 import {
+  deleteObject,
+  getDownloadURL,
   ref,
   StorageReference,
   uploadBytesResumable,
-  getDownloadURL,
-  UploadMetadata,
-  deleteObject
+  UploadMetadata
 } from 'firebase/storage'
-import deletedPost from '@utils/placeholders/deletedPost'
-import { firestore, storage } from '@src/firebase'
+import { ApiReturn, ImageUploadData, PostEdit, PostType, UserType } from 'src/customTypes/types'
 
 function generateID(): string {
   return Date.now().toString()

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import CommentFeed from '@components/comments/commentFeed'
+import NewCommentForm from '@components/comments/newCommentForm'
+import Loading from '@components/loading'
 import Post from '@components/posting/post'
+import { usePosts } from '@hooks/index'
+import { PostType } from 'src/customTypes/types'
 
 import style from './PostPage.module.scss'
-import NewCommentForm from '@components/comments/newCommentForm'
-import CommentFeed from '@components/comments/commentFeed'
-import { PostType } from 'src/customTypes/types'
-import { useParams } from 'react-router-dom'
-import { usePosts } from '@hooks/index'
-import Loading from '@components/loading'
 
 const PostPage: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<PostType | null>()
@@ -33,7 +33,7 @@ const PostPage: React.FC = () => {
       <div className={style.postPage}>
         <Post currentPost={currentPost} />
         <NewCommentForm />
-        <CommentFeed commentIDs={currentPost.comments} postID={postID}/>
+        <CommentFeed commentIDs={currentPost.comments} postID={postID!} />
       </div>
     )
   else return <Loading />

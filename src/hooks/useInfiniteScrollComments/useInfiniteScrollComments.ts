@@ -1,9 +1,8 @@
 /* eslint-disable no-console, indent*/
-import { useState, useRef } from 'react'
-import { CommentType } from 'src/customTypes/types'
-
-import { getDocs, Query, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import { useRef, useState } from 'react'
 import { setPostCommentsQuery, setUserCommentsQuery } from '@src/utils/setQueries'
+import { getDocs, Query, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
+import { CommentType } from 'src/customTypes/types'
 
 function useInfiniteScrollComments() {
   const [comments, setComments] = useState<CommentType[]>([])

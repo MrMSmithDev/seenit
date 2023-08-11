@@ -1,12 +1,12 @@
-import { useAuth, useNotification, usePosts } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
-import { ApiReturn, PostEdit, PostType } from 'src/customTypes/types'
 import { useNavigate, useParams } from 'react-router-dom'
 import Modal from '@components/modal'
-
-import style from './PostForm.module.scss'
+import { useAuth, useNotification, usePosts } from '@hooks/index'
 import generateAddressTitle from '@utils/generateAddressTitle'
 import imageUrlToFile from '@utils/imageUrlToFile'
+import { ApiReturn, PostEdit, PostType } from 'src/customTypes/types'
+
+import style from './PostForm.module.scss'
 
 interface PostFormProps {
   toEdit?: boolean

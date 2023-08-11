@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-
+import { useParams } from 'react-router-dom'
 import Modal from '@components/modal'
 import { useComments, useNotification } from '@hooks/index'
 
 import style from './NewCommentForm.module.scss'
-import { useParams } from 'react-router-dom'
 
 const NewCommentForm: React.FC = () => {
   const { postID } = useParams()

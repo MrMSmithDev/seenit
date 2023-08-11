@@ -1,6 +1,6 @@
-import { User } from 'firebase/auth'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { User } from 'firebase/auth'
 
 import style from '../UserBar.module.scss'
 import localStyle from './UserBarWide.module.scss'

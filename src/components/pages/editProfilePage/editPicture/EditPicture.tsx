@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth, useUsers } from '@hooks/index'
 
 import style from './EditPicture.module.scss'
-import { useAuth, useUsers } from '@hooks/index'
 
 interface EditPictureProps {
   setTempImage: (arg0: null | File) => void

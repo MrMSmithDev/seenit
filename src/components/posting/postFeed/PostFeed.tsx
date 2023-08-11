@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import Loading from '@components/loading'
+import PostFilterBar from '@components/posting/postFilterBar'
 import PostPreview from '@components/posting/postPreview'
+import { useInfiniteScrollPosts, useUsers } from '@hooks/index'
+import { filterSwitch } from '@utils/filters'
+import { FilterQuery, PostType } from 'src/customTypes/types'
 
 import style from './PostFeed.module.scss'
-import { FilterQuery, PostType } from 'src/customTypes/types'
-import { useInfiniteScrollPosts, useUsers } from '@hooks/index'
-import PostFilterBar from '@components/posting/postFilterBar'
-import { useParams } from 'react-router-dom'
-import { filterSwitch } from '@utils/filters'
-import Loading from '@components/loading'
 
 function saveFilterToLocal(filter: string): void {
   localStorage.setItem('filter', filter)

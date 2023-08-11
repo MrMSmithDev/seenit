@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-
+import { faDownLong, faUpLong } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpLong, faDownLong } from '@fortawesome/free-solid-svg-icons'
+import { useAuth, useComments } from '@hooks/index'
+import { CommentType } from 'src/customTypes/types'
 
 import style from './VoteContainer.module.scss'
-import { CommentType } from 'src/customTypes/types'
-import { useAuth, useComments } from '@hooks/index'
 
 interface VoteContainerProps {
   comment: CommentType

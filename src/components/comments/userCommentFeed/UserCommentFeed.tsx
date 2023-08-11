@@ -1,12 +1,15 @@
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
 import PostPreview from '@components/posting/postPreview'
 import { usePosts, useUsers } from '@hooks/index'
 import useInfiniteScrollComments from '@hooks/useInfiniteScrollComments/useInfiniteScrollComments'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { CommentType } from 'src/customTypes/types'
+
 import Comment from '../comment'
+
 import FurtherComments from './furtherComments'
+
 import style from './UserCommentFeed.module.scss'
 
 interface PostIDsWithComments {
@@ -48,7 +51,7 @@ const UserCommentFeed: React.FC = () => {
 
   useEffect(() => {
     const setComments = async (): Promise<void> => {
-      await loadCommentScroll(null, userID!)
+      await loadCommentScroll(null, userID)
     }
 
     setComments()
@@ -101,7 +104,7 @@ const UserCommentFeed: React.FC = () => {
       const isNearingBottom =
         window.innerHeight + window.scrollY >= document.body.offsetHeight - 250
       if (isNearingBottom) {
-        await loadCommentScroll(null, userID!)
+        await loadCommentScroll(null, userID)
       }
     }
 

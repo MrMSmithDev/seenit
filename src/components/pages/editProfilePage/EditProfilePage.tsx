@@ -1,14 +1,14 @@
-import Loading from '@components/loading'
-import { useAuth, useNotification, useUsers } from '@hooks/index'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Loading from '@components/loading'
+import Modal from '@components/modal'
+import { useAuth, useNotification, useUsers } from '@hooks/index'
 import { ApiReturn, UserType } from 'src/customTypes/types'
+
 import EditInfo from './editInfo'
 import EditPicture from './editPicture'
 
-import { useNavigate } from 'react-router-dom'
-
 import style from './EditProfilePage.module.scss'
-import Modal from '@components/modal'
 
 const EditProfilePage: React.FC = () => {
   const { user } = useAuth()
@@ -22,7 +22,9 @@ const EditProfilePage: React.FC = () => {
     displayName: '',
     photoURL: '',
     favorites: [],
-    blurb: ''
+    blurb: '',
+    posts: 0,
+    comments: 0
   })
 
   const [tempProfileImage, setTempProfileImage] = useState<null | File>()
@@ -49,7 +51,9 @@ const EditProfilePage: React.FC = () => {
       displayName: tempDisplayName,
       blurb: tempProfileText,
       photoURL: currentUser.photoURL,
-      image: tempProfileImage
+      image: tempProfileImage,
+      posts: currentUser.posts,
+      comments: currentUser.comments
     }
     const result: ApiReturn = await updateUserProfile(user!.uid, newUserInfo)
     if (result.success) {

@@ -5,8 +5,8 @@ import {
   CollectionReference,
   limit,
   orderBy,
-  query,
   Query,
+  query,
   QueryDocumentSnapshot,
   startAfter,
   where

@@ -1,8 +1,7 @@
 /* eslint-disable no-console, indent*/
-import { useState, useRef } from 'react'
-import { FilterQuery, PostType } from 'src/customTypes/types'
+import { useRef, useState } from 'react'
+import { firestore } from '@src/firebase'
 import { setFavoritesQuery, setQuery } from '@utils/setQueries'
-
 import {
   collection,
   doc,
@@ -14,7 +13,7 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot
 } from 'firebase/firestore'
-import { firestore } from '@src/firebase'
+import { FilterQuery, PostType } from 'src/customTypes/types'
 
 async function getUsersFavorites(userID: string): Promise<string[]> {
   let userFavoriteIDs: string[] = []

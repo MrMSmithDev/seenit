@@ -1,13 +1,12 @@
 import React, { useLayoutEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
-
-import PostForm from '@components/posting/postForm'
-import PostFeed from '@components/posting/postFeed'
-import PostPage from '@components/pages/postPage'
 import UserCommentFeed from '@components/comments/userCommentFeed'
-import UserProfilePage from '@components/pages/userProfilePage'
-import PageNotFound from '@components/pages/pageNotFound'
 import EditProfilePage from '@components/pages/editProfilePage'
+import PageNotFound from '@components/pages/pageNotFound'
+import PostPage from '@components/pages/postPage'
+import UserProfilePage from '@components/pages/userProfilePage'
+import PostFeed from '@components/posting/postFeed'
+import PostForm from '@components/posting/postForm'
 
 const PostRoutes: React.FC = () => {
   const location = useLocation()

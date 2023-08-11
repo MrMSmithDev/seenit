@@ -1,29 +1,28 @@
 /* eslint-disable no-console */
-import { ApiReturn, ImageUploadData, PostType, StatsType, UserType } from 'src/customTypes/types'
-import resizeImage from '@utils/resizeImage'
+import { getDownloadURL, ref, StorageReference, uploadBytesResumable } from '@firebase/storage'
 import useAuth from '@hooks/useAuth'
-
+import { firestore, storage } from '@src/firebase'
+import emptyUser from '@utils/placeholders/emptyUser'
+import resizeImage from '@utils/resizeImage'
 import {
   collection,
-  setDoc,
+  CollectionReference,
   doc,
-  getDoc,
   DocumentReference,
   DocumentSnapshot,
-  CollectionReference,
-  query,
-  where,
-  QuerySnapshot,
-  Query,
+  getDoc,
   getDocs,
-  QueryDocumentSnapshot,
+  increment,
   onSnapshot,
+  Query,
+  query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  setDoc,
   updateDoc,
-  increment
+  where
 } from 'firebase/firestore'
-import { getDownloadURL, ref, StorageReference, uploadBytesResumable } from '@firebase/storage'
-import emptyUser from '@utils/placeholders/emptyUser'
-import { firestore, storage } from '@src/firebase'
+import { ApiReturn, ImageUploadData, PostType, StatsType, UserType } from 'src/customTypes/types'
 
 function useUsers() {
   const { getUserGoogleImage } = useAuth()
