@@ -176,8 +176,8 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
           className={style.postRequirements}
           style={isValid ? { display: 'none' } : { display: 'block' }}
         >
-          You must include a title with an image or a body that has a length of at least 5 to
-          publish this post
+          You must include a title with an image or a body that has a length of at least 5
+          characters to publish this post
         </p>
       </form>
       <button className={style.postSubmitButton} onClick={submitForm} disabled={!isValid}>
