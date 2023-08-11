@@ -15,7 +15,10 @@ function useInfiniteScrollComments() {
     setLastDocState(newDoc)
   }
 
-  async function loadCommentScroll(postID: string | null, userID: string | null): Promise<void> {
+  async function loadCommentScroll(
+    postID: string | null,
+    userID: string | null = null
+  ): Promise<void> {
     let commentsQuery: Query
     if (userID) commentsQuery = setUserCommentsQuery(userID, lastDocRef.current)
     else commentsQuery = setPostCommentsQuery(postID!, lastDocRef.current)
