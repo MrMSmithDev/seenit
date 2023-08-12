@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import generateAddressTitle from '@utils/generateAddressTitle'
-
-import { useAuth, usePosts, useUsers } from '@hooks/index'
-import style from './PostPreview.module.scss'
-import { UserType, PostType } from 'src/customTypes/types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
-import { faStar as hollowStar, faMessage } from '@fortawesome/free-regular-svg-icons'
-import { PostLink } from '@routes/posts'
 import AuthorInfo from '@components/users/authorInfo'
+import { faMessage, faStar as hollowStar } from '@fortawesome/free-regular-svg-icons'
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAuth, usePosts, useUsers } from '@hooks/index'
+import { PostLink } from '@routes/posts'
 import formatTime from '@utils/formatTime'
+import generateAddressTitle from '@utils/generateAddressTitle'
+import { PostType, UserType } from 'src/customTypes/types'
+
+import style from './PostPreview.module.scss'
 
 interface PostProps {
   currentPost: PostType
