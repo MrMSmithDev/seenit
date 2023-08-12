@@ -1,0 +1,36 @@
+@import '~@styles/_variables.scss';
+
+.headline {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    position: relative;
+
+    .favoriteButton {
+        background-color: inherit;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .starIcon {
+        color: #e7be08;
+    }
+
+    .postTitle {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    &:not(.preview) {
+        &::after {
+            background-color: $deep-blue;
+            content: '';
+            height: 2px;
+            left: 0;
+            position: absolute;
+            right: 0;
+            bottom: -5px;
+        }
+    }
+}

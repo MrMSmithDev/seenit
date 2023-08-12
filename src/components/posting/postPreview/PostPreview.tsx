@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AuthorInfo from '@components/users/authorInfo'
-import { faMessage, faStar as hollowStar } from '@fortawesome/free-regular-svg-icons'
+import { faMessage } from '@fortawesome/free-regular-svg-icons'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAuth, usePosts, useUsers } from '@hooks/index'
@@ -8,6 +8,8 @@ import { PostLink } from '@routes/posts'
 import formatTime from '@utils/formatTime'
 import generateAddressTitle from '@utils/generateAddressTitle'
 import { PostType, UserType } from 'src/customTypes/types'
+
+import PostHeadline from '../postHeadline'
 
 import style from './PostPreview.module.scss'
 
@@ -81,15 +83,12 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
 
   const postComponent = (
     <div className={`${style.post} ${style.postPreview}`} data-post-id={ID}>
-      <p className={style.headline}>
-        <button className={style.favoriteButton} onClick={toggleFavorite}>
-          <FontAwesomeIcon
-            className={style.starIcon}
-            icon={userHasFavorite ? solidStar : hollowStar}
-          />
-        </button>
-        <span className={style.postTitle}>{title}</span>
-      </p>
+      <PostHeadline
+        title={currentPost.title}
+        toggleFavorite={toggleFavorite}
+        userHasFavorite={userHasFavorite}
+        preview={true}
+      />
       {postImage}
       <p className={style.postBody} style={{ WebkitLineClamp: bodyLength }}>
         {currentPost.body}

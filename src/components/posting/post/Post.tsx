@@ -3,12 +3,14 @@ import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
 import PostControls from '@components/posting/postControls'
 import AuthorInfo from '@components/users/authorInfo'
-import { faMessage, faStar as hollowStar } from '@fortawesome/free-regular-svg-icons'
+import { faMessage } from '@fortawesome/free-regular-svg-icons'
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useAuth, usePosts, useUsers } from '@hooks/index'
 import formatTime from '@utils/formatTime'
 import { PostType, UserType } from 'src/customTypes/types'
+
+import PostHeadline from '../postHeadline'
 
 import style from './Post.module.scss'
 
@@ -87,15 +89,11 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
 
   return (
     <div className={style.post}>
-      <p className={style.headline}>
-        <button className={style.favoriteButton} onClick={toggleFavorite}>
-          <FontAwesomeIcon
-            className={style.starIcon}
-            icon={userHasFavorite ? solidStar : hollowStar}
-          />
-        </button>
-        <span className={style.postTitle}>{currentPost.title}</span>
-      </p>
+      <PostHeadline
+        title={currentPost.title}
+        toggleFavorite={toggleFavorite}
+        userHasFavorite={userHasFavorite}
+      />
       {postControls}
       {postImage}
       <p className={style.postBody}>{currentPost.body}</p>

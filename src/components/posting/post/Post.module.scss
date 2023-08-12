@@ -30,36 +30,6 @@
     white-space: pre-wrap;
 }
 
-.headline {
-    align-items: center;
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-    position: relative;
-
-    .favoriteButton {
-        background-color: inherit;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .postTitle {
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    &::after {
-        background-color: $deep-blue;
-        content: '';
-        height: 2px;
-        left: 0;
-        position: absolute;
-        right: 0;
-        bottom: -15px;
-    }
-}
-
 .postInfo {
     align-items: center;
     display: flex;
