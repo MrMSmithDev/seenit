@@ -104,7 +104,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
             <FontAwesomeIcon className={style.starIcon} icon={solidStar} />
           </p>
         </div>
-        <AuthorInfo author={author} bold={true} />
+        <AuthorInfo author={author} bold={true} preview={true} />
       </div>
     </div>
   )
