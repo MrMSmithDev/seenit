@@ -6,11 +6,12 @@ import style from './AuthorInfo.module.scss'
 
 interface AuthorInfoProps {
   author: UserType
+  preview?: boolean
   bold?: boolean
   link?: boolean
 }
 
-const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold, link }) => {
+const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold, link, preview }) => {
   let imgElement: React.ReactNode | null = null
   if (author.photoURL.length > 0) {
     imgElement = (
@@ -34,7 +35,13 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold, link }) => {
     return (
       <div className={style.authorContainer}>
         {imgElement}
-        <p className={`${style.postAuthor} ${bold ? style.bold : null}`}>{author.displayName}</p>
+        <p
+          className={`${style.postAuthor} ${bold ? style.bold : null} ${
+            preview ? style.preview : null
+          }`}
+        >
+          {author.displayName}
+        </p>
       </div>
     )
 }

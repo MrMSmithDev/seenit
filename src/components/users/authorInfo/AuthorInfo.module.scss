@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .authorContainer {
     cursor: pointer;
     display: flex;
@@ -14,6 +16,14 @@
     .postAuthor {
         &.bold {
             font-weight: bold;
+        }
+
+        &.preview {
+            display: none;
+
+            @media screen and (min-width: $breakpoint-x-small) {
+                display: inline-block;
+            }
         }
     }
 }
