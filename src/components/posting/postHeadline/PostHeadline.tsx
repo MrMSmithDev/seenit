@@ -20,12 +20,14 @@ const PostHeadline: React.FC<PostHeadlineProps> = ({
 }) => {
   return (
     <p className={preview ? `${style.headline} ${style.preview}` : style.headline}>
-      <button className={style.favoriteButton} onClick={toggleFavorite}>
-        <FontAwesomeIcon
-          className={style.starIcon}
-          icon={userHasFavorite ? solidStar : hollowStar}
-        />
-      </button>
+      <span>
+        <button className={style.favoriteButton} onClick={toggleFavorite}>
+          <FontAwesomeIcon
+            className={style.starIcon}
+            icon={userHasFavorite ? solidStar : hollowStar}
+          />
+        </button>
+      </span>
       <span className={style.postTitle}>{title}</span>
     </p>
   )

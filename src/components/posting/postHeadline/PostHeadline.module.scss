@@ -2,8 +2,6 @@
 
 .headline {
     align-items: center;
-    display: flex;
-    gap: 10px;
     position: relative;
 
     .favoriteButton {
@@ -18,7 +16,7 @@
     }
 
     .postTitle {
-        font-size: 24px;
+        font-size: 16px;
         font-weight: bold;
     }
 
@@ -31,6 +29,12 @@
             position: absolute;
             right: 0;
             bottom: -5px;
+        }
+    }
+
+    @media screen and (min-width: $breakpoint-small) {
+        .postTitle {
+            font-size: 24px;
         }
     }
 }
