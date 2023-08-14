@@ -5,9 +5,9 @@ service firebase.storage {
     match /{allPaths=**} {
       allow read: if true;
     }
-    match /$userID/{allPaths=**} {
+    match /{$userID}/{allPaths=**} {
       allow write, update, delete:
-        if request.auth.uid == userID
+        if request.auth.uid == $userID
     }
   }
 }
