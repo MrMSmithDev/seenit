@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { usePosts } from '@hooks/index'
 
 import style from './PostControls.module.scss'
 
@@ -9,13 +10,15 @@ interface PostControlsProps {
 
 const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
   const navigate: NavigateFunction = useNavigate()
+  const { deletePost } = usePosts()
 
   const editOnClick = (): void => {
     navigate(`/posts/${postID}/edit`)
   }
 
-  const deleteOnClick = (): void => {
-    console.log('deleting post')
+  const deleteOnClick = async (): Promise<void> => {
+    const result = await deletePost(postID)
+    if (result.success) navigate('/')
   }
 
   return (
