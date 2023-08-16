@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import style from './Modal.module.scss'
 
-interface ModalProps {
+interface MessageModalProps {
   message: string
   isShowing: boolean
   toggle: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({ message, isShowing, toggle }) => {
+const MessageModal: React.FC<MessageModalProps> = ({ message, isShowing, toggle }) => {
   return isShowing
     ? createPortal(
       <div className={style.modalOverlay}>
@@ -27,4 +27,4 @@ const Modal: React.FC<ModalProps> = ({ message, isShowing, toggle }) => {
     : null
 }
 
-export default Modal
+export default MessageModal

@@ -1,7 +1,7 @@
 {
-    "name": "modal",
+    "name": "message-modal",
     "version": "1.0.0",
-    "main": "Modal.tsx",
+    "main": "MessageModal.tsx",
     "dependencies": {
         "react": "^18.2.0"
     }
