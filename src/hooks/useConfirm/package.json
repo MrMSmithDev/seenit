@@ -1,0 +1,8 @@
+{
+    "name": "use-confirm",
+    "version": "1.0.0",
+    "main": "useConfirm.ts",
+    "dependencies": {
+        "react": "^18.2.0"
+    }
+}
