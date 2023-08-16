@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import style from './Modal.module.scss'
+import style from './MessageModal.module.scss'
 
 interface MessageModalProps {
   message: string
