@@ -6,10 +6,10 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  deleteDoc,
   doc,
   DocumentReference,
   DocumentSnapshot,
-  Firestore,
   getDoc,
   getDocs,
   increment,
@@ -36,8 +36,7 @@ function generateID(): string {
 }
 
 function usePosts() {
-  const firestoreDB: Firestore = firestore
-  const postDB: CollectionReference = collection(firestoreDB, 'posts')
+  const postDB: CollectionReference = collection(firestore, 'posts')
   //*******************//
   //****** Posts ******//
   //*******************//
@@ -61,6 +60,15 @@ function usePosts() {
     } catch (error) {
       console.error('Error uploading image:', error)
       throw error
+    }
+  }
+
+  async function removeImage(imageURL: string): Promise<void> {
+    try {
+      const imageRef: StorageReference = ref(storage, imageURL)
+      await deleteObject(imageRef)
+    } catch (error) {
+      console.error('Error removing image:', error)
     }
   }
 
@@ -88,7 +96,7 @@ function usePosts() {
       // If image has been uploaded, but post fails to upload, remove the
       // uploaded image
       if (imageData) {
-        deleteObject(imageData.imageRef)
+        await deleteObject(imageData.imageRef)
       }
     }
     return { success: false, reference: null, error: 'Error publishing post' }
@@ -119,6 +127,25 @@ function usePosts() {
     return { success: false, reference: null, error: 'Error editing post' }
   }
 
+  async function deletePost(postID: string): Promise<ApiReturn> {
+    try {
+      const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+      const postDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
+      if (postDoc.exists()) {
+        // Check if image associated with post. If true, remove image.
+        const docData = postDoc.data() as PostType
+        if (docData.imageUrl) {
+          removeImage(docData.imageUrl)
+        }
+        await deleteDoc(postDoc.ref)
+        return { success: true, reference: null }
+      }
+    } catch (error) {
+      console.error('Error removing post:', error)
+    }
+    return { success: false, reference: null, error: 'Error removing post' }
+  }
+
   async function loadCurrentPost(postID: string): Promise<PostType> {
     try {
       const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
@@ -133,7 +160,7 @@ function usePosts() {
 
   async function setFavoriteStatus(userID: string, postID: string): Promise<void> {
     try {
-      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
+      const userRef: DocumentReference = doc(collection(firestore, 'users'), userID)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userFavoritesArr: string[] = userDoc.data()?.favorites
 
@@ -158,7 +185,7 @@ function usePosts() {
 
   async function checkFavoriteStatus(userID: string, postID: string): Promise<boolean> {
     try {
-      const userRef: DocumentReference = doc(collection(firestoreDB, 'users'), userID)
+      const userRef: DocumentReference = doc(collection(firestore, 'users'), userID)
       const userDoc: DocumentSnapshot = await getDoc(userRef)
       const userData = userDoc?.data() as UserType
       if (userData?.favorites?.includes(postID)) return true
@@ -185,6 +212,7 @@ function usePosts() {
   return {
     writePost,
     editPost,
+    deletePost,
     loadCurrentPost,
 
     setFavoriteStatus,
