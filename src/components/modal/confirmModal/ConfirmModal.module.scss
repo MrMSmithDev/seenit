@@ -1,3 +1,5 @@
+@import '~@styles/_variables.scss';
+
 .modalOverlay {
     align-items: center;
     background-color: rgba();
@@ -21,8 +23,17 @@
         text-align: center;
         width: min(200px, 20%);
 
-        .modalButton {
-            
+        .buttonsContainer {
+            align-items: center;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+
+            .modalButton {
+                background-color: #FFF;
+                color: $deep-blue;
+                width: fit-content;
+            }
         }
     }
 }
