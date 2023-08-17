@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import Modal from '@components/modal'
+import MessageModal from '@components/modal/messageModal'
 import { useAuth, useNotification, usePosts } from '@hooks/index'
 import generateAddressTitle from '@utils/generateAddressTitle'
 import imageUrlToFile from '@utils/imageUrlToFile'
@@ -183,7 +183,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
       <button className={style.postSubmitButton} onClick={submitForm} disabled={!isValid}>
         Publish
       </button>
-      <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
+      <MessageModal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
     </div>
   )
 }
