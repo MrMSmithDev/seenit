@@ -21,7 +21,10 @@ const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
   }
 
   const deleteOnClick = async (): Promise<void> => {
-    confirm.toggle('')
+    confirm.toggle('', async (): Promise<void> => {
+      const result = await deletePost(postID)
+      if (result.success) navigate('/')
+    })
     const result = await deletePost(postID)
     if (result.success) navigate('/')
   }
@@ -38,6 +41,7 @@ const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
         message={confirm.message}
         isShowing={confirm.isShowing}
         toggle={confirm.toggle}
+        callbackFunction={confirm.callbackFunction}
       />
     </div>
   )
