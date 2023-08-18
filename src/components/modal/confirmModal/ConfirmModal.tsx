@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+// Disabled due to conflicting errors with spacing within createPortal
+
 import React from 'react'
 import { createPortal } from 'react-dom'
 
@@ -7,12 +10,12 @@ interface ConfirmModalProps {
   message: string
   isShowing: boolean
   toggle: () => void
-  callbackFunction: () => boolean
+  callbackFunction: (() => Promise<void>) | null
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, isShowing, toggle }) => {
-
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, isShowing, toggle, callbackFunction }) => {
   const confirm = () => {
+    if (callbackFunction) callbackFunction()
     toggle()
   }
 
@@ -22,8 +25,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, isShowing, toggle 
         <div className={style.modalContainer}>
           <p>{message}</p>
           <div className={style.buttonsContainer}>
-          <button className={style.modalButton} onClick={confirm}>Confirm</button>
-          <button className={style.modalButton} onClick={toggle}>Cancel</button>
+            <button className={style.modalButton} onClick={confirm}>
+                Confirm
+            </button>
+            <button className={style.modalButton} onClick={toggle}>
+                Cancel
+            </button>
           </div>
         </div>
       </div>,
