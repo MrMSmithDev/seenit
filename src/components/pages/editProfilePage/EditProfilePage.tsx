@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Loading from '@components/loading'
-import Modal from '@components/modal'
+import Modal from '@components/modal/messageModal'
 import { useAuth, useNotification, useUsers } from '@hooks/index'
 import { ApiReturn, UserType } from 'src/customTypes/types'
 

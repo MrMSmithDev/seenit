@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Modal from '@components/modal'
+import Modal from '@components/modal/messageModal'
 import AuthorInfo from '@components/users/authorInfo'
 import { useAuth, useComments, useNotification, useUsers } from '@hooks/index'
 import formatTime from '@utils/formatTime'

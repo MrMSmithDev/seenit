@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Modal from '@components/modal'
+import Modal from '@components/modal/messageModal'
 import { useComments, useNotification } from '@hooks/index'
 
 import style from './NewCommentForm.module.scss'
