@@ -20,13 +20,8 @@ const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
     navigate(`/posts/${postID}/edit`)
   }
 
-  const deleteOnClick = async (): Promise<void> => {
-    confirm.toggle('', async (): Promise<void> => {
-      const result = await deletePost(postID)
-      if (result.success) navigate('/')
-    })
-    const result = await deletePost(postID)
-    if (result.success) navigate('/')
+  const deleteOnClick = (): void => {
+    confirm.toggle('Are you sure you want to delete this post? This action cannot be undone')
   }
 
   return (
@@ -34,14 +29,17 @@ const PostControls: React.FC<PostControlsProps> = ({ postID }) => {
       <button className={style.postControl} onClick={editOnClick}>
         Edit
       </button>
-      <button className={style.postControl} onClick={deleteOnClick} disabled={true}>
+      <button className={style.postControl} onClick={deleteOnClick}>
         Delete
       </button>
       <ConfirmModal
         message={confirm.message}
         isShowing={confirm.isShowing}
         toggle={confirm.toggle}
-        callbackFunction={confirm.callbackFunction}
+        callbackFunction={async (): Promise<void> => {
+          const result = await deletePost(postID)
+          if (result.success) navigate('/')
+        }}
       />
     </div>
   )
