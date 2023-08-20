@@ -14,6 +14,7 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ message, isShowing, toggle, callbackFunction }) => {
+
   const confirm = () => {
     if (callbackFunction) callbackFunction()
     toggle()

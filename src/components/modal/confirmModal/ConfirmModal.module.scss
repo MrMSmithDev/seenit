@@ -2,11 +2,10 @@
 
 .modalOverlay {
     align-items: center;
-    background-color: rgba();
+    background-color: rgba(10, 10, 10, 0.3);
     display: flex;
     justify-content: center;
     position: fixed;
-    pointer-events: none;
     top: 0;
     left: 0;
     height: 100vh;
@@ -14,14 +13,16 @@
     z-index: 10000;
 
     .modalContainer {
-        background-color: $deep-blue;
+        background-color: #0C134F;
         color: #FFF;
         display: grid;
+        row-gap: 15px;
         place-content: center;
         pointer-events: all;
         position: relative;
+        padding: 20px;
         text-align: center;
-        width: min(200px, 20%);
+        width: max(275px, 45%);
 
         .buttonsContainer {
             align-items: center;
@@ -32,6 +33,7 @@
             .modalButton {
                 background-color: #FFF;
                 color: $deep-blue;
+                cursor: pointer;
                 width: fit-content;
             }
         }
