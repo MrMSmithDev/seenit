@@ -21,6 +21,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   const [editing, setEditing] = useState<boolean>(false)
   const [commentBody, setCommentBody] = useState<string>(comment.body)
   const [editBody, setEditBody] = useState<string>(comment.body)
+  const [removed, setRemoved] = useState<boolean>(false)
 
   const { user } = useAuth()
   const { editComment } = useComments()
@@ -58,7 +59,12 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   if (user) {
     commentControlsElement =
       user.uid === author.uid ? (
-        <CommentControls commentID={comment.ID} editState={editing} setEditState={setEditing} />
+        <CommentControls
+          commentID={comment.ID}
+          editState={editing}
+          setEditState={setEditing}
+          setRemoved={setRemoved}
+        />
       ) : null
   }
 
@@ -86,7 +92,11 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
     )
 
   return (
-    <div className={style.commentContainer} data-comment-post-id={comment.postID}>
+    <div
+      className={style.commentContainer}
+      style={removed ? { display: 'none' } : undefined}
+      data-comment-post-id={comment.postID}
+    >
       <VoteContainer comment={comment} />
       <div className={style.comment}>
         <div className={style.commentTimestamp}>{formattedTime}</div>
