@@ -3,9 +3,11 @@ import useAuth from '@hooks/useAuth'
 import { firestore } from '@src/firebase'
 import {
   addDoc,
+  arrayRemove,
   arrayUnion,
   collection,
   CollectionReference,
+  deleteDoc,
   DocumentReference,
   Firestore,
   getDocs,
@@ -20,7 +22,7 @@ import {
   updateDoc,
   where
 } from 'firebase/firestore'
-import { CommentType, UserInteraction } from 'src/customTypes/types'
+import { ApiReturn, CommentType, UserInteraction } from 'src/customTypes/types'
 
 // function editComment
 // function deleteComment
@@ -42,7 +44,20 @@ async function addCommentToPost(postID: string, commentID: string): Promise<void
     })
   } catch (error) {
     console.error('Error adding comment to post:', error)
-    throw error
+  }
+}
+
+async function removeCommentFromPost(postID: string, commentID: string): Promise<void> {
+  try {
+    const postDB: CollectionReference = collection(firestore, 'posts')
+    const querySnapshot: QuerySnapshot = await getDocs(query(postDB, where('ID', '==', postID)))
+
+    const postRef = querySnapshot.docs[0].ref
+    await updateDoc(postRef, {
+      comments: arrayRemove(commentID)
+    })
+  } catch (error) {
+    console.error('Error removing comment from post:', error)
   }
 }
 
@@ -93,6 +108,28 @@ function useComments() {
       console.error('Error editing comment:', error)
     }
     return false
+  }
+
+  async function deleteComment(commentID: string): Promise<ApiReturn> {
+    try {
+      const commentQuery: Query = query(commentDB, where('ID', '==', commentID))
+      const querySnapshot: QuerySnapshot = await getDocs(commentQuery)
+
+      const commentDoc: QueryDocumentSnapshot = querySnapshot.docs[0]
+
+      if (commentDoc.exists()) {
+        // Remove comment ID from post array
+        const commentData = commentDoc.data() as CommentType
+        removeCommentFromPost(commentData.postID, commentID)
+
+        // Remove comment
+        await deleteDoc(commentDoc.ref)
+        return { success: true, reference: null }
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error)
+    }
+    return { success: false, reference: null }
   }
 
   async function loadCommentFeed(commentIDs: string[]): Promise<CommentType[]> {
@@ -192,6 +229,7 @@ function useComments() {
   return {
     writeComment,
     editComment,
+    deleteComment,
 
     loadCommentFeed,
     loadUsersComments,
