@@ -6,8 +6,12 @@ service firebase.storage {
       allow read: if true;
     }
     match /{$userID}/{allPaths=**} {
-      allow write, update, delete:
-        if request.auth.uid == $userID
+      allow write, update: 
+        if request.auth.id == $userID
+        && request.resourceType.contentType.matches('image/.*')
+        && request.resource.size < 5 * 1024 * 1024
+      allow delete:
+        if request.auth.uid == $userID;
     }
   }
 }
