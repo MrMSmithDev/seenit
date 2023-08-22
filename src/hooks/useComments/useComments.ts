@@ -205,7 +205,6 @@ function useComments() {
       })
     } catch (error) {
       console.error('Error updating comment points:', error)
-      throw error
     }
   }
 
@@ -222,7 +221,6 @@ function useComments() {
       })
     } catch (error) {
       console.error('Error incrementing favorite count:', error)
-      throw error
     }
   }
 

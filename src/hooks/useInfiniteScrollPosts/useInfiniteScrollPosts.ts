@@ -81,7 +81,6 @@ function useInfiniteScrollPosts() {
       setLastDoc(tempLastDoc)
     } catch (error) {
       console.error('Error loading users posts:', error)
-      throw error
     }
   }
 

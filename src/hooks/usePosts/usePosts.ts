@@ -45,7 +45,7 @@ function usePosts() {
     image: File,
     postID: string,
     authorID: string
-  ): Promise<ImageUploadData> {
+  ): Promise<ImageUploadData | null> {
     try {
       const filePath = `${authorID}/${postID}`
       const newImageRef: StorageReference = ref(storage, filePath)
@@ -59,8 +59,8 @@ function usePosts() {
       return { publicUrl: imageURL, imageRef: newImageRef }
     } catch (error) {
       console.error('Error uploading image:', error)
-      throw error
     }
+    return null
   }
 
   async function removeImage(imageURL: string): Promise<void> {

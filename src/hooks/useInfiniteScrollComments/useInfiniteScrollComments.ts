@@ -46,7 +46,6 @@ function useInfiniteScrollComments() {
       setLastDoc(tempLastDoc)
     } catch (error) {
       console.error('Error loading users comments:', error)
-      throw error
     }
   }
 
