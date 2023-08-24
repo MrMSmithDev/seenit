@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 
-import PostRoutes from './PostRoutes.tsx'
 import PostLink from './postLink.tsx'
+import PostRoutes from './PostRoutes.tsx'
 
 export { PostRoutes, PostLink }
