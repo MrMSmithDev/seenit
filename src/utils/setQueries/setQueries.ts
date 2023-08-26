@@ -21,30 +21,34 @@ export function setQuery(
   userID: string | null,
   lastDoc: QueryDocumentSnapshot | null
 ): Query {
-  if (lastDoc) {
-    return userID
-      ? query(
-          postDB,
-          where('authorID', '==', userID),
-          orderBy(queryConstraints.attribute, queryConstraints.order),
-          startAfter(lastDoc),
-          limit(10)
-        )
-      : query(
-          postDB,
-          orderBy(queryConstraints.attribute, queryConstraints.order),
-          startAfter(lastDoc),
-          limit(10)
-        )
-  } else {
-    return userID
-      ? query(
-          postDB,
-          where('authorID', '==', userID),
-          orderBy(queryConstraints.attribute, queryConstraints.order),
-          limit(10)
-        )
-      : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
+  try {
+    if (lastDoc) {
+      return userID
+        ? query(
+            postDB,
+            where('authorID', '==', userID),
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            startAfter(lastDoc),
+            limit(10)
+          )
+        : query(
+            postDB,
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            startAfter(lastDoc),
+            limit(10)
+          )
+    } else {
+      return userID
+        ? query(
+            postDB,
+            where('authorID', '==', userID),
+            orderBy(queryConstraints.attribute, queryConstraints.order),
+            limit(10)
+          )
+        : query(postDB, orderBy(queryConstraints.attribute, queryConstraints.order), limit(10))
+    }
+  } catch (error) {
+    throw new Error(`Error in 'setQuery' function: ${error}`)
   }
 }
 
