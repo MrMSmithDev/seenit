@@ -36,7 +36,7 @@ describe('generateAddressTitle', () => {
   it('should handle titles with leading/trailing spaces correctly', () => {
     expect(generateAddressTitle('  Title  ')).toBe('title')
 
-    expect(generateAddressTitle('Title')).toBe('title')
+    expect(generateAddressTitle('Title test')).toBe('titletest')
 
     expect(generateAddressTitle('  Title')).toBe('title')
 
