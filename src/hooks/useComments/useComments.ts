@@ -24,9 +24,6 @@ import {
 } from 'firebase/firestore'
 import { ApiReturn, CommentType, UserInteraction } from 'src/customTypes/types'
 
-// function editComment
-// function deleteComment
-
 const generateCommentID = (): string => {
   const commentID: number = Math.floor(Math.random() * Date.now())
   const formattedID: string = commentID.toLocaleString(undefined, { maximumSignificantDigits: 9 })
