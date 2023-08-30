@@ -53,7 +53,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.js",
-    "jest.config.ts"
+    "jest.config.ts",
+    "cypress.config.ts"
   ],
   "exclude": [
     "node_modules",
