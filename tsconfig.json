@@ -53,6 +53,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.js",
+    "cypress/**/*.ts",
     "jest.config.ts",
     "cypress.config.ts"
   ],
