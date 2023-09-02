@@ -1,37 +1,17 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+import { attachCustomCommands } from 'cypress-firebase'
+import firebase from 'firebase/compat/app'
+
+import 'firebase/compat/auth'
+import 'firebase/compat/database'
+import 'firebase/compat/firestore'
+
+firebase.initializeApp({
+  apiKey: 'AIzaSyC0HUz0CDc2mo3kLF60VRKzSeRqpSY9ggo',
+  authDomain: 'seenit-9e81d.firebaseapp.com',
+  projectId: 'seenit-9e81d',
+  storageBucket: 'seenit-9e81d.appspot.com',
+  messagingSenderId: '197060165111',
+  appId: '1:197060165111:web:90182ba92872e64b01c2f2'
+})
+
+attachCustomCommands({ Cypress, cy, firebase })
