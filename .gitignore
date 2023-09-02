@@ -7,3 +7,6 @@
 /.firebase/
 firebase-debug.log
 src/firebaseConfig.js
+
+serviceAccount.json
+cypress.env.json
