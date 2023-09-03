@@ -7,7 +7,7 @@ import serviceAccount from './serviceAccount.json'
 export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      cypressFirebasePlugin(on, config, admin, {
+      return cypressFirebasePlugin(on, config, admin, {
         credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
       })
     }
