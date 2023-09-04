@@ -88,7 +88,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
   const formattedTime: string = formatTime(timePosted)
 
   return (
-    <div className={style.post}>
+    <div className={style.post} data-testid="post">
       <PostHeadline
         title={currentPost.title}
         toggleFavorite={toggleFavorite}

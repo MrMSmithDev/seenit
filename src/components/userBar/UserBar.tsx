@@ -7,7 +7,7 @@ const UserBar: React.FC = () => {
   const { user } = useAuth()
 
   return (
-    <div>
+    <div data-testid="navbar">
       <UserBarWide user={user!} />
       <UserBarSlim user={user!} />
     </div>

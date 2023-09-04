@@ -9,7 +9,7 @@ const Header: React.FC = () => {
   //Create useState here which adjusts the size of the header when scrolled down.
 
   return (
-    <div className={style.header}>
+    <div className={style.header} data-testid="header">
       <img className={style.headerLogo} src={logo} alt="SeenIt-logo-blue"></img>
       <UserStatus />
     </div>

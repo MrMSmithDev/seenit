@@ -82,7 +82,11 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const postAddressTitle: string = generateAddressTitle(title)
 
   const postComponent = (
-    <div className={`${style.post} ${style.postPreview}`} data-post-id={ID}>
+    <div
+      className={`${style.post} ${style.postPreview}`}
+      data-post-id={ID}
+      data-testid="post-preview"
+    >
       <PostHeadline
         title={currentPost.title}
         toggleFavorite={toggleFavorite}

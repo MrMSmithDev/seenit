@@ -44,7 +44,9 @@ const PostFilterBar: React.FC<PostFilterBarProps> = ({
 
   return (
     <div className={style.filterBar}>
-      <p className={style.postFeedTitle}>{feedTitle}</p>
+      <p className={style.postFeedTitle} data-testid="feed-title">
+        {feedTitle}
+      </p>
       <p className={style.filterTitle}>Filter</p>
       <div className={style.dropMenu}>
         <button className={style.dropToggle} onClick={handleDropToggle}>
