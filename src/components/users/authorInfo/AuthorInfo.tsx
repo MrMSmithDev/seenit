@@ -28,7 +28,12 @@ const AuthorInfo: React.FC<AuthorInfoProps> = ({ author, bold, link, preview }) 
     return (
       <Link className={style.authorContainer} to={`/users/profile/${author.uid}`}>
         {imgElement}
-        <p className={`${style.postAuthor} ${bold ? style.bold : null}`}>{author.displayName}</p>
+        <p
+          className={`${style.postAuthor} ${bold ? style.bold : null}`}
+          data-testid="author-info-link"
+        >
+          {author.displayName}
+        </p>
       </Link>
     )
   else

@@ -19,7 +19,10 @@ const PostHeadline: React.FC<PostHeadlineProps> = ({
   preview = false
 }) => {
   return (
-    <p className={preview ? `${style.headline} ${style.preview}` : style.headline}>
+    <p
+      className={preview ? `${style.headline} ${style.preview}` : style.headline}
+      data-testid="post-title"
+    >
       <span>
         <button className={style.favoriteButton} onClick={toggleFavorite}>
           <FontAwesomeIcon
