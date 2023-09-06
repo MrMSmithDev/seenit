@@ -11,7 +11,7 @@ interface UserBarSlimProps {
 
 const UserBarSlim: React.FC<UserBarSlimProps> = ({ user }) => {
   return (
-    <div className={localStyle.userBarSlim}>
+    <div className={localStyle.userBarSlim} data-testid="navbar-links">
       <Link
         to="/"
         className={`${style.sidebarLink} ${localStyle.carouselItem}`}
