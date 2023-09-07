@@ -49,7 +49,7 @@ const PostFilterBar: React.FC<PostFilterBarProps> = ({
       </p>
       <p className={style.filterTitle}>Filter</p>
       <div className={style.dropMenu}>
-        <button className={style.dropToggle} onClick={handleDropToggle}>
+        <button className={style.dropToggle} onClick={handleDropToggle} data-testid="filter-toggle">
           {filterSetting}{' '}
           <FontAwesomeIcon
             icon={faCaretDown}
