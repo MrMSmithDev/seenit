@@ -28,6 +28,16 @@ describe('logs in with an authorized Google login', () => {
     cy.get('[data-testid="header"]').should('exist')
     cy.get('[data-testid="navbar"]').should('exist')
   })
+
+  it('Changes the filter when selected', () => {
+    // Act
+    cy.visit('http://localhost:8080/')
+    cy.get('[data-testid="filter-toggle"]').click()
+    cy.contains('button', 'Oldest').click({ scrollBehavior: false })
+
+    // Assert
+    cy.get('[data-testid="filter-toggle"]').should('have.text', 'Oldest ')
+  })
 })
 
 export {}
