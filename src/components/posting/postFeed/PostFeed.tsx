@@ -23,7 +23,7 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [filter, setFilter] = useState<string>('newest')
+  const [filter, setFilter] = useState<string>('Newest')
   const [queryConstraints, setQueryState] = useState<FilterQuery>(filterSwitch(filter))
   const [resetPosts, setResetPosts] = useState<boolean>(true)
 
