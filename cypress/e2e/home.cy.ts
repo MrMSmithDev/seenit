@@ -37,6 +37,8 @@ describe('logs in with an authorized Google login', () => {
 
     // Assert
     cy.get('[data-testid="filter-toggle"]').should('have.text', 'Oldest ')
+
+    // Include logic to check first post has changed
   })
 })
 

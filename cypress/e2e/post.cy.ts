@@ -54,6 +54,12 @@ describe('Visits a post link', () => {
     // Assert
     cy.get('[data-testid="post"]').should('exist')
   })
+})
+
+describe('Creates valid links', () => {
+  beforeEach(() => {
+    cy.login()
+  })
 
   it('Creates a valid link to an authors profile page', () => {
     // Act
