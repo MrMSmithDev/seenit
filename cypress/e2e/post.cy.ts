@@ -54,6 +54,15 @@ describe('Visits a post link', () => {
     // Assert
     cy.get('[data-testid="post"]').should('exist')
   })
+
+  it('Creates a valid link to an authors profile page', () => {
+    // Act
+    visitPost()
+    cy.get('[data-testid="author-info-link"]').click()
+
+    // Assert
+    cy.url().should('include', '/users/profile/')
+  })
 })
 
 export {}
