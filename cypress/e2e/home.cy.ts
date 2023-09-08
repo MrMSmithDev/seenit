@@ -1,7 +1,9 @@
+const homepage = 'http://localhost:8080'
+
 describe('loads login page on initial visit', () => {
   it('Opens login on non-auth page opening', () => {
     // Act
-    cy.visit('http://localhost:8080/')
+    cy.visit(homepage)
 
     // Assert
     cy.contains('Sign in with Google').should('exist')
@@ -13,7 +15,7 @@ describe('logs in with an authorized Google login', () => {
 
   it('Logs in when provided with authorized credentials and loads home post previews', () => {
     // Act
-    cy.visit('http://localhost:8080/')
+    cy.visit(homepage)
 
     // Assert
     cy.get('[data-testid="feed-title"]').should('have.text', 'Home')
@@ -22,7 +24,7 @@ describe('logs in with an authorized Google login', () => {
 
   it('Logs in and shows the navbar and header', () => {
     // Act
-    cy.visit('http://localhost:8080/')
+    cy.visit(homepage)
 
     // Assert
     cy.get('[data-testid="header"]').should('exist')
@@ -31,7 +33,7 @@ describe('logs in with an authorized Google login', () => {
 
   it('Changes the filter when selected', () => {
     // Act
-    cy.visit('http://localhost:8080/')
+    cy.visit(homepage)
 
     const initialPostPreview = cy.get('[data-testid="post-preview"]').first()
     cy.get('[data-testid="filter-toggle"]').click()
@@ -40,8 +42,17 @@ describe('logs in with an authorized Google login', () => {
     // Assert
     cy.get('[data-testid="filter-toggle"]').should('have.text', 'Oldest ')
     cy.get('[data-testid="post-preview"]').first().should('not.equal', initialPostPreview)
+  })
 
-    // Include logic to check first post has changed
+  it('Allows the user to log out', () => {
+    // Act
+    cy.visit(homepage)
+
+    cy.get('[data-testid="user-status"]').click()
+    cy.contains('Sign Out').should('be.visible').click()
+
+    // Assert
+    cy.contains('Sign in with Google').should('exist')
   })
 })
 
