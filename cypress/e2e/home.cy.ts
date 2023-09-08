@@ -32,11 +32,14 @@ describe('logs in with an authorized Google login', () => {
   it('Changes the filter when selected', () => {
     // Act
     cy.visit('http://localhost:8080/')
+
+    const initialPostPreview = cy.get('[data-testid="post-preview"]').first()
     cy.get('[data-testid="filter-toggle"]').click()
     cy.contains('button', 'Oldest').click({ scrollBehavior: false })
 
     // Assert
     cy.get('[data-testid="filter-toggle"]').should('have.text', 'Oldest ')
+    cy.get('[data-testid="post-preview"]').first().should('not.equal', initialPostPreview)
 
     // Include logic to check first post has changed
   })
