@@ -17,7 +17,7 @@ const UserStatus: React.FC = () => {
   }
 
   return (
-    <div className={style.userStatus} onClick={showDropDown}>
+    <div className={style.userStatus} onClick={showDropDown} data-testid="user-status">
       <img className={style.userImg} src={user?.photoURL || undefined} alt="Users image" />
       <p>{user?.displayName}</p>
       <div className={`${style.dropDownMenu} ${dropIsActive ? style.isActive : ''}`}>
