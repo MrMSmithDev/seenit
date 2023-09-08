@@ -36,7 +36,7 @@ describe('logs in with an authorized Google login', () => {
     cy.visit(homepage)
 
     const initialPostPreview = cy.get('[data-testid="post-preview"]').first()
-    cy.get('[data-testid="filter-toggle"]').click()
+    cy.get('[data-testid="filter-toggle"]').should('exist').click()
     cy.contains('button', 'Oldest').click({ scrollBehavior: false })
 
     // Assert
@@ -48,7 +48,7 @@ describe('logs in with an authorized Google login', () => {
     // Act
     cy.visit(homepage)
 
-    cy.get('[data-testid="user-status"]').click()
+    cy.get('[data-testid="user-status"]').should('exist').click()
     cy.contains('Sign Out').should('be.visible').click()
 
     // Assert
