@@ -40,7 +40,7 @@ const UserProfilePage: React.FC = () => {
 
   const editProfile: React.ReactNode | null =
     user!.uid === selectedUser.uid ? (
-      <Link className={style.profilePageButton} to="/edit-profile/">
+      <Link className={style.profilePageButton} to="/edit-profile/" data-testid="edit-profile-link">
         Edit Profile
       </Link>
     ) : null
@@ -49,8 +49,10 @@ const UserProfilePage: React.FC = () => {
     <div className={style.userProfilePageContainer}>
       <UserProfileHeading user={selectedUser} />
       <UserStats user={selectedUser} />
-      <div className={style.userBlurb}>{selectedUser.blurb}</div>
-      <div className={style.profileLinksContainer}>
+      <div className={style.userBlurb} data-testid="user-blurb">
+        {selectedUser.blurb}
+      </div>
+      <div className={style.profileLinksContainer} data-testid="profile-links">
         <Link
           className={style.profileLink}
           to={`/users/${selectedUser.uid}/posts`}
