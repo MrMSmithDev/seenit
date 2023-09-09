@@ -46,7 +46,7 @@ const UserProfilePage: React.FC = () => {
     ) : null
 
   return (
-    <div className={style.userProfilePageContainer}>
+    <div className={style.userProfilePageContainer} data-testid="profile-page">
       <UserProfileHeading user={selectedUser} />
       <UserStats user={selectedUser} />
       <div className={style.userBlurb} data-testid="user-blurb">

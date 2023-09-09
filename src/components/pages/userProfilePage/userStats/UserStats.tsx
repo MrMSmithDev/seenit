@@ -25,7 +25,7 @@ const UserStats: React.FC<UserStatsProps> = ({ user }) => {
   if (!userStats) return null
 
   return (
-    <div className={style.userStatsContainer}>
+    <div className={style.userStatsContainer} data-testid="user-stats">
       <p className={style.statPara}>{userStats.posts} posts</p>
       <p className={style.statPara}>{userStats.comments} comments</p>
       <p className={style.statPara}>{userStats.favorites} favorites</p>

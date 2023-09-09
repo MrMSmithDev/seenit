@@ -9,7 +9,7 @@ interface UserProfileHeadingProps {
 
 const UserProfileHeading: React.FC<UserProfileHeadingProps> = ({ user }) => {
   return (
-    <div className={style.userProfileHeadingContainer}>
+    <div className={style.userProfileHeadingContainer} data-testid="user-profile-heading">
       <img
         className={style.profileHeadingImage}
         src={user.photoURL}
