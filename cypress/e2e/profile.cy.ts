@@ -6,19 +6,19 @@ function visitProfilePage() {
 }
 
 describe('Author profile visibility', () => {
-  beforeAll(() => cy.login())
+  before(() => cy.login())
 
   it('Shows the author name and image with post previews', () => {
     cy.visit('http://localhost:8080')
 
     const authorContainer = cy
-      .get('[dataset-testid="post-preview"]')
+      .get('[data-testid="post-preview"]')
       .first()
-      .contains('[data-testid="author-info"]')
+      .get('[data-testid="author-info"]')
 
     // Assert
-    authorContainer.should('contain', '[data-testid="author-info-image"]')
-    authorContainer.should('contain', '[data-testid="author-info-name"]')
+    authorContainer.get('[data-testid="author-info-image"]').should('exist')
+    authorContainer.get('[data-testid="author-info-name"]').should('exist')
   })
 
   it('Shows the author name and image in post pages', () => {
@@ -27,16 +27,19 @@ describe('Author profile visibility', () => {
 
     const authorContainer = cy
       .get('[data-testid="post"]')
-      .contains('[data-testid="author-info-link"]')
+      .first()
+      .get('[data-testid="author-info-link"]')
 
     // Assert
-    authorContainer.should('contain', '[data-testid="author-info-image"]')
-    authorContainer.should('contain', '[data-testid="author-info-name"]')
+    authorContainer.get('[data-testid="author-info-image"]').should('exist')
+    authorContainer.get('[data-testid="author-info-name"]').should('exist')
   })
+
+  after(() => cy.logout())
 })
 
 describe('Profile page functionality', () => {
-  beforeAll(() => cy.login())
+  before(() => cy.login())
 
   it('Displays the authors stats and biography on their profile page', () => {
     visitProfilePage()
@@ -45,11 +48,13 @@ describe('Profile page functionality', () => {
 
     // Assert
     profilePage.should('exist')
-    profilePage.should('contain', '[data-testid="user-profile-heading"]')
-    profilePage.should('contain', '[data-testid="user-stats"]')
-    profilePage.should('contain', '[data-testid="user-blurb"]')
-    profilePage.should('contain', '[data-testid="profile-links"]')
+    profilePage.get('[data-testid="user-profile-heading"]').should('exist')
+    profilePage.get('[data-testid="user-stats"]').should('exist')
+    profilePage.get('[data-testid="user-blurb"]').should('exist')
+    profilePage.get('[data-testid="profile-links"]').should('exist')
   })
+
+  after(() => cy.logout())
 })
 
 export {}
