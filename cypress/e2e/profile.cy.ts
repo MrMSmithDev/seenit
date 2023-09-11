@@ -85,7 +85,19 @@ describe('Profile page functionality', () => {
     cy.get('[data-testid="comment"]').should('exist')
   })
 
+  it('Links to edit the profile page', () => {
+    visitProfilePage()
+
+    cy.contains('a:visible', 'Edit Profile').should('exist').click()
+
+    // Assert
+    cy.url().should('include', '/edit-profile/')
+    cy.get('[data-testid="edit-profile-page"]').should('exist')
+  })
+
   after(() => cy.logout())
 })
+
+describe('', () => {})
 
 export {}
