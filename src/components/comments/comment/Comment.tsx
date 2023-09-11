@@ -96,6 +96,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
       className={style.commentContainer}
       style={removed ? { display: 'none' } : undefined}
       data-comment-post-id={comment.postID}
+      data-testid="comment"
     >
       <VoteContainer comment={comment} />
       <div className={style.comment}>

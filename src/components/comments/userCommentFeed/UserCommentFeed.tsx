@@ -117,7 +117,7 @@ const UserCommentFeed: React.FC = () => {
 
   return (
     <div className={style.userCommentFeed}>
-      <p className={style.feedTitle}>{`${userDisplayName}'s Comments`}</p>
+      <p className={style.feedTitle} data-testid="feed-title">{`${userDisplayName}'s Comments`}</p>
       <div className={style.feedContainer}>{feedDataRef.current}</div>
     </div>
   )
