@@ -35,13 +35,19 @@ const EditPicture: React.FC<EditPictureProps> = ({ setTempImage }) => {
 
   return (
     <div className={style.editPictureContainer}>
-      <img className={style.picturePreview} src={imagePreview} referrerPolicy="no-referrer" />
+      <img
+        className={style.picturePreview}
+        src={imagePreview}
+        referrerPolicy="no-referrer"
+        data-testid="edit-profile-image-preview"
+      />
       <input
         className={style.pictureInput}
         type="file"
         onChange={handleImageInput}
         name="profileImage"
         accept="image/*"
+        data-testid="edit-profile-image-input"
       />
     </div>
   )

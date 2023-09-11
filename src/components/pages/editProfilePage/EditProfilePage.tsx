@@ -67,7 +67,7 @@ const EditProfilePage: React.FC = () => {
   if (isLoading) return <Loading />
 
   return (
-    <div className={style.editProfileContainer}>
+    <div className={style.editProfileContainer} data-testid="edit-profile-page">
       <h1 className={style.editProfileTitle}>Edit Profile</h1>
       <EditPicture setTempImage={setTempProfileImage} />
       <EditInfo

@@ -23,7 +23,7 @@ const EditInfo: React.FC<EditInfoProps> = ({
   }
 
   return (
-    <div className={style.editInfoContainer}>
+    <div className={style.editInfoContainer} data-testid="edit-profile-info-container">
       <form className={style.infoForm}>
         <div className={style.editInfoInputContainer}>
           <label>Display Name:</label>
@@ -31,11 +31,16 @@ const EditInfo: React.FC<EditInfoProps> = ({
             type="text"
             defaultValue={currentUser.displayName}
             onChange={handleDisplayNameChange}
+            data-testid="edit-profile-name-input"
           />
         </div>
         <div className={style.editInfoInputContainer}>
           <label>Profile Blurb</label>
-          <textarea defaultValue={currentUser.blurb} onChange={handleProfileTextChange} />
+          <textarea
+            defaultValue={currentUser.blurb}
+            onChange={handleProfileTextChange}
+            data-testid="edit-profile-blurb-input"
+          />
         </div>
       </form>
     </div>
