@@ -41,9 +41,9 @@ describe('Author profile visibility', () => {
 describe('Profile page functionality', () => {
   before(() => cy.login())
 
-  it('Displays the authors stats and biography on their profile page', () => {
-    visitProfilePage()
+  beforeEach(() => visitProfilePage())
 
+  it('Displays the authors stats and biography on their profile page', () => {
     const profilePage = cy.get('[data-testid="profile-page"]')
 
     // Assert
@@ -52,6 +52,37 @@ describe('Profile page functionality', () => {
     profilePage.get('[data-testid="user-stats"]').should('exist')
     profilePage.get('[data-testid="user-blurb"]').should('exist')
     profilePage.get('[data-testid="profile-links"]').should('exist')
+  })
+
+  it('Links to the users posts', () => {
+    cy.contains('a', 's Posts').should('exist').click()
+
+    // Assert
+    cy.url().should('include', '/users/')
+    cy.url().should('include', 'posts')
+    cy.get('[data-testid="feed-title"]').should('contain.text', 's Posts')
+    cy.get('[data-testid="post-preview"]').should('exist')
+  })
+
+  it('Links to the users favorites', () => {
+    cy.contains('a', 's Favorites').should('exist').click()
+
+    // Assert
+    cy.url().should('include', '/users/')
+    cy.url().should('include', '/favorites')
+    cy.get('[data-testid="feed-title"]').should('contain.text', 's Favorites')
+    cy.get('[data-testid="post-preview"]').should('exist')
+  })
+
+  it('Links to the users comments', () => {
+    cy.contains('a', 's Comments').should('exist').click()
+
+    // Assert
+    cy.url().should('include', '/users/')
+    cy.url().should('include', '/comments')
+    cy.get('[data-testid="feed-title"]').should('contain.text', 's Comments')
+    cy.get('[data-testid="post-preview"]').should('exist')
+    cy.get('[data-testid="comment"]').should('exist')
   })
 
   after(() => cy.logout())
