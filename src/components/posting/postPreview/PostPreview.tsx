@@ -100,7 +100,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
       <div className={style.postInfo}>
         <p className={style.postTimestamp}>{formattedTime}</p>
         <div className={style.postCounts}>
-          <p className={style.postCommentCount}>
+          <p className={style.postCommentCount} data-testid="comment-count">
             {comments?.length || 0} <FontAwesomeIcon icon={faMessage} />
           </p>
           <p className={style.postFavoriteCount}>
