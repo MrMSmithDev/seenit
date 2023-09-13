@@ -44,7 +44,11 @@ const CommentFeed: React.FC<CommentFeedProps> = ({ postID }) => {
   })
 
   if (isLoading) return <Loading />
-  return <div className={style.commentFeed}>{currentComments}</div>
+  return (
+    <div className={style.commentFeed}>
+      {currentComments.length > 0 ? currentComments : <p> No comments have been made</p>}
+    </div>
+  )
 }
 
 export default CommentFeed

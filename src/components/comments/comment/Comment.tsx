@@ -86,7 +86,9 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   else
     commentState = (
       <React.Fragment>
-        <p className={style.commentBody}>{commentBody}</p>
+        <p className={style.commentBody} data-testid="comment-body">
+          {commentBody}
+        </p>
         {comment.edited ? <p className={style.edited}>* This comment has been edited *</p> : null}
       </React.Fragment>
     )
