@@ -31,7 +31,7 @@ const NewCommentForm: React.FC = () => {
 
   return (
     <div className={style.newCommentContainer}>
-      <form className={style.newCommentForm}>
+      <form className={style.newCommentForm} data-testid="new-comment-form">
         <label htmlFor="comment-input">Add Comment</label>
         <textarea
           id="comment-input"
@@ -40,8 +40,15 @@ const NewCommentForm: React.FC = () => {
           maxLength={400}
           value={commentBody}
           onChange={handleCommentBodyChange}
+          data-testid="new-comment-input"
         />
-        <button className={style.confirmButton} type="submit" onClick={uploadComment}>
+        <button
+          className={style.confirmButton}
+          type="submit"
+          onClick={uploadComment}
+          disabled={commentBody.length <= 0}
+          data-testid="new-comment-publish-btn"
+        >
           Publish
         </button>
       </form>
