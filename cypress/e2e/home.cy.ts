@@ -2,7 +2,6 @@ const homepage = 'http://localhost:8080'
 
 describe('loads login page on initial visit', () => {
   it('Opens login on non-auth page opening', () => {
-    // Act
     cy.visit(homepage)
 
     // Assert
@@ -14,7 +13,6 @@ describe('logs in with an authorized Google login', () => {
   beforeEach(() => cy.login())
 
   it('Logs in when provided with authorized credentials and loads home post previews', () => {
-    // Act
     cy.visit(homepage)
 
     // Assert
@@ -23,7 +21,6 @@ describe('logs in with an authorized Google login', () => {
   })
 
   it('Logs in and shows the navbar and header', () => {
-    // Act
     cy.visit(homepage)
 
     // Assert
@@ -32,7 +29,6 @@ describe('logs in with an authorized Google login', () => {
   })
 
   it('Changes the filter when selected', () => {
-    // Act
     cy.visit(homepage)
 
     const initialPostPreview = cy.get('[data-testid="post-preview"]').first()
@@ -45,7 +41,6 @@ describe('logs in with an authorized Google login', () => {
   })
 
   it('Allows the user to log out', () => {
-    // Act
     cy.visit(homepage)
 
     cy.get('[data-testid="user-status"]').should('exist').click()
