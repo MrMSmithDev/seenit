@@ -5,6 +5,14 @@ function visitProfilePage() {
   })
 }
 
+function visitEditProfilePage() {
+  cy.visit('http://localhost:8080')
+  cy.contains('[data-testid="navbar-links"]:visible > a', 'My Profile').should('exist').click({
+    scrollBehavior: false
+  })
+  cy.get('data-testid="edit-profile-link"').should('be.visible').click()
+}
+
 describe('Author profile visibility', () => {
   before(() => cy.login())
 
@@ -88,7 +96,7 @@ describe('Profile page functionality', () => {
   it('Links to edit the profile page', () => {
     visitProfilePage()
 
-    cy.contains('a:visible', 'Edit Profile').should('exist').click()
+    cy.contains('a:visible', 'Edit Profile').should('be.visible').click()
 
     // Assert
     cy.url().should('include', '/edit-profile/')
@@ -98,6 +106,40 @@ describe('Profile page functionality', () => {
   after(() => cy.logout())
 })
 
-describe('', () => {})
+describe('Edit profile page functionality', () => {
+  beforeAll(() => cy.login())
+
+  it('allows a user to edit the blurb section of their profile', () => {
+    visitEditProfilePage()
+
+    const blurbInput = cy.get('data-testid="edit=profile-blurb-input"').should('exist')
+    blurbInput.type('Edit profile blurb test')
+
+    // Assert
+    blurbInput.should('have.value', 'Edit profile blurb test')
+  })
+
+  it('allows a user to upload a new image file as a profile picture', () => {
+    visitEditProfilePage()
+
+    const fileInput = cy.get('[data-testid="edit-profile-image-input"]')
+
+    // Assert
+    fileInput.selectFile('cypress/fixtures/test.jpg')
+    fileInput.should('have.value', 'cypress/fixtures/test.jpg')
+  })
+
+  it('updates the image preview to show the new uploaded image', () => {
+    visitEditProfilePage()
+
+    const originalPreview = cy.get('data-testid="edit-profile-image-preview"')
+    cy.get('data-testid="edit-profile-image-input').selectFile('cypress/fixtures/test.jg')
+
+    const newPreview = cy.get('data-testid="edit-profile-image-preview"')
+
+    // assert
+    originalPreview.should('not.equal', newPreview)
+  })
+})
 
 export {}
