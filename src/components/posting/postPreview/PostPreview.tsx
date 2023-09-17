@@ -82,7 +82,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
   const postAddressTitle: string = generateAddressTitle(title)
 
   const postComponent = (
-    <div
+    <section
       className={`${style.post} ${style.postPreview}`}
       data-post-id={ID}
       data-testid="post-preview"
@@ -110,7 +110,7 @@ const PostPreview: React.FC<PostProps> = ({ currentPost }) => {
         </div>
         <AuthorInfo author={author} bold={true} preview={true} />
       </div>
-    </div>
+    </section>
   )
 
   return (
