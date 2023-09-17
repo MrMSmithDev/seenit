@@ -1,6 +1,22 @@
 .postFeed {
+    animation: expand-down .3s ease-in-out;
     display: flex;
     flex-direction: column;
     padding: 10px;
     gap: 20px;
+    transform-origin: top;
+}
+
+@keyframes expand-down {
+    0% {
+        transform: scaleY(0);
+    }
+
+    70% {
+        transform: scaleY(1.1);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
 }
