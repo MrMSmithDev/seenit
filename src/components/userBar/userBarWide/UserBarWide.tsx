@@ -11,7 +11,7 @@ interface UserBarWideProps {
 
 const UserBarWide: React.FC<UserBarWideProps> = ({ user }) => {
   return (
-    <div className={localStyle.userBarLarge} data-testid="navbar-links">
+    <nav className={localStyle.userBarLarge} data-testid="navbar-links">
       <Link to="/" className={style.sidebarLink} tabIndex={1} data-testid="sidebarLink">
         Home
       </Link>
@@ -50,7 +50,7 @@ const UserBarWide: React.FC<UserBarWideProps> = ({ user }) => {
       >
         My Profile
       </Link>
-    </div>
+    </nav>
   )
 }
 
