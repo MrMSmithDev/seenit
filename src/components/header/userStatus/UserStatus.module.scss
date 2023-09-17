@@ -31,13 +31,15 @@
 }
 
 .dropDownMenu {
+    display: none;
     position: absolute;
     width: calc(100% + 10px);
     bottom: -42px;
-    right: calc(-100% - 20px);
 
     &.isActive {
-        transform: translateX(-100%);
+        animation: expand .5s ease-in-out;
+        display: block;
+        transform-origin: right;
     }
 
     transition: ease-in-out transform .2s;
@@ -59,5 +61,19 @@
 
     @media screen and (min-width: $breakpoint-medium) {
         bottom: -47px;
+    }
+}
+
+@keyframes expand {
+    0% {
+        transform: scaleX(0);
+    }
+
+    70% {
+        transform: scaleX(1.1);
+    }
+
+    100% {
+        transform: scaleX(1);
     }
 }
