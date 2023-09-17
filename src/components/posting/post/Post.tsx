@@ -96,11 +96,11 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
       />
       {postControls}
       {postImage}
-      <p className={style.postBody} data-testid="post-body">
+      <article className={style.postBody} data-testid="post-body">
         {currentPost.body}
-      </p>
+      </article>
       {currentPost.edited ? <p className={style.edited}>* This post has been edited *</p> : null}
-      <div className={style.postInfo} data-testid="post-info">
+      <details className={style.postInfo} data-testid="post-info">
         <p className={style.postTimestamp}>{formattedTime}</p>
         <div className={style.postCounts}>
           <p className={style.postCommentCount}>
@@ -112,7 +112,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
           </p>
         </div>
         <AuthorInfo author={author} bold={true} link={true} />
-      </div>
+      </details>
     </div>
   )
 }
