@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import Loading from '@components/loading'
+import FeedMessage from '@components/modal/feedMessage'
 import useInfiniteScrollComments from '@hooks/useInfiniteScrollComments/useInfiniteScrollComments'
 import { CommentType } from 'src/customTypes/types'
 
@@ -46,7 +47,11 @@ const CommentFeed: React.FC<CommentFeedProps> = ({ postID }) => {
   if (isLoading) return <Loading />
   return (
     <div className={style.commentFeed}>
-      {currentComments.length > 0 ? currentComments : <p> No comments have been made</p>}
+      {currentComments.length > 0 ? (
+        currentComments
+      ) : (
+        <FeedMessage message="Oh no! No one has commented yet. Be the first?" />
+      )}
     </div>
   )
 }
