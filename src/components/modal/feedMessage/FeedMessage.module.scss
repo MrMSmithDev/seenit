@@ -1,12 +1,16 @@
+@import '~@styles/_variables.scss';
+
 .messageContainer {
+    border: 5px solid $deep-blue;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: center;
+    flex-direction: column;
     gap: 10px;
-    margin: 20px;
+    margin: 50px;
+    padding: 30px;
 
     .messageContainerIcon {
-        font-size: 30px;
+        font-size: 50px;
     }
 }
