@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
+import FeedMessage from '@components/modal/feedMessage/FeedMessage'
 import PostPreview from '@components/posting/postPreview'
 import { usePosts, useUsers } from '@hooks/index'
 import useInfiniteScrollComments from '@hooks/useInfiniteScrollComments/useInfiniteScrollComments'
@@ -118,7 +119,13 @@ const UserCommentFeed: React.FC = () => {
   return (
     <div className={style.userCommentFeed}>
       <p className={style.feedTitle} data-testid="feed-title">{`${userDisplayName}'s Comments`}</p>
-      <div className={style.feedContainer}>{feedDataRef.current}</div>
+      <div className={style.feedContainer}>
+        {feedDataRef.current.length > 0 ? (
+          feedDataRef.current
+        ) : (
+          <FeedMessage message="It looks like this user has not made any comments yet" />
+        )}
+      </div>
     </div>
   )
 }
