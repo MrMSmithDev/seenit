@@ -2,6 +2,7 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Loading from '@components/loading'
+import FeedMessage from '@components/modal/feedMessage/FeedMessage'
 import PostFilterBar from '@components/posting/postFilterBar'
 import PostPreview from '@components/posting/postPreview'
 import { useInfiniteScrollPosts, useUsers } from '@hooks/index'
@@ -15,11 +16,12 @@ function saveFilterToLocal(filter: string): void {
 }
 
 interface PostFeedProps {
+  emptyMessage: string
   feedTitle: string
   constraint?: string
 }
 
-const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
+const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint, emptyMessage = '' }) => {
   const { userID } = useParams()
   const [title, setTitle] = useState<string>(feedTitle)
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -117,7 +119,9 @@ const PostFeed: React.FC<PostFeedProps> = ({ feedTitle, constraint }) => {
         filterSetting={filter}
         handleFilterChange={handleFilterChange}
       />
-      <div className={style.postFeed}>{postArr}</div>
+      <div className={style.postFeed}>
+        {postArr.length > 0 ? postArr : <FeedMessage message={emptyMessage} />}
+      </div>
     </div>
   )
 }

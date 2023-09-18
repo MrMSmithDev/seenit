@@ -17,7 +17,11 @@ const PostRoutes: React.FC = () => {
 
   return (
     <Routes>
-      <Route key={location.pathname} path="/" element={<PostFeed feedTitle="Home" />} />
+      <Route
+        key={location.pathname}
+        path="/"
+        element={<PostFeed feedTitle="Home" emptyMessage="Oh no, we couldn't find any posts" />}
+      />
       <Route key={`${location.pathname}-new-post`} path="/posts/new" element={<PostForm />} />
       <Route
         key={`${location.pathname}-edit-post`}
@@ -32,7 +36,7 @@ const PostRoutes: React.FC = () => {
       <Route
         key={`${location.pathname}-user-posts`}
         path="/users/:userID/posts"
-        element={<PostFeed feedTitle="Posts" />}
+        element={<PostFeed feedTitle="Posts" emptyMessage="This user has not made any posts yet" />}
       />
       <Route
         key={`${location.pathname}-user-comments`}
@@ -42,7 +46,13 @@ const PostRoutes: React.FC = () => {
       <Route
         key={`${location.pathname}-user-favorites`}
         path="/users/:userID/favorites"
-        element={<PostFeed feedTitle="Favorites" constraint="favorites" />}
+        element={
+          <PostFeed
+            feedTitle="Favorites"
+            constraint="favorites"
+            emptyMessage="This user has not starred any posts yet"
+          />
+        }
       />
       <Route
         key={`${location.pathname}-user-profile`}
