@@ -48,7 +48,7 @@ const CurrentUserInfo: React.FC = () => {
   if (loading) return <Loading />
 
   return (
-    <div className={style.currentUserContainer}>
+    <aside className={style.currentUserContainer}>
       <img className={style.userImg} src={currentUser.photoURL} referrerPolicy="no-referrer" />
       <h1 className={style.userDisplayName}>{currentUser.displayName}</h1>
       <p className={style.favoriteCount}>
@@ -58,7 +58,7 @@ const CurrentUserInfo: React.FC = () => {
       <Link className={style.editProfileButton} to="/edit-profile/">
         Edit Profile
       </Link>
-    </div>
+    </aside>
   )
 }
 
