@@ -100,7 +100,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
         {currentPost.body}
       </article>
       {currentPost.edited ? <p className={style.edited}>* This post has been edited *</p> : null}
-      <details className={style.postInfo} data-testid="post-info">
+      <div className={style.postInfo} data-testid="post-info">
         <p className={style.postTimestamp}>{formattedTime}</p>
         <div className={style.postCounts}>
           <p className={style.postCommentCount}>
@@ -112,7 +112,7 @@ const Post: React.FC<PostProps> = ({ currentPost }) => {
           </p>
         </div>
         <AuthorInfo author={author} bold={true} link={true} />
-      </details>
+      </div>
     </div>
   )
 }

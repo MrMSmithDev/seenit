@@ -104,10 +104,10 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
       <div className={style.comment}>
         <div className={style.commentTimestamp}>{formattedTime}</div>
         {commentState}
-        <details className={style.commentInfo}>
+        <div className={style.commentInfo}>
           {commentControlsElement}
           <AuthorInfo author={author} link={true} />
-        </details>
+        </div>
       </div>
       <Modal isShowing={notify.isShowing} toggle={notify.toggle} message={notify.message} />
     </div>
