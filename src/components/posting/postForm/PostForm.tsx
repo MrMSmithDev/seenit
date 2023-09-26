@@ -147,6 +147,8 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
         <div className={style.inputContainer}>
           <label htmlFor="post-image">Add Image</label>
           <input
+            id="post-image"
+            name="post-image"
             className={style.imageInput}
             type="file"
             onChange={handleImageChange}
@@ -161,7 +163,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
         </p>
         {imagePreviewElement}
         <div className={style.inputContainer}>
-          <label htmlFor="">Post Body</label>
+          <label htmlFor="post-body">Post Body</label>
           <textarea
             id="post-body"
             name="post-body"
