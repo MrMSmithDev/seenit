@@ -142,6 +142,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
             placeholder="Required"
             value={postTitle}
             required
+            aria-describedby="post-requirements"
           />
         </div>
         <div className={style.inputContainer}>
@@ -175,6 +176,7 @@ const PostForm: React.FC<PostFormProps> = ({ toEdit = false }) => {
           />
         </div>
         <p
+          id="post-requirements"
           className={style.postRequirements}
           style={isValid ? { display: 'none' } : { display: 'block' }}
         >
