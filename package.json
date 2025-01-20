@@ -17,9 +17,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MBright90/seenit/issues"
+    "url": "https://github.com/MrMSmithDev/seenit/issues"
   },
-  "homepage": "https://github.com/MBright90/seenit#readme",
+  "homepage": "https://github.com/MrMSmithDev/seenit#readme",
   "devDependencies": {
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
